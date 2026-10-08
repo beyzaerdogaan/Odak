@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Ses ve müzik</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0E1220}
+a{color:#F2C46D}a:hover{color:#FFD98F}
+input[type=range]{accent-color:#7FD6B5}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1220; color: #EEF0F7; font-family: 'DM Sans', sans-serif; padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+  <span aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 999px; background: #39405C"></span>
+  <header style="display: flex; justify-content: space-between; align-items: center">
+    <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 700">Ses ve müzik</h1>
+    <a href="Active.dc.html" aria-label="Kapat" style="width: 44px; height: 44px; border-radius: 50%; background: #171C2E; display: flex; align-items: center; justify-content: center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9CEDD" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </a>
+  </header>
+
+  <section aria-labelledby="ortam" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <h2 id="ortam" style="margin: 0; font-size: 15px; font-weight: 700">Ortam sesleri</h2>
+      <span style="font-size: 12px; color: #9AA1B9">2 sese kadar karıştır</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+      <button aria-pressed="true" style="min-height: 72px; border-radius: 14px; border: 1px solid #7FD6B5; background: #12261F; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7FD6B5" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M7 14h10a3.5 3.5 0 0 0 .4-7A5 5 0 0 0 7.5 7 3.5 3.5 0 0 0 7 14z"></path><path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3"></path></svg>Yağmur
+      </button>
+      <button aria-pressed="false" style="min-height: 72px; border-radius: 14px; border: 1px solid #262C44; background: #171C2E; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9CEDD" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3l6 9h-4l4 6H6l4-6H6z"></path><path d="M12 18v3"></path></svg>Orman
+      </button>
+      <button aria-pressed="false" style="min-height: 72px; border-radius: 14px; border: 1px solid #262C44; background: #171C2E; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9CEDD" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"></path></svg>Dalga
+      </button>
+      <button aria-pressed="false" style="min-height: 72px; border-radius: 14px; border: 1px solid #262C44; background: #171C2E; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9CEDD" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 0-6 1-9z"></path></svg>Şömine
+      </button>
+      <button aria-pressed="false" style="min-height: 72px; border-radius: 14px; border: 1px solid #262C44; background: #171C2E; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9CEDD" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2"></path></svg>Kahverengi gürültü
+      </button>
+      <button aria-pressed="false" style="min-height: 72px; border-radius: 14px; border: 1px solid #3B4A6E; background: #13233A; color: #EEF0F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#BFD4FF" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M4 6l16 12M20 6L4 18"></path></svg>Kış gecesi
+      </button>
+      <button aria-disabled="true" style="min-height: 72px; border-radius: 14px; border: 1px dashed #4A5170; background: transparent; color: #9AA1B9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA1B9" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Kütüphane
+      </button>
+      <button aria-disabled="true" style="min-height: 72px; border-radius: 14px; border: 1px dashed #4A5170; background: transparent; color: #9AA1B9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font: 500 12px 'DM Sans', sans-serif">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA1B9" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Kahvehane
+      </button>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <label for="vol" style="font-size: 13px; color: #C9CEDD; min-width: 64px">Yağmur</label>
+      <input id="vol" type="range" min="0" max="100" value="30" style="flex: 1">
+      <span style="font-size: 13px; color: #9AA1B9; min-width: 32px; text-align: right">%30</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="spot" style="display: flex; flex-direction: column; gap: 10px; background: #171C2E; border: 1px solid #262C44; border-radius: 18px; padding: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div>
+        <h2 id="spot" style="margin: 0; font-size: 15px; font-weight: 700">Spotify</h2>
+        <p style="margin: 2px 0 0; font-size: 12px; color: #7FD6B5">Hesabın bağlı · odak boyunca engellenmez</p>
+      </div>
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; font-size: 13px; color: #C9CEDD; text-decoration: none">Bağlantıyı kes</a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <button aria-pressed="true" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 10px; border-radius: 12px; border: 1px solid #7FD6B5; background: #12261F; color: #EEF0F7; text-align: left; font: 500 14px 'DM Sans', sans-serif">
+        <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 8px; background: #1E3A4A"></span>
+        <span style="flex: 1"><span style="display: block; font-weight: 700">Derin Odak</span><span style="display: block; font-size: 12px; color: #9AA1B9">Önerilen · enstrümantal</span></span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#7FD6B5" aria-hidden="true"><path d="M7 5v14l12-7z"></path></svg>
+      </button>
+      <button aria-pressed="false" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 10px; border-radius: 12px; border: 1px solid #262C44; background: #0E1220; color: #EEF0F7; text-align: left; font: 500 14px 'DM Sans', sans-serif">
+        <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 8px; background: #3A2E4A"></span>
+        <span style="flex: 1"><span style="display: block; font-weight: 700">Lo-fi Çalışma</span><span style="display: block; font-size: 12px; color: #9AA1B9">Önerilen</span></span>
+      </button>
+      <button aria-pressed="false" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 10px; border-radius: 12px; border: 1px solid #262C44; background: #0E1220; color: #EEF0F7; text-align: left; font: 500 14px 'DM Sans', sans-serif">
+        <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 8px; background: #4A3A22"></span>
+        <span style="flex: 1"><span style="display: block; font-weight: 700">[KULLANICININ LİSTESİ]</span><span style="display: block; font-size: 12px; color: #9AA1B9">Senin çalma listelerin</span></span>
+      </button>
+    </div>
+  </section>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; background: #171C2E; border: 1px solid #262C44; border-radius: 16px; padding: 4px 14px">
+    <div><p style="margin: 0; font-size: 14px; font-weight: 500">Bitince müziği durdur</p><p style="margin: 2px 0 0; font-size: 12px; color: #9AA1B9">Molada ses yumuşakça azalır</p></div>
+    <button aria-label="Bitince müziği durdur" aria-pressed="true" style="flex: none; width: 51px; height: 31px; border: 0; border-radius: 999px; background: {{accent}}; padding: 2px; display: flex; justify-content: flex-end"><span style="width: 27px; height: 27px; border-radius: 50%; background: #FFFFFF"></span></button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2C46D","options":["#F2C46D","#8FB3FF","#7FD6B5"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#F2C46D' };
+  }
+}
+</script>
+</body>
+</html>

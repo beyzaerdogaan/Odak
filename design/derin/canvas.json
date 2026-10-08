@@ -1,0 +1,160 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Active.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "2 · Odak sürüyor",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "Constellation.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "3b · Takımyıldız tamamlandı",
+      "w": 390,
+      "x": 940,
+      "y": 964
+    },
+    "DeepSky.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "6a · Derin gök nesnesi + gezegenler",
+      "w": 390,
+      "x": 470,
+      "y": 2150
+    },
+    "Event.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "6b · Meteor yağmuru etkinliği",
+      "w": 390,
+      "x": 940,
+      "y": 2150
+    },
+    "Main.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "1 · Odak kurulumu",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Map.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "6 · Koleksiyon haritası (5 katman)",
+      "w": 390,
+      "x": 0,
+      "y": 2150
+    },
+    "Prestige.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "6c · Altın gökyüzü (prestij)",
+      "w": 390,
+      "x": 1410,
+      "y": 2150
+    },
+    "Reward.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "3 · Ödül anı",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "Rewards.dc.html": {
+      "h": 1360,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "5 · Ödüller ve Işık mağazası (kaydırmalı)",
+      "w": 390,
+      "x": 1880,
+      "y": 0
+    },
+    "Sky.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "4 · Gökyüzüm (ilerleme)",
+      "w": 390,
+      "x": 1410,
+      "y": 0
+    },
+    "Sounds.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 40,
+      "title": "2b · Ses ve müzik (Spotify)",
+      "w": 390,
+      "x": 470,
+      "y": 964
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-08T16:20:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "droprules": {
+      "fill": "blue",
+      "text": "Yıldız düşme kuralları\n\n• Katalog: 16 gerçek takımyıldız, 4 zorluk kademesi.\n• Aynı anda 3 açık takımyıldız var. Her oturumda bunlardan birinin henüz yanmamış yıldızı rastgele düşer, yani tekrar yok ve hiçbir yıldız boşa gitmez.\n• Ağırlık: tamamlanmaya yakın olanın şansı biraz daha yüksek.\n• Parlak yıldızlar (Betelgeuse, Vega, Deneb…) sadece 60+ dk ya da katı mod oturumunda düşer.\n• Şanssızlık koruması: 4 oturum üst üste yeni bir yıldız gelmezse sonraki oturum eksik olanı garanti eder.\n• Bir takımyıldız tamamlanınca yerine sıradaki açılır.",
+      "w": 390,
+      "x": 1410,
+      "y": 964
+    },
+    "layers": {
+      "fill": "purple",
+      "text": "Uzun vade katmanları\n\n1 Başlangıç göğü: 16 takımyıldız (sıralı)\n2 Tüm gökyüzü: kalan 72 takımyıldız, Kuzey → Güney (sıralı)\n3 Derin gök: 110 Messier nesnesi, kilometre taşlarıyla (paralel)\n4 Gezegenler ve Ay: toplam odak saatiyle, 5s → 1000s (paralel)\n5 Altın gökyüzü: 88/88 sonrası isteğe bağlı prestij, her gece +%10 Işık, en fazla +%50\n+ Meteor etkinlikleri: gerçek takvimle, her zaman açık",
+      "w": 390,
+      "x": 1880,
+      "y": 2150
+    },
+    "title": {
+      "kind": "title1",
+      "maxW": 2270,
+      "text": "Derin — odak akışı ve ödül sistemi (iOS)",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "title2": {
+      "kind": "title1",
+      "maxW": 1800,
+      "text": "Uzun vade: koleksiyon katmanları",
+      "w": 240,
+      "x": 0,
+      "y": 1880
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Active.dc.html",
+    "Reward.dc.html",
+    "Sky.dc.html",
+    "Rewards.dc.html",
+    "Sounds.dc.html",
+    "Constellation.dc.html",
+    "Map.dc.html",
+    "DeepSky.dc.html",
+    "Event.dc.html",
+    "Prestige.dc.html"
+  ],
+  "pages": [],
+  "title": "Derin — Odak ve Ödül Sistemi"
+}
