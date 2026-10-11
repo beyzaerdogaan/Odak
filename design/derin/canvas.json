@@ -60,7 +60,7 @@
       "h": 844,
       "is_interactive": true,
       "radius": 40,
-      "title": "6c · Altın gökyüzü (prestij)",
+      "title": "6c · Işık yolculuğu",
       "w": 390,
       "x": 1410,
       "y": 2150
@@ -75,10 +75,10 @@
       "y": 0
     },
     "Rewards.dc.html": {
-      "h": 1440,
+      "h": 1630,
       "is_interactive": true,
       "radius": 40,
-      "title": "5 · Ödüller ve Işık mağazası (kaydırmalı)",
+      "title": "5 · Ödüller, Işık mağazası ve Zenit (kaydırmalı)",
       "w": 390,
       "x": 1880,
       "y": 0
@@ -129,7 +129,7 @@
     },
     "layers": {
       "fill": "purple",
-      "text": "Uzun vade katmanları\n\n1 Başlangıç göğü: 16 takımyıldız (sıralı)\n2 Tüm gökyüzü: kalan 72 takımyıldız, Kuzey → Güney (sıralı)\n3 Derin gök: 110 Messier nesnesi, kilometre taşlarıyla (paralel)\n4 Gezegenler ve Ay: toplam odak saatiyle, 5s → 1000s (paralel)\n5 Altın gökyüzü: 88/88 sonrası isteğe bağlı prestij, her gece +%10 Işık, en fazla +%50\n+ Meteor etkinlikleri: gerçek takvimle, her zaman açık",
+      "text": "Uzun vade katmanları\n\n1 Başlangıç göğü: 16 takımyıldız (sıralı)\n2 Tüm gökyüzü: kalan 72 takımyıldız, Kuzey → Güney (sıralı)\n3 Derin gök: 110 Messier nesnesi, kilometre taşlarıyla (paralel)\n4 Gezegenler ve Ay: toplam odak saatiyle, 5s → 1000s (paralel)\n5 Işık yolculuğu: 88/88 sonrası gerçek yıldız sistemlerine yolculuk, 1 odak saati = 1 ışık yılı (Alfa Centauri 4,4 → Sirius 8,6 → Vega 25 → TRAPPIST-1 41 → Ülker 444 → …), hiç bitmez\n+ Meteor etkinlikleri: gerçek takvimle, her zaman açık",
       "w": 390,
       "x": 1880,
       "y": 2150
@@ -149,6 +149,13 @@
       "w": 240,
       "x": 0,
       "y": 1880
+    },
+    "zenit": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "fill": "orange",
+      "text": "Gelir modeli: Zenit aboneliği\n\n• Odak, engelleme, yıldızlar ve Işık her zaman ücretsiz.\n• Zenit: tüm ses paketleri ve gök temaları, ayrıntılı istatistikler, sınırsız kendine söz.\n• Mağazadaki fidan dikme kaldırıldı. Fiyat: [FİYAT] / ay."
     }
   },
   "order": [

@@ -15,8 +15,8 @@ Claude Design'daki tasarım tuvalinin dışa aktarılmış hali.
 | Reward.dc.html | 3 · Ödül anı |
 | Constellation.dc.html | 3b · Takımyıldız tamamlandı |
 | Sky.dc.html | 4 · Gökyüzüm (ilerleme) |
-| Rewards.dc.html | 5 · Ödüller ve Işık mağazası |
+| Rewards.dc.html | 5 · Ödüller, Işık mağazası ve Zenit |
 | Map.dc.html | 6 · Koleksiyon haritası |
 | DeepSky.dc.html | 6a · Derin gök + gezegenler |
 | Event.dc.html | 6b · Meteor yağmuru etkinliği |
-| Prestige.dc.html | 6c · Altın gökyüzü (prestij) |
+| Prestige.dc.html | 6c · Işık yolculuğu |

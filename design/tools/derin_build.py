@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the 11 Derin screens (design/derin/*.dc.html) in the "gök atlası" visual language.
+"""Generates the 12 Derin screens (design/derin/*.dc.html) in the "gök atlası" visual language.
 
 Every screen keeps the Claude Design (DC) wrapper: <x-dc>, <helmet>, {{accent}} prop.
 Shared tokens live in CSS below; each file gets its own copy because DC screens are standalone.
@@ -123,6 +123,7 @@ ICON = {
     "sprout": '<path d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2-5-5-5 0 3 2 5 5 5z"/>',
     "meteor": '<path d="M21 3L11 13M17 3h4v4M14 4L6 12M20 10l-8 8"/><circle cx="6" cy="18" r="2.5"/>',
     "orbit": '<circle cx="12" cy="12" r="2.6"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(-24 12 12)"/><circle cx="19.6" cy="8.2" r="1.3" fill="currentColor" stroke="none"/>',
+    "zenith": '<path d="M3 20h18"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke-dasharray="1.6 2.6"/><path d="M12 3l1.3 2.7 2.9.4-2.1 2 .5 2.9L12 9.6 9.4 11l.5-2.9-2.1-2 2.9-.4z"/>',
     "bell": '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
 }
 
@@ -733,13 +734,13 @@ def rewards_screen():
     pr_html = "".join(
         f'<div style="display:flex;flex-direction:column;gap:8px;padding:14px 0"><div class="between"><span style="font-size:16px;font-weight:600">{t}</span><span class="num" style="font-size:13px;color:var(--paper-2)">{v}</span></div>'
         f'<div class="bar"><i style="width:{w}%;background:{c}"></i></div><p class="small" style="margin:0">{h}</p></div>' for t, v, w, c, h in promises)
-    tabs = ["Tümü", "Güçlendirici", "Sesler", "Görünüm", "İyilik"]
+    tabs = ["Tümü", "Güçlendirici", "Sesler", "Görünüm", "Zenit"]
     t_html = "".join(
         f'<button role="tab" aria-selected="{"true" if i == 0 else "false"}" style="flex:none;min-height:38px;padding:0 15px;border-radius:999px;font-size:14px;font-weight:{600 if i == 0 else 500};'
         + ("background:var(--paper);color:#0B1026" if i == 0 else "box-shadow:inset 0 0 0 1px var(--hair);color:var(--paper-2)") + f'">{t}</button>'
         for i, t in enumerate(tabs))
     body = f"""
-{starfield(6, h=1440, n=60, bottom=260, grid=False)}
+{starfield(6, h=1630, n=60, bottom=260, grid=False)}
 <div class="layer" style="padding:58px 22px 100px;gap:22px">
   <header class="between" style="align-items:center">
     <h1 class="h1">Ödüller</h1>
@@ -769,14 +770,17 @@ def rewards_screen():
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px">{l_html}</div>
   </section>
 
-  <section aria-labelledby="iyi" class="row" style="padding:14px;border-radius:22px;background:linear-gradient(120deg,rgba(143,220,192,.14),rgba(143,220,192,.04));box-shadow:inset 0 0 0 1px rgba(143,220,192,.22)">
-    <span style="flex:none;width:46px;height:46px;border-radius:50%;background:rgba(143,220,192,.16);display:flex;align-items:center;justify-content:center">{icon('sprout', 22, '#8FDCC0')}</span>
-    <div style="flex:1;min-width:0"><h2 id="iyi" class="h2">Bir fidan dikilsin</h2><p style="margin:2px 0 0;font-size:12px;color:#B5D8C9">[PARTNER KURUM] ile</p></div>
-    <button class="price num" style="color:#8FDCC0;border-color:rgba(143,220,192,.45)"><svg width="11" height="11" viewBox="0 0 24 24" fill="#8FDCC0" aria-hidden="true">{ICON['spark']}</svg>2.000</button>
+  <section aria-labelledby="zenit" style="display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:24px;background:linear-gradient(150deg,rgba(242,196,109,.16),rgba(242,196,109,.03) 70%);box-shadow:inset 0 0 0 1px rgba(242,196,109,.32)">
+    <div class="row" style="align-items:flex-start;gap:14px">
+      <span style="flex:none;width:46px;height:46px;border-radius:50%;background:rgba(242,196,109,.14);display:flex;align-items:center;justify-content:center">{icon('zenith', 24, 'var(--acc-ink)')}</span>
+      <div style="flex:1;min-width:0"><h2 id="zenit" class="serif" style="margin:0;font-size:28px;line-height:1">Zenit</h2><p class="small" style="margin:5px 0 0;color:var(--paper-2)">Gökyüzünün en tepesi. Odak, yıldızlar ve Işık her zaman ücretsiz.</p></div>
+    </div>
+    <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px"><li class="row" style="gap:10px;font-size:14px">{spark(11)}Tüm ses paketleri ve gök temaları</li><li class="row" style="gap:10px;font-size:14px">{spark(11)}Ayrıntılı haftalık ve aylık istatistikler</li><li class="row" style="gap:10px;font-size:14px">{spark(11)}Sınırsız kendine söz</li></ul>
+    <button class="btn btn-acc" style="height:50px">Zenit'e geç · [FİYAT] / ay</button>
   </section>
 </div>
 {tabbar('Rewards.dc.html')}"""
-    return page("Ödüller ve Işık mağazası", root(body, style="height:1440px"), height=1440)
+    return page("Ödüller ve Işık mağazası", root(body, style="height:1630px"), height=1630)
 
 
 # ---------------------------------------------------------------- 6 · Koleksiyon haritası
@@ -791,8 +795,8 @@ def map_screen():
              href="DeepSky.dc.html", color="#E6A6C7", state="parallel"),
         dict(n=4, title="Gezegenler ve Ay", right='<span class="num" style="font-size:14px;font-weight:600;color:#A8C4FF">2 / 8</span>',
              bar=("#A8C4FF", 92), text="Paralel ilerler. Sıradaki: Venüs, 25 saat (sen 23 saattesin).", href="DeepSky.dc.html", color="#A8C4FF", state="parallel"),
-        dict(n=5, title="Altın gökyüzü", right='<span class="row small" style="gap:4px">' + icon('lock', 13, '#6E7597', sw=2) + 'Kilitli</span>',
-             bar=None, text="88 takımyıldızın hepsi bitince yeni bir gece başlat. Koleksiyon korunur, yıldızlar altın olur.",
+        dict(n=5, title="Işık yolculuğu", right='<span class="row small" style="gap:4px">' + icon('lock', 13, '#6E7597', sw=2) + 'Kilitli</span>',
+             bar=None, text="88 takımyıldız bitince gerçek yıldız sistemlerine yolculuk başlar. Her odak saati 1 ışık yılı, rota hiç bitmez.",
              href="Prestige.dc.html", color="#6E7597", state="locked"),
     ]
     items = []
@@ -819,7 +823,7 @@ def map_screen():
   <header class="row" style="gap:12px">
     <a href="Sky.dc.html" aria-label="Geri" class="iconbtn">{icon('back', 18, '#A7ADC6', sw=2)}</a>
     <div style="flex:1"><h1 class="h1" style="font-size:26px;white-space:nowrap">Koleksiyon haritası</h1><p class="small serif it" style="margin:2px 0 0;font-size:14px;color:var(--paper-2)">Gökyüzün hiç bitmez</p></div>
-    <span class="row acc" style="flex:none;gap:5px;font-size:13px;font-weight:600;height:30px;padding:0 11px;border-radius:999px;background:rgba(242,196,109,.12)">{spark(10)}Gece 1</span>
+    <span class="row acc" style="flex:none;gap:5px;font-size:13px;font-weight:600;height:30px;padding:0 11px;border-radius:999px;background:rgba(242,196,109,.12)">{spark(10)}23 sa</span>
   </header>
 
   <a href="Event.dc.html" class="row" style="position:relative;overflow:hidden;padding:12px 14px;border-radius:20px;background:linear-gradient(110deg,#2A2150,#151236);box-shadow:inset 0 0 0 1px rgba(201,184,255,.25)">
@@ -965,39 +969,82 @@ def event_screen():
     return page("Meteor yağmuru", root(body, style="background:#0A0A1C"), bg="#0A0A1C")
 
 
-# ---------------------------------------------------------------- 6c · Altın gökyüzü
+# ---------------------------------------------------------------- 6c · Işık yolculuğu
+STOPS = [("Alfa Centauri", 4.4, "Üçlü yıldız sisteminin hikâyesi, Proxima rozeti"),
+         ("Sirius", 8.6, "Gecenin en parlak yıldızı, +300 Işık"),
+         ("Vega", 25, "Lir'in kalbi, yeni bir ses paketi"),
+         ("TRAPPIST-1", 41, "Yedi gezegenli sistem, “Kırmızı cüce” gök teması"),
+         ("Ülker", 444, "Yedi Kız Kardeş kümesi, özel rozet")]
+TRAVELED = 2.6
+
+
+def fmt_ly(d):
+    return f"{d:g}".replace(".", ",")
+
+
+def route_chart():
+    """Sun → stops as a voyage line across the sky. Spacing is schematic; the labels carry the real distances."""
+    xs = [34 + i * (322 / len(STOPS)) for i in range(len(STOPS) + 1)]
+
+    def y(x):
+        return 112 - 62 * math.sin((x - 34) / 322 * math.pi * 0.7)
+
+    def line(x_from, x_to, n=40):
+        return " ".join(f"{'M' if i == 0 else 'L'}{x:.1f} {y(x):.1f}" for i, x in
+                        ((i, x_from + (x_to - x_from) * i / n) for i in range(n + 1)))
+
+    ship = xs[0] + (xs[1] - xs[0]) * TRAVELED / STOPS[0][1]
+    stops = []
+    for i, (name, d, _) in enumerate(STOPS):
+        x = xs[i + 1]
+        up = i % 2 == 0
+        anchor = "end" if i == len(STOPS) - 1 else "middle"
+        tx = x + 6 if anchor == "end" else x
+        ny, dy = (y(x) - 14, y(x) - 30) if up else (y(x) + 24, y(x) + 38)
+        stops.append(f'<circle cx="{x:.1f}" cy="{y(x):.1f}" r="4.5" style="fill:var(--night)" stroke="#ECE6D6" stroke-opacity=".7" stroke-width="1.2"/>'
+                     f'<text x="{tx:.1f}" y="{ny:.1f}" text-anchor="{anchor}" font-family="Newsreader,serif" font-style="italic" font-size="14" fill="#ECE6D6">{name}</text>'
+                     f'<text x="{tx:.1f}" y="{dy:.1f}" text-anchor="{anchor}" font-family="Hanken Grotesk,sans-serif" font-size="10.5" fill="#6E7597">{fmt_ly(d)} ı.y.</text>')
+    sx = xs[0]
+    return f"""<svg width="390" height="150" viewBox="0 0 390 150" role="img" aria-label="Güneş'ten Ülker'e uzanan yolculuk rotası" style="display:block;margin:0 -22px;overflow:visible">
+  <path d="{line(sx, xs[-1] + 18)}" fill="none" stroke="#ECE6D6" stroke-opacity=".28" stroke-width="1.2" stroke-dasharray="2 5" stroke-linecap="round"/>
+  <path d="{line(sx, ship, 12)}" fill="none" class="sa" stroke-width="2.2" stroke-linecap="round"/>
+  {flare(round(sx, 1), round(y(sx), 1), 3.2, color_cls='', halo_color='#F0A070').replace('<path class=""', '<path fill="#F0A070"')}
+  <text x="{sx:.1f}" y="{y(sx) + 26:.1f}" text-anchor="middle" font-family="Newsreader,serif" font-style="italic" font-size="14" fill="#ECE6D6">Güneş</text>
+  {''.join(stops)}
+  {flare(round(ship, 1), round(y(ship), 1), 2.4, cls='halo')}
+</svg>"""
+
+
 def prestige_screen():
-    gains = [("Takımyıldızlar altın olarak yeniden", "0 / 88"), ("Kalıcı Işık bonusu", "+%10"), ("Profil unvanı", "Gece 2"), ("Altın yıldız sayaç stili", "Açılır")]
-    g_html = "".join(f'<div class="between" style="min-height:44px;align-items:center;font-size:15px"><span>{a}</span><span class="num acc" style="font-weight:600">{b}</span></div>' for a, b in gains)
-    rings = "".join(f'<circle cx="80" cy="80" r="{r}" fill="none" class="sa" stroke-opacity="{o}" stroke-width="1"/>' for r, o in [(78, .18), (62, .3), (46, .5)])
-    ticks = "".join(
-        f'<line x1="{80+70*math.cos(math.radians(a)):.1f}" y1="{80+70*math.sin(math.radians(a)):.1f}" x2="{80+78*math.cos(math.radians(a)):.1f}" y2="{80+78*math.sin(math.radians(a)):.1f}" class="sa" stroke-opacity=".45"/>'
-        for a in range(0, 360, 360 // 88 * 4))
+    nxt_name, nxt_d, _ = STOPS[0]
+    pct = TRAVELED / nxt_d * 100
+    rows = "".join(
+        f'<div class="between" style="min-height:48px;align-items:center;padding:4px 0"><div style="min-width:0">'
+        f'<p class="serif it" style="margin:0;font-size:19px;line-height:1.15{";color:var(--acc-ink)" if i == 0 else ""}">{n}</p>'
+        f'<p class="small" style="margin:1px 0 0">{r}</p></div><span class="num" style="flex:none;font-size:13px;color:var(--paper-2)">{fmt_ly(d)} ı.y.</span></div>'
+        for i, (n, d, r) in enumerate(STOPS))
     body = f"""
-<div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(120% 60% at 50% 0%,#2A200C 0%,#140F07 55%,#0E0A05 100%)"></div>
-{starfield(10, n=110, tint='#F6D98E', grid=False)}
-<div class="layer" style="padding:48px 22px 24px;gap:14px;color:#F5EEDC">
-  <header style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px">
-    <svg width="124" height="124" viewBox="0 0 160 160" aria-hidden="true" style="overflow:visible">{rings}{ticks}{flare(80, 80, 8, cls='halo')}</svg>
-    <p class="num acc" style="margin:0;font-size:14px;font-weight:600">88 / 88 takımyıldız</p>
-    <h1 class="serif" style="margin:0;font-size:36px;line-height:1.05;letter-spacing:-.025em">Tüm gökyüzünü yaktın</h1>
-    <p style="margin:4px 0 0;font-size:15px;line-height:1.45;color:#D8CCAE;max-width:300px">İstersen yeni bir gece başlat. Bu sefer yıldızlar altın olarak yanacak.</p>
+{starfield(10, n=120, grid=False)}
+<div class="layer" style="padding:50px 22px 22px;gap:10px">
+  <header class="row" style="gap:12px">
+    <a href="Map.dc.html" aria-label="Geri" class="iconbtn">{icon('back', 18, '#A7ADC6', sw=2)}</a>
+    <div style="flex:1"><p class="meta num acc" style="font-weight:600">88 / 88 takımyıldız</p><h1 class="h1" style="font-size:32px;white-space:nowrap">Işık yolculuğu</h1></div>
   </header>
-  <section aria-labelledby="kor" style="display:flex;flex-direction:column;gap:6px;padding-left:14px;border-left:1px solid rgba(242,196,109,.4)">
-    <h2 id="kor" class="h2">Korunanlar</h2>
-    <p style="margin:0;font-size:14px;line-height:1.5;color:#E2D8BE">Gökyüzü koleksiyonun (her zaman bakabilirsin), rozetler, derin gök nesneleri, gezegenler, Işık bakiyen, kendine sözlerin ve tüm istatistiklerin.</p>
+  <p style="margin:0;font-size:15px;line-height:1.45;color:var(--paper-body)">Gökyüzünü yaktın, şimdi oraya gitme zamanı. Her odak saatin seni <span class="serif it" style="font-size:17px">1 ışık yılı</span> ileri taşır.</p>
+  {route_chart()}
+  <section aria-labelledby="durak" style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:20px;background:rgba(242,196,109,.07);box-shadow:inset 0 0 0 1px rgba(242,196,109,.32)">
+    <div class="between"><h2 id="durak" class="h2">Sıradaki durak: {nxt_name}</h2><span class="num acc" style="font-size:13px;font-weight:600">{fmt_ly(TRAVELED)} / {fmt_ly(nxt_d)} ı.y.</span></div>
+    <div class="bar"><i style="width:{pct:.0f}%"></i></div>
+    <p class="small" style="margin:0">Güneş'e en yakın yıldız sistemi. 2 saatlik odak kaldı.</p>
   </section>
-  <section aria-labelledby="yeni" style="display:flex;flex-direction:column">
-    <h2 id="yeni" class="h2" style="margin-bottom:2px">Yeni gecede</h2>
-    <div class="list" style="--hair:rgba(242,196,109,.14)">{g_html}</div>
+  <section aria-labelledby="rota" style="display:flex;flex-direction:column">
+    <h2 id="rota" class="meta" style="font-weight:500;margin-bottom:2px">Rota</h2>
+    <div class="list">{rows}</div>
   </section>
-  <p style="margin:0;font-size:12.5px;line-height:1.45;color:#B5AA8E;text-align:center">Her yeni gece +%10 daha ekler, en fazla +%50. Acelesi yok: beklersen hiçbir şey kaybetmezsin.</p>
-  <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
-    <button class="btn btn-acc">Yeni bir gece başlat</button>
-    <a href="Map.dc.html" class="btn btn-ghost" style="border-color:rgba(242,196,109,.22);color:#F5EEDC">Şimdilik kalsın</a>
-  </div>
+  <p class="small" style="margin:auto 0 0;line-height:1.45;text-align:center;color:var(--paper-2)">Mesafeler gerçek, rota hiç bitmez. Koleksiyonun ve Işık bakiyen olduğu gibi kalır.</p>
+  <a href="Main.dc.html" class="btn btn-acc">Yolculuğa devam et</a>
 </div>"""
-    return page("Altın gökyüzü", root(body, style="background:#0E0A05"), bg="#0E0A05")
+    return page("Işık yolculuğu", root(body))
 
 
 # ---------------------------------------------------------------- 0 · Evrenim (giriş)
@@ -1089,7 +1136,7 @@ def home_screen():
       <h1 class="h1" style="font-size:38px">Evrenin</h1>
     </div>
     <div class="row" style="gap:6px;padding-bottom:4px">
-      <span class="chip" style="height:30px">Gece 1</span>
+      <span class="chip num" style="height:30px">23 sa odak</span>
       <span class="row num acc" style="gap:5px;height:30px;padding:0 11px;border-radius:999px;background:rgba(242,196,109,.12);font-size:13px;font-weight:600">{spark(11)}1.440</span>
     </div>
   </header>
