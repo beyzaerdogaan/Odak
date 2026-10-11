@@ -11,12 +11,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#090D22}
-.scr{--night:#090D22;--night-2:#0E1430;--plate:rgba(236,230,214,.045);--plate-2:rgba(236,230,214,.08);
-  --hair:rgba(236,230,214,.11);--paper:#ECE6D6;--paper-2:#A7ADC6;--paper-3:#6E7597;
-  --nebula:#E6A6C7;--ice:#A8C4FF;--aurora:#8FDCC0;--meteor:#C9B8FF;--ember:#F0A070;--alarm:#F2A49A;
+@media (prefers-color-scheme:light){body{background:#E8EBF4}}
+/* Tokens. Dark is the night sky; light is a dawn star atlas printed in navy ink. */
+.scr{--night:#090D22;--night-2:#0E1430;--deep:#05081A;--plate:rgba(236,230,214,.045);--plate-2:rgba(236,230,214,.08);
+  --hair:rgba(236,230,214,.11);--paper:#ECE6D6;--paper-2:#A7ADC6;--paper-3:#6E7597;--paper-body:#CFCBC0;--star:#ECE6D6;
+  --acc-ink:var(--accent);--acc-fill:var(--accent);--on-acc:#1C1404;--core:#FFF8E6;--shade:rgba(0,0,0,.45);
+  --nebula:#E6A6C7;--ice:#A8C4FF;--aurora:#8FDCC0;--aurora-2:#B5D8C9;--meteor:#C9B8FF;--meteor-2:#D6CFF0;--ember:#F0A070;--alarm:#F2A49A;
+  --ev-1:#1E1744;--ev-2:#0E0B24;--ev-3:#0A0A1C;--ev-card-1:#2A2150;--ev-card-2:#151236;--on-meteor:#18123A;--trail:#F4EEFF;
+  --astro-m:-22px;--astro-bg:transparent;--astro-r:0;
+  --pr-1:#2A200C;--pr-2:#140F07;--pr-3:#0E0A05;--pr-star:#F6D98E;--pr-paper:#F5EEDC;--pr-body:#E2D8BE;--pr-3txt:#B5AA8E;
   position:relative;width:390px;height:844px;box-sizing:border-box;overflow:hidden;background:var(--night);
   color:var(--paper);font:400 15px/1.4 'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;
   display:flex;flex-direction:column}
+@media (prefers-color-scheme:light){.scr:not([data-theme=dark]){--night:#E8EBF4;--night-2:#F6F7FB;--deep:#CBD1E2;--plate:rgba(27,33,64,.055);--plate-2:rgba(27,33,64,.09);
+  --hair:rgba(27,33,64,.13);--paper:#1B2140;--paper-2:#4F5779;--paper-3:#7D84A2;--paper-body:#353C5E;--star:#27305C;
+  --acc-ink:color-mix(in srgb,var(--accent) 55%,#3D2A00);--acc-fill:color-mix(in srgb,var(--accent) 80%,#5A3D00);--core:#FFFDF5;--shade:rgba(27,33,64,.18);
+  --nebula:#A8487A;--ice:#3557B8;--aurora:#1C7D60;--aurora-2:#2F6B58;--meteor:#5D47BE;--meteor-2:#463A7A;--ember:#B9582A;--alarm:#B23A30;
+  --ev-1:#D9D3F2;--ev-2:#E9E5F7;--ev-3:#F2F0FA;--ev-card-1:#E4DDFA;--ev-card-2:#F1EEFC;--on-meteor:#FFFFFF;--trail:#5D47BE;
+  --astro-m:0;--astro-bg:#0E1430;--astro-r:22px;
+  --pr-1:#F3E2B4;--pr-2:#F7EEDA;--pr-3:#FBF6EA;--pr-star:#9A7424;--pr-paper:#2A2110;--pr-body:#4A3D22;--pr-3txt:#7A6A48;color-scheme:light}}
+.scr[data-theme=light]{--night:#E8EBF4;--night-2:#F6F7FB;--deep:#CBD1E2;--plate:rgba(27,33,64,.055);--plate-2:rgba(27,33,64,.09);
+  --hair:rgba(27,33,64,.13);--paper:#1B2140;--paper-2:#4F5779;--paper-3:#7D84A2;--paper-body:#353C5E;--star:#27305C;
+  --acc-ink:color-mix(in srgb,var(--accent) 55%,#3D2A00);--acc-fill:color-mix(in srgb,var(--accent) 80%,#5A3D00);--core:#FFFDF5;--shade:rgba(27,33,64,.18);
+  --nebula:#A8487A;--ice:#3557B8;--aurora:#1C7D60;--aurora-2:#2F6B58;--meteor:#5D47BE;--meteor-2:#463A7A;--ember:#B9582A;--alarm:#B23A30;
+  --ev-1:#D9D3F2;--ev-2:#E9E5F7;--ev-3:#F2F0FA;--ev-card-1:#E4DDFA;--ev-card-2:#F1EEFC;--on-meteor:#FFFFFF;--trail:#5D47BE;
+  --astro-m:0;--astro-bg:#0E1430;--astro-r:22px;
+  --pr-1:#F3E2B4;--pr-2:#F7EEDA;--pr-3:#FBF6EA;--pr-star:#9A7424;--pr-paper:#2A2110;--pr-body:#4A3D22;--pr-3txt:#7A6A48;color-scheme:light}
+
 .scr *{box-sizing:border-box}
 :where(.scr) a{color:inherit;text-decoration:none}
 :where(.scr) button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -31,23 +52,23 @@ body{margin:0;background:#090D22}
 .meta{margin:0;font-size:13px;color:var(--paper-2)}
 .small{font-size:12px;color:var(--paper-3)}
 .num{font-variant-numeric:tabular-nums lining-nums}
-.acc{color:var(--accent)}
-.fa{fill:var(--accent)}
-.sa{stroke:var(--accent)}
+.acc{color:var(--acc-ink)}
+.fa{fill:var(--acc-fill)}
+.sa{stroke:var(--acc-fill)}
 .rule{height:1px;background:var(--hair);border:0;margin:0}
 .row{display:flex;align-items:center;gap:12px}
 .between{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .btn{height:56px;border-radius:28px;display:flex;align-items:center;justify-content:center;gap:10px;
   font:600 16px 'Hanken Grotesk',sans-serif;letter-spacing:-.005em}
-.btn-acc{background:var(--accent);color:#1C1404;box-shadow:0 10px 30px -12px var(--accent)}
+.btn-acc{background:var(--accent);color:var(--on-acc);box-shadow:0 10px 30px -12px var(--accent)}
 .btn-ghost{height:50px;border:1px solid var(--hair);color:var(--paper);font-weight:500;font-size:15px}
 .seg{display:grid;gap:2px;padding:3px;border-radius:999px;background:var(--plate)}
 .seg>*{min-height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;
   font-weight:500;color:var(--paper-2)}
-.seg>[aria-pressed=true],.seg>[aria-checked=true],.seg>[aria-selected=true]{background:var(--paper);color:#0B1026;font-weight:600}
+.seg>[aria-pressed=true],.seg>[aria-checked=true],.seg>[aria-selected=true]{background:var(--paper);color:var(--night);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;font-size:13px;
   color:var(--paper);background:var(--plate)}
-.tog{flex:none;width:51px;height:31px;border-radius:999px;background:rgba(236,230,214,.16);padding:2px;display:flex}
+.tog{flex:none;width:51px;height:31px;border-radius:999px;background:color-mix(in srgb,var(--paper) 16%,transparent);padding:2px;display:flex}
 .tog::after{content:"";width:27px;height:27px;border-radius:50%;background:#FFF;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .tog[aria-pressed=true]{background:var(--accent);justify-content:flex-end}
 .list>*{border-bottom:1px solid var(--hair)}
@@ -55,57 +76,59 @@ body{margin:0;background:#090D22}
 .bar{height:4px;border-radius:999px;background:var(--plate-2);overflow:hidden}
 .bar>i{display:block;height:100%;border-radius:999px;background:var(--accent)}
 .price{flex:none;display:inline-flex;align-items:center;gap:5px;height:36px;padding:0 13px;border-radius:999px;
-  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent);font-size:14px;font-weight:600}
-.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;padding:8px 24px 0;display:flex;justify-content:space-around;
-  align-items:flex-start;background:linear-gradient(to top,rgba(9,13,34,.98) 55%,rgba(9,13,34,0));}
+  border:1px solid color-mix(in srgb,var(--acc-fill) 50%,transparent);color:var(--acc-ink);font-size:14px;font-weight:600}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;padding:8px 12px 0;display:flex;justify-content:space-around;
+  align-items:flex-start;background:linear-gradient(to top,color-mix(in srgb,var(--night) 98%,transparent) 55%,color-mix(in srgb,var(--night) 0%,transparent));}
 .tabbar a{min-width:72px;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
   font-weight:500;color:var(--paper-3)}
-.tabbar a[aria-current=page]{color:var(--accent)}
+.tabbar a[aria-current=page]{color:var(--acc-ink)}
 .iconbtn{flex:none;width:44px;height:44px;border-radius:50%;background:var(--plate);display:flex;align-items:center;justify-content:center}
 @keyframes ignite{0%{transform:scale(.2) rotate(-30deg);opacity:0}60%{transform:scale(1.12) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 @keyframes halo{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
 .ignite{transform-origin:center;transform-box:fill-box;animation:ignite 1.1s cubic-bezier(.2,.8,.2,1) both .2s}
 .halo{transform-origin:center;transform-box:fill-box;animation:halo 1.6s ease-out both}
-@media (prefers-reduced-motion:reduce){.ignite,.halo{animation:none}}
-
-body{background:#0A0A1C}
+@keyframes beckon{0%,100%{opacity:.45;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+.beckon{transform-origin:center;transform-box:fill-box;animation:beckon 2.6s ease-in-out infinite}
+.astro{margin:0 var(--astro-m);background:var(--astro-bg);border-radius:var(--astro-r);overflow:hidden}
+.astro svg{width:100%;height:auto;margin:0!important}
+@media (prefers-reduced-motion:reduce){.ignite,.halo,.beckon{animation:none}}
 </style>
 </helmet>
-<div class="scr " style="--accent: {{accent}}; background:#0A0A1C">
-<div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,#1E1744 0%,#0E0B24 40%,#0A0A1C 100%)"></div>
-<svg width="390" height="250" viewBox="0 0 390 250" aria-hidden="true" class="sky" style="height:250px"><defs><linearGradient id="trail" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9B8FF" stop-opacity="0"/><stop offset="1" stop-color="#F4EEFF"/></linearGradient></defs><line x1="370" y1="10" x2="241" y2="85" stroke="url(#trail)" stroke-width="2.2" stroke-linecap="round"/><circle cx="241" cy="85" r="2.8600000000000003" fill="#FFF8E6"/><line x1="300" y1="-10" x2="205" y2="45" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round"/><circle cx="205" cy="45" r="2.08" fill="#FFF8E6"/><line x1="395" y1="80" x2="292" y2="140" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round"/><circle cx="292" cy="140" r="2.08" fill="#FFF8E6"/><line x1="210" y1="20" x2="141" y2="60" stroke="url(#trail)" stroke-width="1.2" stroke-linecap="round"/><circle cx="141" cy="60" r="1.56" fill="#FFF8E6"/><line x1="340" y1="140" x2="288" y2="170" stroke="url(#trail)" stroke-width="1" stroke-linecap="round"/><circle cx="288" cy="170" r="1.3" fill="#FFF8E6"/><g fill="#C9B8FF" opacity=".55"><circle cx="181" cy="90" r="0.6"/><circle cx="73" cy="162" r="0.8"/><circle cx="196" cy="216" r="0.6"/><circle cx="130" cy="225" r="1"/><circle cx="16" cy="91" r="1"/><circle cx="369" cy="228" r="0.8"/><circle cx="61" cy="57" r="0.6"/><circle cx="52" cy="209" r="1"/><circle cx="25" cy="165" r="1"/><circle cx="346" cy="221" r="0.6"/><circle cx="263" cy="174" r="0.8"/><circle cx="347" cy="185" r="0.6"/><circle cx="155" cy="82" r="0.6"/><circle cx="78" cy="213" r="0.8"/><circle cx="21" cy="91" r="0.8"/><circle cx="54" cy="57" r="1"/><circle cx="354" cy="27" r="1"/><circle cx="2" cy="183" r="0.6"/><circle cx="349" cy="49" r="0.6"/><circle cx="348" cy="32" r="0.6"/><circle cx="195" cy="138" r="1"/><circle cx="359" cy="101" r="0.8"/><circle cx="75" cy="184" r="1"/><circle cx="226" cy="41" r="1"/><circle cx="281" cy="10" r="0.8"/><circle cx="216" cy="146" r="0.6"/><circle cx="291" cy="177" r="1"/><circle cx="389" cy="29" r="1"/><circle cx="157" cy="217" r="0.6"/><circle cx="238" cy="10" r="0.8"/><circle cx="330" cy="125" r="1"/><circle cx="302" cy="21" r="0.8"/><circle cx="43" cy="212" r="0.8"/><circle cx="176" cy="97" r="1"/><circle cx="291" cy="91" r="1"/><circle cx="128" cy="104" r="0.6"/><circle cx="86" cy="65" r="0.6"/><circle cx="120" cy="68" r="1"/><circle cx="306" cy="6" r="1"/><circle cx="315" cy="119" r="1"/><circle cx="303" cy="136" r="0.6"/><circle cx="166" cy="55" r="0.8"/><circle cx="199" cy="229" r="1"/><circle cx="144" cy="160" r="0.6"/><circle cx="270" cy="210" r="0.6"/><circle cx="20" cy="234" r="0.6"/><circle cx="103" cy="39" r="0.6"/><circle cx="237" cy="3" r="0.6"/><circle cx="176" cy="189" r="0.8"/><circle cx="239" cy="232" r="0.8"/></g></svg>
+<div class="scr " data-theme="{{theme}}" style="--accent: {{accent}}; background:var(--ev-3)">
+<div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,var(--ev-1) 0%,var(--ev-2) 40%,var(--ev-3) 100%)"></div>
+<svg width="390" height="250" viewBox="0 0 390 250" aria-hidden="true" class="sky" style="height:250px"><defs><linearGradient id="trail" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0" style="stop-color:var(--meteor)"/><stop offset="1" style="stop-color:var(--trail)"/></linearGradient></defs><line x1="370" y1="10" x2="241" y2="85" stroke="url(#trail)" stroke-width="2.2" stroke-linecap="round"/><circle cx="241" cy="85" r="2.8600000000000003" style="fill:var(--core)"/><line x1="300" y1="-10" x2="205" y2="45" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round"/><circle cx="205" cy="45" r="2.08" style="fill:var(--core)"/><line x1="395" y1="80" x2="292" y2="140" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round"/><circle cx="292" cy="140" r="2.08" style="fill:var(--core)"/><line x1="210" y1="20" x2="141" y2="60" stroke="url(#trail)" stroke-width="1.2" stroke-linecap="round"/><circle cx="141" cy="60" r="1.56" style="fill:var(--core)"/><line x1="340" y1="140" x2="288" y2="170" stroke="url(#trail)" stroke-width="1" stroke-linecap="round"/><circle cx="288" cy="170" r="1.3" style="fill:var(--core)"/><g opacity=".55" style="fill:var(--meteor)"><circle cx="181" cy="90" r="0.6"/><circle cx="73" cy="162" r="0.8"/><circle cx="196" cy="216" r="0.6"/><circle cx="130" cy="225" r="1"/><circle cx="16" cy="91" r="1"/><circle cx="369" cy="228" r="0.8"/><circle cx="61" cy="57" r="0.6"/><circle cx="52" cy="209" r="1"/><circle cx="25" cy="165" r="1"/><circle cx="346" cy="221" r="0.6"/><circle cx="263" cy="174" r="0.8"/><circle cx="347" cy="185" r="0.6"/><circle cx="155" cy="82" r="0.6"/><circle cx="78" cy="213" r="0.8"/><circle cx="21" cy="91" r="0.8"/><circle cx="54" cy="57" r="1"/><circle cx="354" cy="27" r="1"/><circle cx="2" cy="183" r="0.6"/><circle cx="349" cy="49" r="0.6"/><circle cx="348" cy="32" r="0.6"/><circle cx="195" cy="138" r="1"/><circle cx="359" cy="101" r="0.8"/><circle cx="75" cy="184" r="1"/><circle cx="226" cy="41" r="1"/><circle cx="281" cy="10" r="0.8"/><circle cx="216" cy="146" r="0.6"/><circle cx="291" cy="177" r="1"/><circle cx="389" cy="29" r="1"/><circle cx="157" cy="217" r="0.6"/><circle cx="238" cy="10" r="0.8"/><circle cx="330" cy="125" r="1"/><circle cx="302" cy="21" r="0.8"/><circle cx="43" cy="212" r="0.8"/><circle cx="176" cy="97" r="1"/><circle cx="291" cy="91" r="1"/><circle cx="128" cy="104" r="0.6"/><circle cx="86" cy="65" r="0.6"/><circle cx="120" cy="68" r="1"/><circle cx="306" cy="6" r="1"/><circle cx="315" cy="119" r="1"/><circle cx="303" cy="136" r="0.6"/><circle cx="166" cy="55" r="0.8"/><circle cx="199" cy="229" r="1"/><circle cx="144" cy="160" r="0.6"/><circle cx="270" cy="210" r="0.6"/><circle cx="20" cy="234" r="0.6"/><circle cx="103" cy="39" r="0.6"/><circle cx="237" cy="3" r="0.6"/><circle cx="176" cy="189" r="0.8"/><circle cx="239" cy="232" r="0.8"/></g></svg>
 <div class="layer" style="padding:54px 22px 24px;gap:16px">
   <header class="row" style="gap:12px">
-    <a href="Map.dc.html" aria-label="Geri" class="iconbtn" style="background:rgba(201,184,255,.12)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D8CCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <p class="meta" style="color:#D8CCFF;font-weight:600">Gökyüzü etkinliği</p>
+    <a href="Map.dc.html" aria-label="Geri" class="iconbtn" style="background:color-mix(in srgb,var(--meteor) 12%,transparent)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke:var(--meteor)"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <p class="meta" style="color:var(--meteor);font-weight:600">Gökyüzü etkinliği</p>
   </header>
   <div style="margin-top:34px;display:flex;flex-direction:column;gap:6px">
     <h1 class="serif" style="margin:0;font-size:42px;line-height:1.02;letter-spacing:-.025em">Orionid<br>meteor yağmuru</h1>
-    <p class="meta" style="color:#CFC6EE">Ekim başından Kasım başına, zirve 21–22 Ekim civarı</p>
+    <p class="meta" style="color:var(--meteor-2)">Ekim başından Kasım başına, zirve 21–22 Ekim civarı</p>
   </div>
-  <section aria-labelledby="kur" style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:22px;background:rgba(201,184,255,.08);box-shadow:inset 0 0 0 1px rgba(201,184,255,.18)">
+  <section aria-labelledby="kur" style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:22px;background:color-mix(in srgb,var(--meteor) 8%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--meteor) 18%,transparent)">
     <h2 id="kur" class="h2">Etkinlik boyunca</h2>
-    <p style="margin:0;font-size:14px;line-height:1.45;color:#DCD6F0">Her oturumda %25 şansla kayan yıldız düşer: o oturumun Işığı ×2.</p>
-    <p style="margin:0;font-size:14px;line-height:1.45;color:#DCD6F0">10 oturum tamamla, Orionid rozetini ve “Meteor izi” sayaç stilini kazan.</p>
-    <div class="between" style="margin-top:4px;font-size:13px"><span style="color:#CFC6EE">İlerleme</span><span class="num" style="font-weight:600">4 / 10 oturum</span></div>
-    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px" aria-hidden="true"><span style="height:6px;border-radius:3px;background:#C9B8FF"></span><span style="height:6px;border-radius:3px;background:#C9B8FF"></span><span style="height:6px;border-radius:3px;background:#C9B8FF"></span><span style="height:6px;border-radius:3px;background:#C9B8FF"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span><span style="height:6px;border-radius:3px;background:rgba(201,184,255,.16)"></span></div>
+    <p style="margin:0;font-size:14px;line-height:1.45;color:var(--meteor-2)">Her oturumda %25 şansla kayan yıldız düşer: o oturumun Işığı ×2.</p>
+    <p style="margin:0;font-size:14px;line-height:1.45;color:var(--meteor-2)">10 oturum tamamla, Orionid rozetini ve “Meteor izi” sayaç stilini kazan.</p>
+    <div class="between" style="margin-top:4px;font-size:13px"><span style="color:var(--meteor-2)">İlerleme</span><span class="num" style="font-weight:600">4 / 10 oturum</span></div>
+    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px" aria-hidden="true"><span style="height:6px;border-radius:3px;background:var(--meteor)"></span><span style="height:6px;border-radius:3px;background:var(--meteor)"></span><span style="height:6px;border-radius:3px;background:var(--meteor)"></span><span style="height:6px;border-radius:3px;background:var(--meteor)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span><span style="height:6px;border-radius:3px;background:color-mix(in srgb,var(--meteor) 16%,transparent)"></span></div>
   </section>
   <section aria-labelledby="gercek" style="display:flex;flex-direction:column;gap:8px">
     <h2 id="gercek" class="h2">Gerçekte de izle</h2>
-    <p style="margin:0;font-size:14px;line-height:1.45;color:#CFCBC0">Meteorlar Avcı yönünden geliyor gibi görünür. En iyi zaman gece yarısından sonra, şehir ışıklarından uzakta.</p>
-    <button class="row" style="align-self:flex-start;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(201,184,255,.35);color:#D8CCFF;font-size:14px;font-weight:600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D8CCFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>Zirve gecesi için hatırlat</button>
+    <p style="margin:0;font-size:14px;line-height:1.45;color:var(--paper-body)">Meteorlar Avcı yönünden geliyor gibi görünür. En iyi zaman gece yarısından sonra, şehir ışıklarından uzakta.</p>
+    <button class="row" style="align-self:flex-start;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--meteor) 35%,transparent);color:var(--meteor);font-size:14px;font-weight:600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke:var(--meteor)"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>Zirve gecesi için hatırlat</button>
   </section>
   <section aria-labelledby="takvim" style="display:flex;flex-direction:column">
     <h2 id="takvim" class="meta" style="font-weight:500;margin-bottom:2px">Sıradaki etkinlikler</h2>
     <div class="list"><div class="between" style="min-height:40px;align-items:center;font-size:15px"><span>Leonidler</span><span class="small" style="font-size:13px;color:var(--paper-2)">Kasım ortası</span></div><div class="between" style="min-height:40px;align-items:center;font-size:15px"><span>Geminidler (İkizler)</span><span class="small" style="font-size:13px;color:var(--paper-2)">Aralık ortası</span></div><div class="between" style="min-height:40px;align-items:center;font-size:15px"><span>Perseidler</span><span class="small" style="font-size:13px;color:var(--paper-2)">Ağustos ortası</span></div></div>
   </section>
-  <a href="Main.dc.html" class="btn" style="margin-top:auto;background:#C9B8FF;color:#18123A;box-shadow:0 10px 30px -12px #C9B8FF">Odaklanmaya başla</a>
+  <a href="Main.dc.html" class="btn" style="margin-top:auto;background:var(--meteor);color:var(--on-meteor);box-shadow:0 10px 30px -12px var(--meteor)">Odaklanmaya başla</a>
 </div></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2C46D","options":["#F2C46D","#8FB3FF","#7FD6B5"]},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2C46D","options":["#F2C46D","#8FB3FF","#7FD6B5"]},"theme":{"editor":"select","default":"auto","options":["auto","light","dark"]},"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   renderVals() {
-    return { accent: this.props.accent ?? '#F2C46D' };
+    return { accent: this.props.accent ?? '#F2C46D', theme: this.props.theme ?? 'auto' };
   }
 }
 </script>

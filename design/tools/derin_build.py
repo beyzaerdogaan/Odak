@@ -16,12 +16,30 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6
 
 CSS = """
 body{margin:0;background:#090D22}
-.scr{--night:#090D22;--night-2:#0E1430;--plate:rgba(236,230,214,.045);--plate-2:rgba(236,230,214,.08);
-  --hair:rgba(236,230,214,.11);--paper:#ECE6D6;--paper-2:#A7ADC6;--paper-3:#6E7597;
-  --nebula:#E6A6C7;--ice:#A8C4FF;--aurora:#8FDCC0;--meteor:#C9B8FF;--ember:#F0A070;--alarm:#F2A49A;
+@media (prefers-color-scheme:light){body{background:#E8EBF4}}
+/* Tokens. Dark is the night sky; light is a dawn star atlas printed in navy ink. */
+.scr{--night:#090D22;--night-2:#0E1430;--deep:#05081A;--plate:rgba(236,230,214,.045);--plate-2:rgba(236,230,214,.08);
+  --hair:rgba(236,230,214,.11);--paper:#ECE6D6;--paper-2:#A7ADC6;--paper-3:#6E7597;--paper-body:#CFCBC0;--star:#ECE6D6;
+  --acc-ink:var(--accent);--acc-fill:var(--accent);--on-acc:#1C1404;--core:#FFF8E6;--shade:rgba(0,0,0,.45);
+  --nebula:#E6A6C7;--ice:#A8C4FF;--aurora:#8FDCC0;--aurora-2:#B5D8C9;--meteor:#C9B8FF;--meteor-2:#D6CFF0;--ember:#F0A070;--alarm:#F2A49A;
+  --ev-1:#1E1744;--ev-2:#0E0B24;--ev-3:#0A0A1C;--ev-card-1:#2A2150;--ev-card-2:#151236;--on-meteor:#18123A;--trail:#F4EEFF;
+  --astro-m:-22px;--astro-bg:transparent;--astro-r:0;
+  --pr-1:#2A200C;--pr-2:#140F07;--pr-3:#0E0A05;--pr-star:#F6D98E;--pr-paper:#F5EEDC;--pr-body:#E2D8BE;--pr-3txt:#B5AA8E;
   position:relative;width:390px;height:844px;box-sizing:border-box;overflow:hidden;background:var(--night);
   color:var(--paper);font:400 15px/1.4 'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;
   display:flex;flex-direction:column}
+@media (prefers-color-scheme:light){.scr:not([data-theme=dark]){LIGHT}}
+.scr[data-theme=light]{LIGHT}
+"""
+LIGHT = """--night:#E8EBF4;--night-2:#F6F7FB;--deep:#CBD1E2;--plate:rgba(27,33,64,.055);--plate-2:rgba(27,33,64,.09);
+  --hair:rgba(27,33,64,.13);--paper:#1B2140;--paper-2:#4F5779;--paper-3:#7D84A2;--paper-body:#353C5E;--star:#27305C;
+  --acc-ink:color-mix(in srgb,var(--accent) 55%,#3D2A00);--acc-fill:color-mix(in srgb,var(--accent) 80%,#5A3D00);--core:#FFFDF5;--shade:rgba(27,33,64,.18);
+  --nebula:#A8487A;--ice:#3557B8;--aurora:#1C7D60;--aurora-2:#2F6B58;--meteor:#5D47BE;--meteor-2:#463A7A;--ember:#B9582A;--alarm:#B23A30;
+  --ev-1:#D9D3F2;--ev-2:#E9E5F7;--ev-3:#F2F0FA;--ev-card-1:#E4DDFA;--ev-card-2:#F1EEFC;--on-meteor:#FFFFFF;--trail:#5D47BE;
+  --astro-m:0;--astro-bg:#0E1430;--astro-r:22px;
+  --pr-1:#F3E2B4;--pr-2:#F7EEDA;--pr-3:#FBF6EA;--pr-star:#9A7424;--pr-paper:#2A2110;--pr-body:#4A3D22;--pr-3txt:#7A6A48;color-scheme:light"""
+CSS = CSS.replace("LIGHT", LIGHT)
+RULES = """
 .scr *{box-sizing:border-box}
 :where(.scr) a{color:inherit;text-decoration:none}
 :where(.scr) button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -36,9 +54,9 @@ body{margin:0;background:#090D22}
 .meta{margin:0;font-size:13px;color:var(--paper-2)}
 .small{font-size:12px;color:var(--paper-3)}
 .num{font-variant-numeric:tabular-nums lining-nums}
-.acc{color:var(--accent)}
-.fa{fill:var(--accent)}
-.sa{stroke:var(--accent)}
+.acc{color:var(--acc-ink)}
+.fa{fill:var(--acc-fill)}
+.sa{stroke:var(--acc-fill)}
 .rule{height:1px;background:var(--hair);border:0;margin:0}
 .row{display:flex;align-items:center;gap:12px}
 .between{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
@@ -49,7 +67,7 @@ body{margin:0;background:#090D22}
 .seg{display:grid;gap:2px;padding:3px;border-radius:999px;background:var(--plate)}
 .seg>*{min-height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;
   font-weight:500;color:var(--paper-2)}
-.seg>[aria-pressed=true],.seg>[aria-checked=true],.seg>[aria-selected=true]{background:var(--paper);color:#0B1026;font-weight:600}
+.seg>[aria-pressed=true],.seg>[aria-checked=true],.seg>[aria-selected=true]{background:var(--paper);color:var(--night);font-weight:600}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;font-size:13px;
   color:var(--paper);background:var(--plate)}
 .tog{flex:none;width:51px;height:31px;border-radius:999px;background:rgba(236,230,214,.16);padding:2px;display:flex}
@@ -60,18 +78,22 @@ body{margin:0;background:#090D22}
 .bar{height:4px;border-radius:999px;background:var(--plate-2);overflow:hidden}
 .bar>i{display:block;height:100%;border-radius:999px;background:var(--accent)}
 .price{flex:none;display:inline-flex;align-items:center;gap:5px;height:36px;padding:0 13px;border-radius:999px;
-  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent);font-size:14px;font-weight:600}
-.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;padding:8px 24px 0;display:flex;justify-content:space-around;
+  border:1px solid color-mix(in srgb,var(--acc-fill) 50%,transparent);color:var(--acc-ink);font-size:14px;font-weight:600}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;padding:8px 12px 0;display:flex;justify-content:space-around;
   align-items:flex-start;background:linear-gradient(to top,rgba(9,13,34,.98) 55%,rgba(9,13,34,0));}
 .tabbar a{min-width:72px;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
   font-weight:500;color:var(--paper-3)}
-.tabbar a[aria-current=page]{color:var(--accent)}
+.tabbar a[aria-current=page]{color:var(--acc-ink)}
 .iconbtn{flex:none;width:44px;height:44px;border-radius:50%;background:var(--plate);display:flex;align-items:center;justify-content:center}
 @keyframes ignite{0%{transform:scale(.2) rotate(-30deg);opacity:0}60%{transform:scale(1.12) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 @keyframes halo{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
 .ignite{transform-origin:center;transform-box:fill-box;animation:ignite 1.1s cubic-bezier(.2,.8,.2,1) both .2s}
 .halo{transform-origin:center;transform-box:fill-box;animation:halo 1.6s ease-out both}
-@media (prefers-reduced-motion:reduce){.ignite,.halo{animation:none}}
+@keyframes beckon{0%,100%{opacity:.45;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+.beckon{transform-origin:center;transform-box:fill-box;animation:beckon 2.6s ease-in-out infinite}
+.astro{margin:0 var(--astro-m);background:var(--astro-bg);border-radius:var(--astro-r);overflow:hidden}
+.astro svg{width:100%;height:auto;margin:0!important}
+@media (prefers-reduced-motion:reduce){.ignite,.halo,.beckon{animation:none}}
 """
 
 ICON = {
@@ -100,8 +122,62 @@ ICON = {
     "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
     "sprout": '<path d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2-5-5-5 0 3 2 5 5 5z"/>',
     "meteor": '<path d="M21 3L11 13M17 3h4v4M14 4L6 12M20 10l-8 8"/><circle cx="6" cy="18" r="2.5"/>',
+    "orbit": '<circle cx="12" cy="12" r="2.6"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(-24 12 12)"/><circle cx="19.6" cy="8.2" r="1.3" fill="currentColor" stroke="none"/>',
     "bell": '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
 }
+
+
+import re
+
+# UI colours written as literals in the screen code map to theme tokens. Lower-case hex is
+# artwork (album covers, planet discs, sky previews) and stays fixed in both modes.
+TOKEN = {
+    "#ECE6D6": "paper", "#A7ADC6": "paper-2", "#C3C6D4": "paper-2", "#6E7597": "paper-3", "#CFCBC0": "paper-body",
+    "#090D22": "night", "#0B1026": "night", "#0E1430": "night-2", "#0C1129": "night-2", "#05081A": "deep",
+    "#1C1404": "on-acc", "#F2C46D": "acc-fill", "#FFF8E6": "core",
+    "#A8C4FF": "ice", "#C9DAFF": "ice", "#C9B8FF": "meteor", "#D8CCFF": "meteor", "#CFC6EE": "meteor-2", "#DCD6F0": "meteor-2",
+    "#8FDCC0": "aurora", "#B5D8C9": "aurora-2", "#F0A070": "ember", "#E6A6C7": "nebula", "#F0C2DC": "nebula", "#F2A49A": "alarm",
+    "#1E1744": "ev-1", "#0E0B24": "ev-2", "#0A0A1C": "ev-3", "#2A2150": "ev-card-1", "#151236": "ev-card-2",
+    "#18123A": "on-meteor", "#F4EEFF": "trail",
+    "#2A200C": "pr-1", "#140F07": "pr-2", "#0E0A05": "pr-3", "#F6D98E": "pr-star", "#F5EEDC": "pr-paper",
+    "#E2D8BE": "pr-body", "#D8CCAE": "pr-body", "#B5AA8E": "pr-3txt",
+}
+RGB = {(236, 230, 214): "paper", (9, 13, 34): "night", (242, 196, 109): "acc-fill", (168, 196, 255): "ice",
+       (201, 184, 255): "meteor", (143, 220, 192): "aurora", (240, 160, 112): "ember", (242, 164, 154): "alarm"}
+
+
+def _rgba(m):
+    r, g, b, a = int(m[1]), int(m[2]), int(m[3]), float(m[4])
+    tok = RGB.get((r, g, b))
+    return f"color-mix(in srgb,var(--{tok}) {a * 100:g}%,transparent)" if tok else m[0]
+
+
+def _tag(m):
+    """SVG presentation attributes can't take var(), so token colours move into style."""
+    tag = m[0]
+    moved = []
+    for attr in ("fill", "stroke", "stop-color"):
+        a = re.search(r'\s' + attr + r'="(#[0-9A-F]{6})"', tag)
+        if a and a[1] in TOKEN:
+            moved.append(f"{attr}:var(--{TOKEN[a[1]]})")
+            tag = tag.replace(a[0], "")
+    if not moved:
+        return tag
+    decl = ";".join(moved)
+    if ' style="' in tag:
+        return tag.replace(' style="', f' style="{decl};', 1)
+    if tag.endswith("/>"):
+        return tag[:-2] + f' style="{decl}"/>'
+    return tag[:-1] + f' style="{decl}">'
+
+
+def themify(html):
+    html = re.sub(r"<[a-zA-Z][^<>]*>", _tag, html)
+    html = re.sub(r"rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)", _rgba, html)
+    html = re.sub(r"#[0-9A-F]{6}\b", lambda m: f"var(--{TOKEN[m[0]]})" if m[0] in TOKEN else m[0], html)
+    # accent used as text gets the darker ink in light mode
+    html = re.sub(r"(?<![-\w])color:\s*var\(--accent\)", "color:var(--acc-ink)", html)
+    return html
 
 
 def icon(name, size=20, color="currentColor", fill=False, sw=1.7, cls=""):
@@ -160,7 +236,7 @@ def flare(cx, cy, r, color_cls="fa", halo_color="var(--accent)", cls=""):
             f'<circle cx="{cx}" cy="{cy}" r="{r*.55}" fill="#FFF8E6"/></g>')
 
 
-TABBAR_ITEMS = [("Main.dc.html", "timer", "Odak"), ("Sky.dc.html", "moon", "Gökyüzü"), ("Rewards.dc.html", "gift", "Ödüller")]
+TABBAR_ITEMS = [("Home.dc.html", "orbit", "Evren"), ("Main.dc.html", "timer", "Odak"), ("Sky.dc.html", "moon", "Gökyüzü"), ("Rewards.dc.html", "gift", "Ödüller")]
 
 
 def tabbar(current):
@@ -183,16 +259,14 @@ def page(title, body, height=844, bg="#090D22", extra_css=""):
 <x-dc>
 <helmet>
 <link href="{FONTS}" rel="stylesheet">
-<style>{CSS}{extra_css}
-body{{background:{bg}}}
-</style>
+<style>{CSS}{themify(RULES + extra_css)}</style>
 </helmet>
-{body}
+{themify(body)}
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{{"accent":{{"editor":"color","default":"#F2C46D","options":["#F2C46D","#8FB3FF","#7FD6B5"]}},"$preview":{{"width":390,"height":{height}}}}}'>
+<script type="text/x-dc" data-dc-script data-props='{{"accent":{{"editor":"color","default":"#F2C46D","options":["#F2C46D","#8FB3FF","#7FD6B5"]}},"theme":{{"editor":"select","default":"auto","options":["auto","light","dark"]}},"$preview":{{"width":390,"height":{height}}}}}'>
 class Component extends DCLogic {{
   renderVals() {{
-    return {{ accent: this.props.accent ?? '#F2C46D' }};
+    return {{ accent: this.props.accent ?? '#F2C46D', theme: this.props.theme ?? 'auto' }};
   }}
 }}
 </script>
@@ -202,7 +276,7 @@ class Component extends DCLogic {{
 
 
 def root(inner, style="", cls=""):
-    return f'<div class="scr {cls}" style="--accent: {{{{accent}}}}; {style}">{inner}</div>'
+    return f'<div class="scr {cls}" data-theme="{{{{theme}}}}" style="--accent: {{{{accent}}}}; {style}">{inner}</div>'
 
 
 # ---------------------------------------------------------------- 1 · Odak kurulumu
@@ -270,7 +344,7 @@ def dial(size=284, minutes=45, elapsed_frac=0.709):
         major = i % 5 == 0
         r1, r2 = r + 9, r + (17 if major else 13)
         lit = i / minutes <= elapsed_frac
-        col = "var(--accent)" if lit else "#ECE6D6"
+        col = "var(--acc-fill)" if lit else "#ECE6D6"
         op = (0.9 if major else 0.55) if lit else (0.35 if major else 0.16)
         ticks.append(f'<line x1="{c + r1*math.cos(a):.1f}" y1="{c + r1*math.sin(a):.1f}" x2="{c + r2*math.cos(a):.1f}" '
                      f'y2="{c + r2*math.sin(a):.1f}" style="stroke:{col}" stroke-opacity="{op}" stroke-width="{1.6 if major else 1}" stroke-linecap="round"/>')
@@ -511,7 +585,7 @@ def constellation_screen():
              "Betelgeuse turuncu-kırmızı bir süperdev. Rigel ise mavi-beyaz ve takımyıldızın en parlak yıldızı.",
              "Türkiye'den kış akşamları güney gökyüzünde çıplak gözle görülür."]
     f_html = "".join(f'<p style="margin:0;font-size:13.5px;line-height:1.45;color:#CFCBC0">{t}</p>' for t in facts)
-    prizes = [(spark(18), "+200", "Işık", "var(--accent)"),
+    prizes = [(spark(18), "+200", "Işık", "var(--acc-ink)"),
               (icon("snow", 18, "#A8C4FF"), "Kış gecesi", "Ses paketi", "#A8C4FF"),
               (icon("sun", 18, "#C9B8FF"), "Avcı", "Rozet", "#C9B8FF")]
     p_html = "".join(
@@ -576,7 +650,7 @@ def sky_screen():
     badges = [("sun", "İlk ışık", True), ("timer", "90 dk maraton", True), ("lock", "7 gün seri", False), ("lock", "Gece kuşu", False)]
     b_html = "".join(
         f'<div style="display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center">'
-        + (f'<span style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(242,196,109,.32),rgba(242,196,109,.08));box-shadow:inset 0 0 0 1px rgba(242,196,109,.45);display:flex;align-items:center;justify-content:center">{icon(ic, 24, "var(--accent)", sw=1.8)}</span>'
+        + (f'<span style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(242,196,109,.32),rgba(242,196,109,.08));box-shadow:inset 0 0 0 1px rgba(242,196,109,.45);display:flex;align-items:center;justify-content:center">{icon(ic, 24, "var(--acc-ink)", sw=1.8)}</span>'
            if on else f'<span style="width:56px;height:56px;border-radius:50%;border:1px dashed rgba(236,230,214,.22);display:flex;align-items:center;justify-content:center">{icon(ic, 20, "#6E7597", sw=2)}</span>')
         + f'<span style="font-size:12px;color:{"var(--paper)" if on else "var(--paper-3)"}">{l}</span></div>'
         for ic, l, on in badges)
@@ -621,7 +695,7 @@ def sky_screen():
 
 
 # ---------------------------------------------------------------- 5 · Ödüller ve Işık mağazası
-def mini_sky(seed, bg, tint="#ECE6D6", h=64):
+def mini_sky(seed, bg, tint="#ece6d6", h=64):
     rnd = random.Random(seed)
     dots = "".join(f'<circle cx="{rnd.uniform(4,156):.0f}" cy="{rnd.uniform(4,h-10):.0f}" r="{rnd.choice([.6,.8,1,1.2])}" opacity="{rnd.uniform(.4,.95):.2f}"/>' for _ in range(22))
     return (f'<svg width="100%" height="{h}" viewBox="0 0 160 {h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="display:block;width:100%;border-radius:14px;background:{bg}">'
@@ -629,8 +703,8 @@ def mini_sky(seed, bg, tint="#ECE6D6", h=64):
 
 
 def rewards_screen():
-    boosts = [("scope", "Teleskop", "Sonraki yıldızı sen seç", "400", "var(--accent)", "rgba(242,196,109,.12)"),
-              ("shoot", "Kayan yıldız", "Sonraki oturumda Işık ×2", "150", "var(--accent)", "rgba(242,196,109,.12)"),
+    boosts = [("scope", "Teleskop", "Sonraki yıldızı sen seç", "400", "var(--acc-ink)", "rgba(242,196,109,.12)"),
+              ("shoot", "Kayan yıldız", "Sonraki oturumda Işık ×2", "150", "var(--acc-ink)", "rgba(242,196,109,.12)"),
               ("cloud", "Seri koruyucu bulut", "En fazla 3 tane taşıyabilirsin", "250", "#A8C4FF", "rgba(168,196,255,.12)"),
               ("sun", "Parlak yıldız bileti", "Bir parlak yıldızı 45 dk'da düşür", "500", "#F0A070", "rgba(240,160,112,.12)")]
     b_html = "".join(
@@ -801,7 +875,7 @@ def deepsky_screen():
             lc, hc = "var(--paper)", "var(--paper-3)"
         elif st == "next":
             disc = f'<span aria-hidden="true" style="width:{d}px;height:{d}px;border-radius:50%;background:conic-gradient(var(--accent) 0 92%,rgba(236,230,214,.12) 0);padding:2px;display:block"><span style="display:block;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6E2B0,#B48A4A)"></span></span>'
-            lc, hc = "var(--paper)", "var(--accent)"
+            lc, hc = "var(--paper)", "var(--acc-ink)"
         else:
             disc = f'<span aria-hidden="true" style="width:{d}px;height:{d}px;border-radius:50%;border:1px dashed rgba(236,230,214,.25)"></span>'
             lc, hc = "var(--paper-3)", "var(--paper-3)"
@@ -816,7 +890,7 @@ def deepsky_screen():
     <h1 class="serif" style="margin:2px 0 0;font-size:44px;line-height:1.05;letter-spacing:-.025em">Avcı Bulutsusu</h1>
     <p class="meta num">M42, 110 nesnenin ilki</p>
   </header>
-  {nebula()}
+  <div class="astro">{nebula()}</div>
   <section aria-labelledby="nedir" style="display:flex;flex-direction:column;gap:8px;margin-top:-6px">
     <h2 id="nedir" class="h2">Bu ne?</h2>
     <p style="margin:0;font-size:14px;line-height:1.5;color:#CFCBC0">Yeni yıldızların doğduğu dev bir gaz ve toz bulutu. Avcı'nın Kemeri'nin hemen altında, “kılıç” bölgesinde.</p>
@@ -926,8 +1000,121 @@ def prestige_screen():
     return page("Altın gökyüzü", root(body, style="background:#0E0A05"), bg="#0E0A05")
 
 
+# ---------------------------------------------------------------- 0 · Evrenim (giriş)
+def planisphere():
+    """The user's own sky as a planisphere: north celestial pole in the centre, hour ring on the rim."""
+    cx, cy, R = 195, 186, 166
+    out = [f'<svg width="390" height="372" viewBox="0 0 390 372" role="img" aria-label="Senin gökyüzün: Büyük Ayı tamam, Avcı 7 yıldızdan 6, Kassiopeia 5 yıldızdan 2, Ay ve Merkür açıldı" style="display:block;overflow:visible">']
+    out.append('<defs><radialGradient id="disk"><stop offset="0" stop-color="#0E1430"/><stop offset="1" stop-color="#090D22"/></radialGradient>'
+               f'<clipPath id="inner"><circle cx="{cx}" cy="{cy}" r="{R}"/></clipPath></defs>')
+    out.append(f'<circle cx="{cx}" cy="{cy}" r="{R + 20}" fill="none" stroke="#ECE6D6" stroke-opacity=".14"/>')
+    out.append(f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="url(#disk)" stroke="#ECE6D6" stroke-opacity=".22"/>')
+    # hour ring: 24 hours of right ascension, labelled every 2
+    for h in range(24):
+        a = math.radians(h * 15 - 90)
+        r1, r2 = R + 2, R + (8 if h % 2 == 0 else 5)
+        out.append(f'<line x1="{cx + r1*math.cos(a):.1f}" y1="{cy + r1*math.sin(a):.1f}" x2="{cx + r2*math.cos(a):.1f}" y2="{cy + r2*math.sin(a):.1f}" stroke="#ECE6D6" stroke-opacity=".4"/>')
+        if h % 2 == 0:
+            tx, ty = cx + (R + 14) * math.cos(a), cy + (R + 14) * math.sin(a) + 3.5
+            out.append(f'<text x="{tx:.1f}" y="{ty:.1f}" text-anchor="middle" font-size="9.5" font-family="Hanken Grotesk, sans-serif" fill="#6E7597">{h}s</text>')
+    out.append(f'<g clip-path="url(#inner)">')
+    # declination circles and hour lines, like a printed chart
+    out.append('<g fill="none" stroke="#ECE6D6" stroke-opacity=".07">' + "".join(f'<circle cx="{cx}" cy="{cy}" r="{r}"/>' for r in (42, 84, 126)) +
+               "".join(f'<line x1="{cx}" y1="{cy}" x2="{cx + R*math.cos(math.radians(a)):.1f}" y2="{cy + R*math.sin(math.radians(a)):.1f}"/>' for a in range(0, 360, 30)) + '</g>')
+    # catalogue stars not lit yet: faint
+    rnd = random.Random(77)
+    dots = []
+    for _ in range(150):
+        rr, aa = R * math.sqrt(rnd.random()), rnd.uniform(0, 2 * math.pi)
+        dots.append(f'<circle cx="{cx + rr*math.cos(aa):.1f}" cy="{cy + rr*math.sin(aa):.1f}" r="{rnd.choice([.6, .8, 1, 1.2])}" opacity="{rnd.uniform(.18, .5):.2f}"/>')
+    out.append('<g fill="#ECE6D6">' + "".join(dots) + '</g>')
+    # ecliptic with the Moon and planets placed on it
+    out.append(f'<ellipse cx="{cx + 10}" cy="{cy + 34}" rx="{R + 30}" ry="92" transform="rotate(-16 {cx} {cy})" fill="none" stroke="#A8C4FF" stroke-opacity=".35" stroke-dasharray="3 5"/>')
+    out.append('</g>')
+
+    def lit(pts, lines, missing=(), miss_lines=()):
+        g = []
+        for a, b in lines:
+            g.append(f'<line x1="{pts[a][0]}" y1="{pts[a][1]}" x2="{pts[b][0]}" y2="{pts[b][1]}" class="sa" stroke-opacity=".6" stroke-width="1.2"/>')
+        for a, b in miss_lines:
+            g.append(f'<line x1="{a[0]}" y1="{a[1]}" x2="{b[0]}" y2="{b[1]}" stroke="#ECE6D6" stroke-opacity=".3" stroke-dasharray="2 4"/>')
+        for x, y in pts:
+            g.append(f'<circle cx="{x}" cy="{y}" r="6" class="fa" opacity=".14"/><circle cx="{x}" cy="{y}" r="2.6" class="fa"/>')
+        for x, y in missing:
+            g.append(f'<circle cx="{x}" cy="{y}" r="4" fill="none" stroke="#ECE6D6" stroke-opacity=".45" stroke-dasharray="2 2"/>')
+        return "".join(g)
+
+    # Büyük Ayı (complete), north-west of the pole
+    ursa = [(86, 120), (104, 104), (124, 100), (144, 110), (180, 98), (184, 132), (148, 138)]
+    out.append(lit(ursa, [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 3)]))
+    # Kassiopeia 2/5 across the pole from the Bear
+    cas = [(232, 128), (252, 148)]
+    cas_m = [(270, 126), (290, 146), (306, 122)]
+    out.append(lit(cas, [(0, 1)], cas_m, [((252, 148), (270, 126)), ((270, 126), (290, 146)), ((290, 146), (306, 122))]))
+    # Avcı 6/7 down on the ecliptic side
+    ori = [(258, 238), (236, 290), (220, 292), (204, 294), (190, 340), (262, 334)]
+    bet = (184, 232)
+    out.append(lit(ori, [(0, 1), (1, 2), (2, 3), (3, 4), (1, 5)], [], [(bet, (204, 294)), (bet, (258, 238))]))
+    out.append(f'<circle cx="{bet[0]}" cy="{bet[1]}" r="7" fill="none" stroke="#F0A070" stroke-width="1.3" stroke-dasharray="2 3" class="beckon"/>')
+    # pole star
+    out.append(flare(cx, cy, 2.2, color_cls='', halo_color='#ECE6D6').replace('<path class=""', '<path fill="#ECE6D6"'))
+    # Moon and Mercury unlocked; the rest wait on the ecliptic
+    out.append('<circle cx="70" cy="226" r="9" fill="url(#moon)"/><defs><radialGradient id="moon" cx=".35" cy=".35"><stop offset="0" stop-color="#f2efe8"/><stop offset="1" stop-color="#9c988f"/></radialGradient></defs>')
+    out.append('<circle cx="118" cy="262" r="5" fill="#b8b2a8"/>')
+    for x, y in [(150, 282), (306, 252), (336, 222)]:
+        out.append(f'<circle cx="{x}" cy="{y}" r="4" fill="none" stroke="#A8C4FF" stroke-opacity=".55" stroke-dasharray="2 2"/>')
+    # labels
+    lab = 'font-family="Newsreader, serif" font-style="italic" font-size="12.5" fill="#ECE6D6"'
+    small = 'font-family="Hanken Grotesk, sans-serif" font-size="10" fill="#A7ADC6"'
+    out.append(f'<text x="92" y="160" {lab}>Büyük Ayı</text><text x="156" y="160" {small}>tamam</text>'
+               f'<text x="246" y="174" {lab}>Kassiopeia</text><text x="314" y="174" {small}>2/5</text>'
+               f'<text x="272" y="300" {lab}>Avcı</text><text x="272" y="312" {small}>6/7</text>'
+               f'<text x="203" y="{cy + 16}" {small}>Kutup Yıldızı</text>'
+               f'<text x="52" y="250" {lab} font-size="11.5">Ay</text><text x="98" y="280" {lab} font-size="11.5">Merkür</text>'
+               f'<text x="128" y="226" font-family="Newsreader, serif" font-style="italic" font-size="11.5" fill="#F0A070">Betelgeuse?</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def home_screen():
+    stats = [("12", "yıldız yaktın"), ("1", "takımyıldız bitti"), ("2", "gök cismi açıldı")]
+    s_html = '<span style="background:var(--hair)"></span>'.join(
+        f'<div><p class="serif num" style="margin:0;font-size:26px;line-height:1.05">{v}</p><p class="small" style="margin:2px 0 0">{l}</p></div>' for v, l in stats)
+    body = f"""
+{starfield(12, n=40, bottom=200, grid=False)}
+<div class="layer" style="padding:54px 22px 96px;gap:12px">
+  <header class="between" style="align-items:flex-end">
+    <div>
+      <p class="meta">İyi akşamlar</p>
+      <h1 class="h1" style="font-size:38px">Evrenin</h1>
+    </div>
+    <div class="row" style="gap:6px;padding-bottom:4px">
+      <span class="chip" style="height:30px">Gece 1</span>
+      <span class="row num acc" style="gap:5px;height:30px;padding:0 11px;border-radius:999px;background:rgba(242,196,109,.12);font-size:13px;font-weight:600">{spark(11)}1.440</span>
+    </div>
+  </header>
+
+  <a href="Sky.dc.html" aria-label="Gökyüzüme git" style="margin:0 -22px;display:block">{planisphere()}</a>
+
+  <div style="display:grid;grid-template-columns:auto 1px auto 1px auto;justify-content:space-between;gap:0 10px">{s_html}</div>
+
+  <section aria-labelledby="sonraki" style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:24px;background:var(--plate)">
+    <div class="row" style="align-items:flex-start;gap:12px">
+      <span style="flex:none;width:40px;height:40px;border-radius:50%;background:rgba(240,160,112,.12);display:flex;align-items:center;justify-content:center">{spark(16, cls='', extra='style="fill:#F0A070"')}</span>
+      <div>
+        <h2 id="sonraki" class="h2">Avcı'yı bitirmene bir yıldız kaldı</h2>
+        <p class="small" style="margin:3px 0 0;color:var(--paper-2)">Betelgeuse parlak bir yıldız: yalnızca 60+ dk ya da katı mod oturumunda düşer.</p>
+      </div>
+    </div>
+    <a href="Main.dc.html" class="btn btn-acc" style="height:50px">Odaklanmaya başla</a>
+  </section>
+</div>
+{tabbar('Home.dc.html')}"""
+    return page("Evrenim", root(body))
+
+
 SCREENS = {
-    "Main": main_screen, "Active": active_screen, "Sounds": sounds_screen, "Reward": reward_screen,
+    "Home": home_screen, "Main": main_screen, "Active": active_screen, "Sounds": sounds_screen, "Reward": reward_screen,
     "Constellation": constellation_screen, "Sky": sky_screen, "Rewards": rewards_screen, "Map": map_screen,
     "DeepSky": deepsky_screen, "Event": event_screen, "Prestige": prestige_screen,
 }
