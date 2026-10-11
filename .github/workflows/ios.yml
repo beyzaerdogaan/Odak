@@ -1,0 +1,75 @@
+name: iOS build
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Test and build
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XCODE" ]; then sudo xcode-select -s "$XCODE"; fi
+          xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Rules tests (OdakCore)
+        run: swift test --package-path Packages/OdakCore
+
+      - name: Build app
+        run: |
+          set -o pipefail
+          xcodegen generate
+          xcodebuild build -project Odak.xcodeproj -scheme Odak \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
+            CODE_SIGNING_ALLOWED=NO -quiet
+
+      - name: Screenshots (light and dark)
+        if: github.event_name == 'push'
+        run: ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
+
+      - name: Upload screenshots
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots
+
+      - name: Publish screenshots to the ci-screenshots branch
+        if: github.event_name == 'push'
+        run: |
+          SRC="$PWD/screenshots"
+          DEST=$(mktemp -d)
+          cd "$DEST"
+          git init -q -b ci-screenshots
+          mkdir -p "${GITHUB_REF_NAME}"
+          cp "$SRC"/*.png "${GITHUB_REF_NAME}/"
+          git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
+            commit -q -m "Screenshots for ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" ci-screenshots
+
+      - name: Build app with Screen Time extensions
+        run: |
+          set -o pipefail
+          xcodegen generate --spec project-screentime.yml
+          xcodebuild build -project Odak.xcodeproj -scheme Odak \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
+            CODE_SIGNING_ALLOWED=NO -quiet

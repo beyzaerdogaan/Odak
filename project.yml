@@ -1,0 +1,52 @@
+# Generate the Xcode project with:  xcodegen generate
+# For the build with Screen Time app blocking (needs Apple's Family Controls approval):
+#   xcodegen generate --spec project-screentime.yml
+name: Odak
+options:
+  bundleIdPrefix: com.beyzaerdogan
+  deploymentTarget:
+    iOS: "26.0"
+  developmentLanguage: tr
+  createIntermediateGroups: true
+  groupSortPosition: top
+configFiles:
+  Debug: Config/Odak.xcconfig
+  Release: Config/Odak.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+settingGroups:
+  derin:
+    base:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) $(ODAK_SCREEN_TIME_FLAG_$(ODAK_SCREEN_TIME))"
+packages:
+  OdakCore:
+    path: Packages/OdakCore
+targets:
+  Odak:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: OdakCore
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_NAME: Derin
+        PRODUCT_MODULE_NAME: Odak
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin
+        CODE_SIGN_ENTITLEMENTS: App/Support/Odak-$(ODAK_SCREEN_TIME).entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIconDawn
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_FILE: App/Support/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+    scheme:
+      testTargets: []
+      storeKitConfiguration: Config/Derin.storekit

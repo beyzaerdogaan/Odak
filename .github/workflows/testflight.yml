@@ -1,0 +1,84 @@
+name: TestFlight
+
+# Archives the app, signs it with Apple's cloud-managed certificates through an App Store Connect
+# API key, and uploads it to TestFlight. No Mac needed. See docs/TESTFLIGHT.md for the secrets.
+on:
+  workflow_dispatch:
+    inputs:
+      screen_time:
+        description: "Screen Time (FamilyControls) ile derle. Yalnızca Apple onayı geldikten sonra."
+        type: boolean
+        default: false
+  push:
+    tags: ["v*"]
+
+jobs:
+  upload:
+    name: Archive and upload
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      BUNDLE_PREFIX: ${{ vars.BUNDLE_ID_PREFIX || 'com.beyzaerdogan' }}
+      SPOTIFY_CLIENT_ID: ${{ vars.SPOTIFY_CLIENT_ID }}
+      SCREEN_TIME: ${{ inputs.screen_time && 'YES' || vars.SCREEN_TIME || 'NO' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secrets
+        run: |
+          missing=""
+          for v in TEAM_ID ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            [ -z "${!v}" ] && missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Eksik GitHub secret:$missing (docs/TESTFLIGHT.md)"; exit 1
+          fi
+
+      - name: Select Xcode 26
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XCODE" ]; then sudo xcode-select -s "$XCODE"; fi
+          xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: App Store Connect API key
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          KEY="$RUNNER_TEMP/keys/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$KEY"
+          echo "ASC_KEY_PATH=$KEY" >> "$GITHUB_ENV"
+
+      - name: Generate project
+        run: |
+          if [ "$SCREEN_TIME" = "YES" ]; then xcodegen generate --spec project-screentime.yml; else xcodegen generate; fi
+
+      - name: Archive
+        run: |
+          set -o pipefail
+          xcodebuild archive -project Odak.xcodeproj -scheme Odak -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
+            DEVELOPMENT_TEAM="$TEAM_ID" ODAK_BUNDLE_ID_PREFIX="$BUNDLE_PREFIX" \
+            ODAK_SPOTIFY_CLIENT_ID="$SPOTIFY_CLIENT_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            -quiet
+
+      - name: Upload to TestFlight
+        run: |
+          set -o pipefail
+          cp ci/ExportOptions.plist "$RUNNER_TEMP/ExportOptions.plist"
+          plutil -replace teamID -string "$TEAM_ID" "$RUNNER_TEMP/ExportOptions.plist"
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+
+      - name: Clean up key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys"

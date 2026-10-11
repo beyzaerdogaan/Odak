@@ -1,0 +1,52 @@
+# Same app plus Screen Time blocking: the FamilyControls entitlement, an App Group and the three
+# Screen Time extensions. Use only after Apple approves "Family Controls (Distribution)".
+include:
+  - project.yml
+settings:
+  base:
+    ODAK_SCREEN_TIME: YES
+targets:
+  Odak:
+    dependencies:
+      - target: DerinActivityMonitor
+      - target: DerinShieldConfiguration
+      - target: DerinShieldAction
+  DerinActivityMonitor:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/ActivityMonitor
+      - path: Shared
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.activity-monitor
+        CODE_SIGN_ENTITLEMENTS: Extensions/Extension-$(ODAK_SCREEN_TIME).entitlements
+        INFOPLIST_FILE: Extensions/ActivityMonitor/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+  DerinShieldConfiguration:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/ShieldConfiguration
+      - path: Shared
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.shield-configuration
+        CODE_SIGN_ENTITLEMENTS: Extensions/Extension-$(ODAK_SCREEN_TIME).entitlements
+        INFOPLIST_FILE: Extensions/ShieldConfiguration/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+  DerinShieldAction:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/ShieldAction
+      - path: Shared
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.shield-action
+        CODE_SIGN_ENTITLEMENTS: Extensions/Extension-$(ODAK_SCREEN_TIME).entitlements
+        INFOPLIST_FILE: Extensions/ShieldAction/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
