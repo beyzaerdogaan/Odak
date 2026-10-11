@@ -6,14 +6,14 @@ struct CollectionMapView: View {
     @Environment(AppModel.self) private var model
 
     private struct Layer: Identifiable {
-        enum State { case here, parallel, locked, done }
+        enum Status { case here, parallel, locked, done }
         let n: Int
         let title: String
         let right: String
         let bar: Double?
         let text: String
         let color: Color
-        let state: State
+        let state: Status
         let route: Route?
         var id: Int { n }
     }

@@ -6,7 +6,7 @@ struct RewardFlowView: View {
     let summary: SessionSummary
     var onShowSky: () -> Void
     @Environment(AppModel.self) private var model
-    @State private var showConstellation = false
+    @State private var showConstellation = Demo.screen == "constellation"
 
     var body: some View {
         ZStack {

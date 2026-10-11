@@ -4,7 +4,7 @@ import SwiftUI
 /// "Odak sürüyor": the countdown dial, what is locked, the no-look streak and the sound card.
 struct ActiveSessionView: View {
     @Environment(AppModel.self) private var model
-    @State private var showSounds = false
+    @State private var showSounds = Demo.screen == "sounds"
     @State private var giveUpProgress: CGFloat = 0
     @State private var holding = false
 

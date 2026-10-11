@@ -25,9 +25,15 @@ final class AppModel {
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
 
     init() {
-        progress = Self.load(SkyProgress.self, from: "progress.json") ?? SkyProgress()
-        settings = Self.load(FocusSettings.self, from: "settings.json") ?? FocusSettings()
-        session = Self.load(FocusSession.self, from: "session.json")
+        if Demo.isOn {
+            progress = Demo.progress()
+            settings = FocusSettings(task: "Tez · Bölüm 3 literatür", ambient: ["rain": 0.3])
+            session = nil
+        } else {
+            progress = Self.load(SkyProgress.self, from: "progress.json") ?? SkyProgress()
+            settings = Self.load(FocusSettings.self, from: "settings.json") ?? FocusSettings()
+            session = Self.load(FocusSession.self, from: "session.json")
+        }
         sounds.restore(settings.ambient)
         store.start()
         screenTime.clearIfExpired()
@@ -205,6 +211,51 @@ final class AppModel {
         screenTime.end()
     }
 
+    // MARK: - Screenshot mode
+
+    /// Puts the app on the screen named by `-screen` (see Demo).
+    func applyDemoScreen() {
+        guard Demo.isOn, let screen = Demo.screen else { return }
+        let now = Date.now
+        switch screen {
+        case "active", "sounds":
+            var s = FocusSession(task: settings.task, minutes: 45, strict: false, blockMode: .selected, silenceCalls: true,
+                                 now: now.addingTimeInterval(-(12 * 60 + 46)))
+            s.lastReturn = s.start
+            settings.focusShortcutsReady = true
+            session = s
+        case "reward":
+            var p = Demo.progress(now: now, saiphLit: false)
+            p.telescopeTarget = Catalog.constellation("orion")?.stars.first { $0.name == "Saiph" }?.id
+            var rng = SeededGenerator(seed: 6)
+            let end = now
+            summary = p.complete(FocusInput(task: settings.task, start: end.addingTimeInterval(-45 * 60), end: end, plannedMinutes: 45,
+                                            focusedMinutes: 45, strict: false, lookedAway: false), rng: &rng)
+            progress = p
+        case "constellation":
+            var p = Demo.progress(now: now)
+            p.telescopeTarget = Catalog.constellation("orion")?.stars.first { $0.name == "Betelgeuse" }?.id
+            var rng = SeededGenerator(seed: 6)
+            summary = p.complete(FocusInput(task: settings.task, start: now.addingTimeInterval(-60 * 60), end: now, plannedMinutes: 60,
+                                            focusedMinutes: 60, strict: false, lookedAway: false), rng: &rng)
+            progress = p
+        case "deepsky":
+            progress.deepSky["m42"] = now
+            progress.ownedThemes.insert(.nebula)
+        case "journey":
+            var p = progress
+            for c in Catalog.constellations {
+                for s in c.stars { p.litStars[s.id] = now }
+                if !p.completedConstellations.contains(c.id) { p.completedConstellations.append(c.id) }
+            }
+            p.openConstellations = []
+            p.journeyStartMinutes = p.totalFocusedMinutes - 156
+            progress = p
+        default:
+            break
+        }
+    }
+
     // MARK: - Storage
 
     private static var folder: URL {
@@ -219,6 +270,7 @@ final class AppModel {
     }
 
     private func persist<T: Encodable>(_ value: T?, to name: String) {
+        guard !Demo.isOn else { return }
         let url = Self.folder.appending(path: name)
         guard let value, let data = try? JSONEncoder().encode(value) else {
             try? FileManager.default.removeItem(at: url)

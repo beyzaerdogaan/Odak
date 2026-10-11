@@ -11,11 +11,12 @@ enum Route: Hashable {
 struct RootView: View {
     @Environment(AppModel.self) private var model
     @State private var tab: AppTab = .universe
+    @State private var universePath: [Route] = []
 
     var body: some View {
         TabView(selection: $tab) {
             Tab("Evren", systemImage: "circle.circle", value: .universe) {
-                NavigationStack { HomeView(tab: $tab).routes() }
+                NavigationStack(path: $universePath) { HomeView(tab: $tab).routes() }
             }
             Tab("Odak", systemImage: "timer", value: .focus) {
                 NavigationStack { FocusSetupView() }
@@ -37,6 +38,19 @@ struct RootView: View {
                 .tint(Theme.accent)
         }
         .overlay(alignment: .top) { ToastView() }
+        .task {
+            model.applyDemoScreen()
+            switch Demo.screen {
+            case "focus": tab = .focus
+            case "sky": tab = .sky
+            case "rewards": tab = .rewards
+            case "map": universePath = [.collection]
+            case "deepsky": universePath = [.deepSky]
+            case "event": universePath = [.event]
+            case "journey": universePath = [.journey]
+            default: break
+            }
+        }
     }
 }
 
