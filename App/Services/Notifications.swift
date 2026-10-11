@@ -1,0 +1,35 @@
+import Foundation
+import UserNotifications
+
+/// Local notifications: the end of a session and meteor shower peak nights.
+enum Notifications {
+    static let sessionID = "derin.session.end"
+
+    static func requestPermission() async {
+        _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+    }
+
+    static func scheduleSessionEnd(at date: Date, task: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "Yıldızın hazır"
+        content.body = task.isEmpty ? "Odak süren doldu. Hangi yıldızı yaktığını gör." : "\(task) için odak süren doldu. Hangi yıldızı yaktığını gör."
+        content.sound = .default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(1, date.timeIntervalSinceNow), repeats: false)
+        UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: sessionID, content: content, trigger: trigger))
+    }
+
+    static func cancelSessionEnd() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sessionID])
+    }
+
+    static func remindPeak(name: String, at date: Date) async {
+        await requestPermission()
+        let content = UNMutableNotificationContent()
+        content.title = "\(name) zirvede"
+        content.body = "Bu gece meteor yağmurunun zirvesi. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak."
+        content.sound = .default
+        let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "derin.peak.\(name)", content: content, trigger: trigger))
+    }
+}

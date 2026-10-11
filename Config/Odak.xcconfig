@@ -1,0 +1,21 @@
+// Shared settings for every Derin target. Values here are the safe defaults that build in CI
+// without any Apple account; the TestFlight workflow overrides team, bundle prefix and build number.
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+// Your Apple Developer Team ID (10 characters, developer.apple.com → Membership).
+DEVELOPMENT_TEAM =
+// Reverse-DNS prefix you own. The app becomes $(ODAK_BUNDLE_ID_PREFIX).derin.
+ODAK_BUNDLE_ID_PREFIX = com.beyzaerdogan
+ODAK_APP_GROUP = group.$(ODAK_BUNDLE_ID_PREFIX).derin
+
+// YES once Apple approves the Family Controls (Distribution) entitlement. project-screentime.yml sets it.
+ODAK_SCREEN_TIME = NO
+ODAK_SCREEN_TIME_FLAG_YES = SCREEN_TIME
+ODAK_SCREEN_TIME_FLAG_NO =
+
+// Spotify app client ID from developer.spotify.com. Empty keeps Spotify in "open in Spotify" mode.
+ODAK_SPOTIFY_CLIENT_ID =
+
+#include? "Local.xcconfig"
