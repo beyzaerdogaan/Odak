@@ -29,6 +29,7 @@ struct HomeView: View {
                         HStack(spacing: 6) {
                             Text("\(p.totalFocusedMinutes / 60) sa odak")
                                 .font(.system(size: 13)).monospacedDigit().foregroundStyle(Theme.paper)
+                                .lineLimit(1).fixedSize()
                                 .padding(.horizontal, 12).frame(height: 32)
                                 .glassEffect(.regular, in: .capsule)
                             LightPill(amount: p.light)

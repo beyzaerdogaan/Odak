@@ -57,13 +57,17 @@ struct RootView: View {
 extension View {
     func routes() -> some View {
         navigationDestination(for: Route.self) { route in
-            switch route {
-            case .collection: CollectionMapView()
-            case .deepSky: DeepSkyView()
-            case .event: MeteorEventView()
-            case .journey: JourneyView()
-            case let .constellation(id): ConstellationDetailView(id: id)
+            Group {
+                switch route {
+                case .collection: CollectionMapView()
+                case .deepSky: DeepSkyView()
+                case .event: MeteorEventView()
+                case .journey: JourneyView()
+                case let .constellation(id): ConstellationDetailView(id: id)
+                }
             }
+            // Detail screens own the bottom edge (Derin gök's "Temayı uygula" sat under the tab bar).
+            .toolbar(.hidden, for: .tabBar)
         }
     }
 }

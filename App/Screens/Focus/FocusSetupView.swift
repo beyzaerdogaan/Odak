@@ -34,6 +34,7 @@ struct FocusSetupView: View {
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 8)
+            .bottomFade()
         }
         .background(StarField(seed: 1, count: 46, depth: 0.28, grid: false, theme: model.progress.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)

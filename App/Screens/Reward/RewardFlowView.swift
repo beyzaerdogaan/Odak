@@ -79,6 +79,7 @@ struct RewardView: View {
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 8)
+            .bottomFade()
         }
         .background {
             ZStack {
@@ -267,6 +268,7 @@ struct ConstellationCompleteView: View {
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 8)
+            .bottomFade()
         }
         .background(StarField(seed: 4, count: 130, grid: true, theme: model.progress.selectedTheme))
         .sheet(isPresented: $showFinder) {

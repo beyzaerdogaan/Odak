@@ -107,13 +107,32 @@ struct LightPill: View {
             Text(amount.formatted(.number.locale(Locale(identifier: "tr_TR"))))
                 .font(.system(size: 14, weight: .semibold)).monospacedDigit()
                 .foregroundStyle(Theme.accentInk)
+                .lineLimit(1)
         }
+        .fixedSize()
         .padding(.horizontal, 12)
         .frame(height: 32)
         .glassEffect(.regular.tint(Theme.accent.opacity(0.18)), in: .capsule)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("\(amount) Işık"))
     }
+}
+
+/// Fades scrolled content out under bottom-pinned buttons so text never shows through beside them.
+struct BottomFade: ViewModifier {
+    func body(content: Content) -> some View {
+        content.background(alignment: .bottom) {
+            LinearGradient(colors: [Theme.night.opacity(0), Theme.night.opacity(0.92), Theme.night],
+                           startPoint: .top, endPoint: .bottom)
+                .padding(.top, -28)
+                .ignoresSafeArea(edges: .bottom)
+                .allowsHitTesting(false)
+        }
+    }
+}
+
+extension View {
+    func bottomFade() -> some View { modifier(BottomFade()) }
 }
 
 /// Three numbers separated by hairlines (Evrenin and Gökyüzüm).

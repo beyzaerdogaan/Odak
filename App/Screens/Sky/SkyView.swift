@@ -14,15 +14,16 @@ struct SkyView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text("Gökyüzüm").font(.serif(36)).foregroundStyle(Theme.paper)
-                    Spacer()
+                    Text("Gökyüzüm").font(.serif(34)).foregroundStyle(Theme.paper)
+                        .lineLimit(1).minimumScaleFactor(0.7)
+                    Spacer(minLength: 12)
                     Picker("Dönem", selection: $period) {
                         Text("Gün").tag(SkyProgress.Period.day)
                         Text("Hafta").tag(SkyProgress.Period.week)
                         Text("Tümü").tag(SkyProgress.Period.all)
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 190)
+                    .frame(width: 170)
                 }
                 .padding(.horizontal, 22)
 
