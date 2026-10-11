@@ -128,8 +128,29 @@ Beş katmanın hepsi canvas'a eklendi. "Uzun vade: koleksiyon katmanları" başl
 | 3 | Ödül anı | Yeni yıldız (Saiph, Avcı 6/7), Işık dökümü, kendine söz ilerlemesi |
 | 3b | Takımyıldız tamamlandı | Avcı çizimi, bilgiler, tamamlama ödülleri, gerçek gökyüzünde bul |
 | 4 | Gökyüzüm | Takımyıldız haritası, haftalık istatistik, seri koruyucu bulut, rozetler |
-| 5 | Ödüller ve mağaza | Kendine sözler, güçlendiriciler, ses paketleri, görünüm, iyilik |
+| 5 | Ödüller ve mağaza | Kendine sözler, güçlendiriciler, ses paketleri, görünüm, Zenit aboneliği |
 | 6 | Koleksiyon haritası | 5 katman ve aktif etkinlik |
 | 6a | Derin gök + gezegenler | Avcı Bulutsusu, gezegen kilometre taşları |
 | 6b | Meteor yağmuru etkinliği | Orionidler, etkinlik kuralları, takvim |
-| 6c | Altın gökyüzü | Prestij: korunanlar ve yeni gecede kazanılanlar |
+| 6c | Işık yolculuğu | Gerçek yıldız sistemlerine rota, sıradaki durak |
+
+---
+
+## 5. İstek: Altın yıldızlar ve fidan dikme yerine yeni konseptler (11 Ekim 2026)
+
+> Bütün gökyüzü tamamlandığında altın yıldızları toplamak yerine başka bir konsept düşün. Ayrıca para kazanmak için fidan dikme yerine de başka bir özellik kurgula.
+
+Sunulan seçeneklerden Beyza şunları seçti:
+
+**Işık yolculuğu (Altın gökyüzü prestijinin yerine)**
+- 88 takımyıldız bitince kullanıcı gerçek yıldız sistemlerine yolculuğa çıkar. Her odak saati 1 ışık yılı.
+- Rota: Alfa Centauri (4,4 ı.y.) → Sirius (8,6) → Vega (25) → TRAPPIST-1 (41) → Ülker (444) → ve ötesi. Her durakta sistemin hikâyesi ve bir ödül (rozet, Işık, ses paketi, gök teması) var.
+- Mesafeler gerçek olduğu için hiç bitmez; hiçbir şey baştan toplanmaz, koleksiyon ve Işık bakiyesi korunur.
+- 6c ekranı bu yolculuğa dönüştü (açık ve koyu mod); koleksiyon haritasındaki 5. katman güncellendi, "Gece 1" etiketleri toplam odak saatine çevrildi.
+- Mesafeler yayından önce bir astronomi kaynağıyla doğrulanmalı.
+
+**Zenit aboneliği (fidan dikmenin yerine, gelir modeli)**
+- Odak, engelleme, yıldızlar ve Işık her zaman ücretsiz.
+- Zenit: tüm ses paketleri ve gök temaları, ayrıntılı istatistikler, sınırsız kendine söz.
+- Ad olarak "Derin+" beğenilmedi; Zenit (gökyüzünün en tepe noktası) seçildi. Fiyat henüz belirlenmedi: [FİYAT] / ay.
+- Mağazadaki "Bir fidan dikilsin" kartı ve "İyilik" sekmesi kaldırıldı, yerine Zenit kartı ve sekmesi geldi.
