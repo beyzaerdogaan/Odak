@@ -1,0 +1,17 @@
+{
+  "name": "odak-plugins",
+  "owner": {
+    "name": "Beyza"
+  },
+  "description": "Plugins used by the Odak project that are not published in a marketplace of their own.",
+  "plugins": [
+    {
+      "name": "swiftui-macos-skill",
+      "description": "Expert SwiftUI guidance for macOS apps: observation, concurrency, view identity and platform integration.",
+      "source": {
+        "source": "github",
+        "repo": "kageroumado/swiftui-macos-skill"
+      }
+    }
+  ]
+}
