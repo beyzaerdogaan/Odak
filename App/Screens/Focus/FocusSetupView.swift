@@ -27,6 +27,7 @@ struct FocusSetupView: View {
             .padding(.bottom, 24)
         }
         .scrollDismissesKeyboard(.interactively)
+        .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
                 taskFocused = false
@@ -144,32 +145,27 @@ struct FocusSetupView: View {
     private var togglesSection: some View {
         @Bindable var model = model
         return VStack(spacing: 0) {
-            toggleRow("Arama ve mesajları sustur",
-                      model.settings.focusShortcutsReady ? "iOS Odak modu “Derin” açılır" : "Bir kez kurulum gerekir, dokun",
-                      isOn: $model.settings.silenceCalls) {
-                showShortcutsGuide = true
-            }
+            toggleRow("Arama ve mesajları sustur", isOn: $model.settings.silenceCalls)
+                .onChange(of: model.settings.silenceCalls) { _, on in
+                    // The one-time Shortcuts setup is offered when the toggle is first turned on.
+                    if on && !model.settings.focusShortcutsReady { showShortcutsGuide = true }
+                }
             Divider().overlay(Theme.hair)
-            toggleRow("Favoriler arayabilsin", "Acil durumlar için; Derin Odak modunda ayarlanır",
-                      isOn: $model.settings.allowFavorites, onInfo: nil)
+            toggleRow("Favoriler arayabilsin", isOn: $model.settings.allowFavorites)
             Divider().overlay(Theme.hair)
-            toggleRow("Katı mod", "Süre bitmeden kilit açılmaz, Işık ×1,5", isOn: $model.settings.strict, onInfo: nil)
+            toggleRow("Katı mod", info: "Süre bitmeden kilit açılmaz, Işık ×1,5", isOn: $model.settings.strict)
         }
     }
 
-    private func toggleRow(_ title: String, _ subtitle: String, isOn: Binding<Bool>, onInfo: (() -> Void)?) -> some View {
+    private func toggleRow(_ title: String, info: String? = nil, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 6) {
                 Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
-                if let onInfo {
-                    Button(subtitle, action: onInfo).font(.system(size: 12)).foregroundStyle(Theme.paper3).buttonStyle(.plain)
-                } else {
-                    Text(subtitle).small()
-                }
+                if let info { InfoButton(text: info) }
             }
         }
         .tint(Theme.accent)
-        .frame(minHeight: 58)
+        .frame(minHeight: 52)
     }
 
     @ViewBuilder private var armedBoosters: some View {
@@ -194,6 +190,28 @@ struct FocusSetupView: View {
         Task {
             if !model.screenTime.isAuthorized { await model.screenTime.requestAuthorization() }
             if model.screenTime.isAuthorized { showPicker = true } else { showBlockingInfo = true }
+        }
+    }
+}
+
+/// A small "i" next to a title that shows its explanation in a popover bubble.
+private struct InfoButton: View {
+    let text: String
+    @State private var shown = Demo.info
+
+    var body: some View {
+        Button { shown = true } label: {
+            Image(systemName: "info.circle").font(.system(size: 14)).foregroundStyle(Theme.paper3)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Bilgi")
+        .popover(isPresented: $shown, arrowEdge: .bottom) {
+            Text(text)
+                .font(.system(size: 14)).foregroundStyle(Theme.paper)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 260, alignment: .leading)
+                .padding(14)
+                .presentationCompactAdaptation(.popover)
         }
     }
 }

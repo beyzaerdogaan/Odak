@@ -13,6 +13,8 @@ enum Demo {
     }
     /// `-scrolled`: open scroll views at the bottom, to photograph pinned headers.
     static var scrolled: Bool { isOn && arguments.contains("-scrolled") }
+    /// `-info`: open info popovers, to photograph them.
+    static var info: Bool { isOn && arguments.contains("-info") }
 
     static func progress(now: Date = .now, saiphLit: Bool = true) -> SkyProgress {
         var p = SkyProgress()
