@@ -14,14 +14,15 @@ struct FocusSetupView: View {
     @State private var blockMode: BlockMode = .selected
     @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
-    /// Content has started scrolling under the status bar: show the compact "Odak" bar over it.
-    @State private var titleCollapsed = Demo.scrolled
+    /// How far the page has scrolled. The big title fades out as it goes up and the compact
+    /// "Odak" bar fades in, like a large navigation title collapsing into an inline one.
+    @State private var scrollOffset: CGFloat = Demo.scrolled ? 200 : 0
 
     var body: some View {
         @Bindable var model = model
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                header
+                header.opacity(Double(max(0, 1 - scrollOffset / 90)))
                 taskField($model.settings.task)
                 durationSection
                 blockingSection
@@ -34,13 +35,14 @@ struct FocusSetupView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
-        .onScrollGeometryChange(for: Bool.self) { g in
-            g.contentOffset.y + g.contentInsets.top > 8
-        } action: { _, collapsed in
-            withAnimation(.easeOut(duration: 0.2)) { titleCollapsed = collapsed }
+        .onScrollGeometryChange(for: CGFloat.self) { g in
+            // Steps of 6 pt: smooth enough for the fades without redrawing the page every point.
+            min(200, max(0, ((g.contentOffset.y + g.contentInsets.top) / 6).rounded() * 6))
+        } action: { _, offset in
+            withAnimation(.linear(duration: 0.08)) { scrollOffset = offset }
         }
         .overlay(alignment: .top) {
-            compactTitleBar.opacity(titleCollapsed ? 1 : 0).allowsHitTesting(false).accessibilityHidden(!titleCollapsed)
+            compactTitleBar.allowsHitTesting(false).accessibilityHidden(scrollOffset < 60)
         }
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
@@ -81,12 +83,14 @@ struct FocusSetupView: View {
     private var compactTitleBar: some View {
         Text("Odak")
             .font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.paper)
+            .opacity(Double(min(1, max(0, (scrollOffset - 50) / 40))))
             .frame(maxWidth: .infinity).frame(height: 44)
             .background {
                 LinearGradient(colors: [Theme.night, Theme.night.opacity(0.94), Theme.night.opacity(0)],
                                startPoint: .top, endPoint: .bottom)
                     .padding(.bottom, -28)
                     .ignoresSafeArea(edges: .top)
+                    .opacity(Double(min(1, max(0, scrollOffset / 12))))
             }
     }
 
