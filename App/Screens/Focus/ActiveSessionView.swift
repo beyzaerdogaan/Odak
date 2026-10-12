@@ -1,7 +1,7 @@
 import OdakCore
 import SwiftUI
 
-/// "Odak sürüyor": the countdown dial, what is locked, the no-look streak and the sound card.
+/// "Odak sürüyor": the countdown dial, what is locked, the Işık so far and the sound card.
 struct ActiveSessionView: View {
     @Environment(AppModel.self) private var model
     @State private var showSounds = Demo.screen == "sounds"
@@ -59,20 +59,10 @@ struct ActiveSessionView: View {
                 }
             }
 
-            HStack {
-                VStack(spacing: 2) {
-                    Text(s.lookAways == 0 ? clock(now.timeIntervalSince(s.start) - pausedSeconds(s, now)) : clock(now.timeIntervalSince(s.lastReturn)))
-                        .font(.serif(26)).monospacedDigit().foregroundStyle(Theme.paper)
-                    Text("dakikadır telefona bakmadın").small()
-                }
-                .frame(maxWidth: .infinity)
-                Rectangle().fill(Theme.hair).frame(width: 1, height: 36)
-                VStack(spacing: 2) {
-                    Text("+\(model.liveLight(at: now))").font(.serif(26)).monospacedDigit().foregroundStyle(Theme.accentInk)
-                        .contentTransition(.numericText())
-                    Text("Işık birikti").small()
-                }
-                .frame(maxWidth: .infinity)
+            VStack(spacing: 2) {
+                Text("+\(model.liveLight(at: now))").font(.serif(26)).monospacedDigit().foregroundStyle(Theme.accentInk)
+                    .contentTransition(.numericText())
+                Text("Işık birikti").small()
             }
 
             NowPlayingCard(onOpen: { showSounds = true })
@@ -132,13 +122,6 @@ struct ActiveSessionView: View {
         if s.blockMode == .all { return "Uygulamalar kilitli" }
         let n = model.screenTime.blockedCount
         return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitli uygulama seçilmedi"
-    }
-
-    private func pausedSeconds(_ s: FocusSession, _ now: Date) -> TimeInterval {
-        // Time the end was pushed by a finished break, plus a break in progress.
-        let pushed = s.end.timeIntervalSince(s.start) - TimeInterval(s.plannedMinutes * 60)
-        let current = s.breakStartedAt.map { now.timeIntervalSince($0) } ?? 0
-        return pushed + current
     }
 
     private func clock(_ t: TimeInterval) -> String {

@@ -13,6 +13,8 @@ final class AppModel {
     /// Set when a session completes; drives the reward screens.
     var summary: SessionSummary? = nil
     var toast: String? = nil
+    /// Minutes the phone stayed locked in the session that just finished; shown on the reward screen.
+    var lastScreenOffMinutes: Int? = nil
 
     let screenTime = ScreenTimeController()
     let sounds = SoundEngine()
@@ -22,6 +24,7 @@ final class AppModel {
     @ObservationIgnored private var awaySince: Date?
     @ObservationIgnored private var lockedWhileAway = false
     @ObservationIgnored private var expectingHandOff = false
+    @ObservationIgnored private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
 
     init() {
@@ -40,7 +43,11 @@ final class AppModel {
         progress.reconcileClouds(now: .now)
         NotificationCenter.default.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification,
                                                object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.lockedWhileAway = true }
+            MainActor.assumeIsolated { self?.didLock() }
+        }
+        NotificationCenter.default.addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification,
+                                               object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.didUnlock(at: .now) }
         }
     }
 
@@ -104,7 +111,9 @@ final class AppModel {
     }
 
     private func finish(at end: Date) {
-        guard let s = session else { return }
+        guard var s = session else { return }
+        s.screenUnlocked(at: end)
+        lastScreenOffMinutes = s.screenOffMinutes(at: end)
         var p = progress
         summary = p.complete(input(for: s, end: end), rng: &rng)
         progress = p
@@ -141,10 +150,17 @@ final class AppModel {
         guard session != nil else { return }
         awaySince = .now
         lockedWhileAway = false
+        // Stay awake long enough to hear the lock notification, which comes a few seconds after the screen goes off.
+        endBackgroundTask()
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            MainActor.assumeIsolated { self?.endBackgroundTask() }
+        }
     }
 
     func didBecomeActive() {
         defer { awaySince = nil; expectingHandOff = false }
+        endBackgroundTask()
+        didUnlock(at: .now)
         screenTime.clearIfExpired()
         tick()
         guard var s = session, let away = awaySince else { return }
@@ -154,6 +170,31 @@ final class AppModel {
             s.lastReturn = .now
             session = s
         }
+    }
+
+    /// Only time with the phone locked counts as "not looking at the phone"; the screen being on does not.
+    private func didLock() {
+        lockedWhileAway = true
+        endBackgroundTask()
+        guard var s = session else { return }
+        // The notification lags the lock by a few seconds. If the app left the foreground just before, the
+        // lock is what sent it away, so the screen has been off since then; otherwise count from now.
+        let now = Date.now
+        let since = awaySince.flatMap { now.timeIntervalSince($0) < 20 ? $0 : nil } ?? now
+        s.screenLocked(at: since)
+        session = s
+    }
+
+    private func didUnlock(at now: Date) {
+        guard var s = session, s.lockedAt != nil else { return }
+        s.screenUnlocked(at: now)
+        session = s
+    }
+
+    private func endBackgroundTask() {
+        guard backgroundTask != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
     }
 
     /// Işık earned so far, for the live counter on the session screen.
@@ -232,6 +273,7 @@ final class AppModel {
             summary = p.complete(FocusInput(task: settings.task, start: end.addingTimeInterval(-45 * 60), end: end, plannedMinutes: 45,
                                             focusedMinutes: 45, strict: false, lookedAway: false), rng: &rng)
             progress = p
+            lastScreenOffMinutes = 38
         case "constellation":
             var p = Demo.progress(now: now)
             p.telescopeTarget = Catalog.constellation("orion")?.stars.first { $0.name == "Betelgeuse" }?.id

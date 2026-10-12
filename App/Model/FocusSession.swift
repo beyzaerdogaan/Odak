@@ -44,6 +44,10 @@ struct FocusSession: Codable, Equatable, Identifiable {
     var breakStartedAt: Date?
     var lookAways = 0
     var lastReturn: Date
+    /// Seconds the phone was locked (screen off) during the session. Optional so sessions saved by older builds still load.
+    var screenOffSeconds: TimeInterval?
+    /// When the phone was locked, while it still is.
+    var lockedAt: Date?
 
     static let breakLength: TimeInterval = 5 * 60
 
@@ -90,5 +94,25 @@ struct FocusSession: Codable, Equatable, Identifiable {
         end = end.addingTimeInterval(paused)
         breakStartedAt = nil
         lastReturn = b.addingTimeInterval(paused)
+    }
+
+    mutating func screenLocked(at t: Date) {
+        if lockedAt == nil { lockedAt = t }
+    }
+
+    mutating func screenUnlocked(at t: Date) {
+        guard let l = lockedAt else { return }
+        lockedAt = nil
+        screenOffSeconds = (screenOffSeconds ?? 0) + Self.overlap(l, t, start, end)
+    }
+
+    /// Whole minutes the screen was off, counting a lock that is still going on.
+    func screenOffMinutes(at now: Date) -> Int {
+        let ongoing = lockedAt.map { Self.overlap($0, now, start, end) } ?? 0
+        return Int((((screenOffSeconds ?? 0) + ongoing) / 60).rounded(.down))
+    }
+
+    private static func overlap(_ a: Date, _ b: Date, _ lo: Date, _ hi: Date) -> TimeInterval {
+        max(0, min(b, hi).timeIntervalSince(max(a, lo)))
     }
 }

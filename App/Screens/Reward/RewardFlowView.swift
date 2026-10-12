@@ -110,6 +110,10 @@ struct RewardView: View {
                 Text("Kalan yıldızlar parlak: 60+ dk ya da katı mod oturumu gerekiyor. Üst üste 4 oturumda yıldız gelmezse sıradaki garanti.")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper).multilineTextAlignment(.center)
             }
+            if let off = model.lastScreenOffMinutes, off > 0 {
+                Text("\(off) dakika telefona bakmadın")
+                    .font(.serif(15, italic: true)).foregroundStyle(Theme.paper2).padding(.top, 6)
+            }
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
