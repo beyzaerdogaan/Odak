@@ -69,16 +69,42 @@ jobs:
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             -quiet
 
-      - name: Upload to TestFlight
+      # Export the signed .ipa locally first so the signature can be checked (and logged) before
+      # it goes to Apple, then upload it with altool.
+      - name: Export signed build
         run: |
           set -o pipefail
           cp ci/ExportOptions.plist "$RUNNER_TEMP/ExportOptions.plist"
           plutil -replace teamID -string "$TEAM_ID" "$RUNNER_TEMP/ExportOptions.plist"
+          plutil -replace destination -string export "$RUNNER_TEMP/ExportOptions.plist"
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
+      - name: Check signature
+        run: |
+          cd "$RUNNER_TEMP" && rm -rf ipa && mkdir ipa && cd ipa && unzip -q ../export/Derin.ipa
+          APP=Payload/Derin.app
+          codesign -dvv "$APP" 2>&1 | grep -E "Identifier|Authority|TeamIdentifier|Format" || true
+          codesign -d --entitlements - --xml "$APP" 2>/dev/null | plutil -p - || true
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          for f in "$APP"/Frameworks/* "$APP"/PlugIns/*; do [ -e "$f" ] && codesign -dv "$f" 2>&1 | grep -E "Identifier|Authority=Apple" ; done || true
+
+      - name: Upload to TestFlight
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          cp "$ASC_KEY_PATH" ~/.appstoreconnect/private_keys/
+          xcrun altool --upload-app -f "$RUNNER_TEMP/export/Derin.ipa" -t ios \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Distribution logs
+        if: failure()
+        run: |
+          for f in $(find "$TMPDIR" /var/folders -name "IDEDistribution*.log" 2>/dev/null | head -5); do
+            echo "== $f"; grep -iE "error|sign|identity|certificate|profile" "$f" | tail -60
+          done
+
       - name: Clean up key
         if: always()
-        run: rm -rf "$RUNNER_TEMP/keys"
+        run: rm -rf "$RUNNER_TEMP/keys" ~/.appstoreconnect/private_keys
