@@ -14,7 +14,7 @@ struct FocusSetupView: View {
     @State private var blockMode: BlockMode = .selected
     @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
-    /// The big title has scrolled under the status bar: show the compact "Odak" bar instead.
+    /// Content has started scrolling under the status bar: show the compact "Odak" bar over it.
     @State private var titleCollapsed = Demo.scrolled
 
     var body: some View {
@@ -35,7 +35,7 @@ struct FocusSetupView: View {
         .scrollDismissesKeyboard(.interactively)
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
         .onScrollGeometryChange(for: Bool.self) { g in
-            g.contentOffset.y + g.contentInsets.top > 110
+            g.contentOffset.y + g.contentInsets.top > 8
         } action: { _, collapsed in
             withAnimation(.easeOut(duration: 0.2)) { titleCollapsed = collapsed }
         }
