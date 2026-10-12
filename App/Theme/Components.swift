@@ -207,11 +207,14 @@ extension View {
             header().padding(.horizontal, 22).padding(.top, 8).padding(.bottom, 4)
                 .background {
                     // Like BottomFade: scrolled text fades out before it reaches the title.
-                    LinearGradient(colors: [fade, fade.opacity(0.92), fade.opacity(0)],
-                                   startPoint: .top, endPoint: .bottom)
-                        .padding(.bottom, -28)
-                        .ignoresSafeArea(edges: .top)
-                        .allowsHitTesting(false)
+                    VStack(spacing: 0) {
+                        fade
+                        LinearGradient(colors: [fade, fade.opacity(0)], startPoint: .top, endPoint: .bottom)
+                            .frame(height: 32)
+                    }
+                    .padding(.bottom, -32)
+                    .ignoresSafeArea(edges: .top)
+                    .allowsHitTesting(false)
                 }
         }
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
