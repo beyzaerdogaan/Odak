@@ -43,4 +43,10 @@ for mode in dark light; do
     xcrun simctl io "$UDID" screenshot "$OUT/$mode-$s-scrolled.png" >/dev/null
     echo "shot $mode-$s-scrolled"
   done
+  # Odak screen scrolled to its toggles, with the Katı mod info popover open.
+  xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+  xcrun simctl launch "$UDID" "$BID" -demo -screen focus -scrolled -info >/dev/null
+  sleep 6
+  xcrun simctl io "$UDID" screenshot "$OUT/$mode-focus-info.png" >/dev/null
+  echo "shot $mode-focus-info"
 done

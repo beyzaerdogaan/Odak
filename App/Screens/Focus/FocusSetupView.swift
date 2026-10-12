@@ -9,13 +9,20 @@ struct FocusSetupView: View {
     @State private var showPicker = false
     @State private var showBlockingInfo = false
     @State private var showShortcutsGuide = false
+    /// The block-mode picker runs on local state so its Liquid Glass slide isn't interrupted by
+    /// model writes; the choice is committed once it settles (and always before starting).
+    @State private var blockMode: BlockMode = .selected
+    @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
+    /// How far the page has scrolled. The big title fades out as it goes up and the compact
+    /// "Odak" bar fades in, like a large navigation title collapsing into an inline one.
+    @State private var scrollOffset: CGFloat = Demo.scrolled ? 200 : 0
 
     var body: some View {
         @Bindable var model = model
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                header
+                header.opacity(Double(max(0, 1 - scrollOffset / 40)))
                 taskField($model.settings.task)
                 durationSection
                 blockingSection
@@ -27,9 +34,21 @@ struct FocusSetupView: View {
             .padding(.bottom, 24)
         }
         .scrollDismissesKeyboard(.interactively)
+        .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
+        .onScrollGeometryChange(for: CGFloat.self) { g in
+            // Steps of 4 pt: smooth enough for the fades without redrawing the page every point.
+            min(200, max(0, ((g.contentOffset.y + g.contentInsets.top) / 4).rounded() * 4))
+        } action: { _, offset in
+            withAnimation(.linear(duration: 0.08)) { scrollOffset = offset }
+        }
+        .overlay(alignment: .top) {
+            compactTitleBar.allowsHitTesting(false).accessibilityHidden(scrollOffset < 30)
+        }
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
                 taskFocused = false
+                blockModeCommit?.cancel()
+                model.settings.blockMode = blockMode
                 model.startSession()
             }
             .padding(.horizontal, 22)
@@ -38,10 +57,41 @@ struct FocusSetupView: View {
         }
         .background(StarField(seed: 1, count: 46, depth: 0.28, grid: false, theme: model.progress.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
-        .onAppear { custom = !FocusSettings.presets.contains(model.settings.minutes) }
+        .onAppear {
+            custom = !FocusSettings.presets.contains(model.settings.minutes)
+            blockMode = model.settings.blockMode
+        }
+        .onChange(of: blockMode) { _, mode in
+            blockModeCommit?.cancel()
+            blockModeCommit = Task {
+                try? await Task.sleep(for: .milliseconds(450))
+                guard !Task.isCancelled, model.settings.blockMode != mode else { return }
+                model.settings.blockMode = mode
+            }
+        }
+        .onDisappear {
+            blockModeCommit?.cancel()
+            if model.settings.blockMode != blockMode { model.settings.blockMode = blockMode }
+        }
         .sheet(isPresented: $showPicker) { AppPickerSheet() }
         .sheet(isPresented: $showBlockingInfo) { BlockingInfoSheet() }
         .sheet(isPresented: $showShortcutsGuide) { FocusShortcutsGuide() }
+    }
+
+    /// Like a navigation bar's inline title: content scrolling up fades out under it and never
+    /// reaches the status bar.
+    private var compactTitleBar: some View {
+        Text("Odak")
+            .font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.paper)
+            .opacity(Double(min(1, max(0, (scrollOffset - 16) / 24))))
+            .frame(maxWidth: .infinity).frame(height: 44)
+            .background {
+                LinearGradient(colors: [Theme.night, Theme.night.opacity(0.94), Theme.night.opacity(0)],
+                               startPoint: .top, endPoint: .bottom)
+                    .padding(.bottom, -28)
+                    .ignoresSafeArea(edges: .top)
+                    .opacity(Double(min(1, max(0, scrollOffset / 8))))
+            }
     }
 
     private var header: some View {
@@ -108,8 +158,7 @@ struct FocusSetupView: View {
     }
 
     private var blockingSection: some View {
-        @Bindable var model = model
-        return VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Engellenecek uygulamalar").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                 Spacer()
@@ -118,13 +167,13 @@ struct FocusSetupView: View {
                     .foregroundStyle(Theme.accentInk)
                     .frame(minHeight: 44)
             }
-            Picker("Engelleme modu", selection: $model.settings.blockMode) {
+            Picker("Engelleme modu", selection: $blockMode) {
                 ForEach(BlockMode.allCases) { Text($0.title).tag($0) }
             }
             .pickerStyle(.segmented)
             .padding(.top, -6)
             HStack(spacing: 6) {
-                switch model.settings.blockMode {
+                switch blockMode {
                 case .selected: Chip(text: model.screenTime.selectionSummary, systemImage: "lock")
                 case .all: Chip(text: "Telefon ve izin verdiklerin dışında her şey", systemImage: "lock")
                 case .none: Chip(text: "Hiçbir uygulama kilitlenmez", systemImage: "lock.open")
@@ -144,32 +193,27 @@ struct FocusSetupView: View {
     private var togglesSection: some View {
         @Bindable var model = model
         return VStack(spacing: 0) {
-            toggleRow("Arama ve mesajları sustur",
-                      model.settings.focusShortcutsReady ? "iOS Odak modu “Derin” açılır" : "Bir kez kurulum gerekir, dokun",
-                      isOn: $model.settings.silenceCalls) {
-                showShortcutsGuide = true
-            }
+            toggleRow("Arama ve mesajları sustur", isOn: $model.settings.silenceCalls)
+                .onChange(of: model.settings.silenceCalls) { _, on in
+                    // The one-time Shortcuts setup is offered when the toggle is first turned on.
+                    if on && !model.settings.focusShortcutsReady { showShortcutsGuide = true }
+                }
             Divider().overlay(Theme.hair)
-            toggleRow("Favoriler arayabilsin", "Acil durumlar için; Derin Odak modunda ayarlanır",
-                      isOn: $model.settings.allowFavorites, onInfo: nil)
+            toggleRow("Favoriler arayabilsin", isOn: $model.settings.allowFavorites)
             Divider().overlay(Theme.hair)
-            toggleRow("Katı mod", "Süre bitmeden kilit açılmaz, Işık ×1,5", isOn: $model.settings.strict, onInfo: nil)
+            toggleRow("Katı mod", info: "Süre bitmeden kilit açılmaz, Işık ×1,5", isOn: $model.settings.strict)
         }
     }
 
-    private func toggleRow(_ title: String, _ subtitle: String, isOn: Binding<Bool>, onInfo: (() -> Void)?) -> some View {
+    private func toggleRow(_ title: String, info: String? = nil, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 6) {
                 Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
-                if let onInfo {
-                    Button(subtitle, action: onInfo).font(.system(size: 12)).foregroundStyle(Theme.paper3).buttonStyle(.plain)
-                } else {
-                    Text(subtitle).small()
-                }
+                if let info { InfoButton(text: info) }
             }
         }
         .tint(Theme.accent)
-        .frame(minHeight: 58)
+        .frame(minHeight: 52)
     }
 
     @ViewBuilder private var armedBoosters: some View {
@@ -194,6 +238,28 @@ struct FocusSetupView: View {
         Task {
             if !model.screenTime.isAuthorized { await model.screenTime.requestAuthorization() }
             if model.screenTime.isAuthorized { showPicker = true } else { showBlockingInfo = true }
+        }
+    }
+}
+
+/// A small "i" next to a title that shows its explanation in a popover bubble.
+private struct InfoButton: View {
+    let text: String
+    @State private var shown = Demo.info
+
+    var body: some View {
+        Button { shown = true } label: {
+            Image(systemName: "info.circle").font(.system(size: 14)).foregroundStyle(Theme.paper3)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Bilgi")
+        .popover(isPresented: $shown, arrowEdge: .bottom) {
+            Text(text)
+                .font(.system(size: 14)).foregroundStyle(Theme.paper)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 260, alignment: .leading)
+                .padding(14)
+                .presentationCompactAdaptation(.popover)
         }
     }
 }

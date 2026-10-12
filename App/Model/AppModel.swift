@@ -8,7 +8,7 @@ import UIKit
 @MainActor @Observable
 final class AppModel {
     var progress: SkyProgress { didSet { persist(progress, to: "progress.json") } }
-    var settings: FocusSettings { didSet { persist(settings, to: "settings.json") } }
+    var settings: FocusSettings { didSet { scheduleSettingsSave() } }
     private(set) var session: FocusSession? { didSet { persist(session, to: "session.json") } }
     /// Set when a session completes; drives the reward screens.
     var summary: SessionSummary? = nil
@@ -318,6 +318,17 @@ final class AppModel {
     private static func load<T: Decodable>(_ type: T.Type, from name: String) -> T? {
         guard let data = try? Data(contentsOf: folder.appending(path: name)) else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
+    }
+
+    /// Settings change in bursts (toggles, pickers); write them once things settle, off the animation.
+    private var settingsSave: Task<Void, Never>?
+    private func scheduleSettingsSave() {
+        settingsSave?.cancel()
+        settingsSave = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(500))
+            guard !Task.isCancelled, let self else { return }
+            persist(settings, to: "settings.json")
+        }
     }
 
     private func persist<T: Encodable>(_ value: T?, to name: String) {
