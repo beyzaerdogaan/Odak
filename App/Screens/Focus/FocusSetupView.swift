@@ -14,6 +14,8 @@ struct FocusSetupView: View {
     @State private var blockMode: BlockMode = .selected
     @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
+    /// The big title has scrolled under the status bar: show the compact "Odak" bar instead.
+    @State private var titleCollapsed = Demo.scrolled
 
     var body: some View {
         @Bindable var model = model
@@ -32,6 +34,14 @@ struct FocusSetupView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
+        .onScrollGeometryChange(for: Bool.self) { g in
+            g.contentOffset.y + g.contentInsets.top > 110
+        } action: { _, collapsed in
+            withAnimation(.easeOut(duration: 0.2)) { titleCollapsed = collapsed }
+        }
+        .overlay(alignment: .top) {
+            compactTitleBar.opacity(titleCollapsed ? 1 : 0).allowsHitTesting(false).accessibilityHidden(!titleCollapsed)
+        }
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
                 taskFocused = false
@@ -64,6 +74,20 @@ struct FocusSetupView: View {
         .sheet(isPresented: $showPicker) { AppPickerSheet() }
         .sheet(isPresented: $showBlockingInfo) { BlockingInfoSheet() }
         .sheet(isPresented: $showShortcutsGuide) { FocusShortcutsGuide() }
+    }
+
+    /// Like a navigation bar's inline title: content scrolling up fades out under it and never
+    /// reaches the status bar.
+    private var compactTitleBar: some View {
+        Text("Odak")
+            .font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.paper)
+            .frame(maxWidth: .infinity).frame(height: 44)
+            .background {
+                LinearGradient(colors: [Theme.night, Theme.night.opacity(0.94), Theme.night.opacity(0)],
+                               startPoint: .top, endPoint: .bottom)
+                    .padding(.bottom, -28)
+                    .ignoresSafeArea(edges: .top)
+            }
     }
 
     private var header: some View {
