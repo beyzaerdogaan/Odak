@@ -200,6 +200,16 @@ extension BackHeader where Trailing == EmptyView {
     }
 }
 
+extension View {
+    /// Keeps a `BackHeader` pinned above a scroll view; content scrolls under it with the system edge effect.
+    func pinnedHeader<Header: View>(@ViewBuilder _ header: () -> Header) -> some View {
+        safeAreaBar(edge: .top, spacing: 0) {
+            header().padding(.horizontal, 22).padding(.top, 8).padding(.bottom, 4)
+        }
+        .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
+    }
+}
+
 extension Int {
     /// "1 sa 10 dk", "45 dk"
     var minutesText: String {

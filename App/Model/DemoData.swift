@@ -11,6 +11,8 @@ enum Demo {
         guard let i = arguments.firstIndex(of: "-screen"), i + 1 < arguments.count else { return nil }
         return arguments[i + 1]
     }
+    /// `-scrolled`: open scroll views at the bottom, to photograph pinned headers.
+    static var scrolled: Bool { isOn && arguments.contains("-scrolled") }
 
     static func progress(now: Date = .now, saiphLit: Bool = true) -> SkyProgress {
         var p = SkyProgress()
