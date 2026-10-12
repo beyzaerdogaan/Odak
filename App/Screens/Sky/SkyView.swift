@@ -79,7 +79,7 @@ struct SkyView: View {
         }
         .scrollIndicators(.hidden)
         .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
-        .background(StarField(seed: 5, count: 60, depth: 0.45, grid: false, theme: p.selectedTheme))
+        .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
     }
@@ -176,12 +176,6 @@ struct SkyChart: View {
                     .buttonStyle(.plain)
                     .position(x: slots[i].midX * w, y: slots[i].maxY * h + 14)
                 }
-                HStack(spacing: 6) {
-                    Circle().strokeBorder(Theme.star.opacity(0.5), style: StrokeStyle(lineWidth: 1, dash: [2, 2])).frame(width: 9, height: 9)
-                    Text("Kesikli: henüz yanmadı")
-                }
-                .small()
-                .position(x: w - 90, y: 8)
             }
         }
     }

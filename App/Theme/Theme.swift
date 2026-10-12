@@ -79,6 +79,8 @@ extension SkyTheme {
 }
 
 /// Seeded star field with the faint celestial grid of the design. Drawn once with Canvas.
+/// Reads like a real night sky: darker at the zenith with airglow near the horizon, many faint stars
+/// and few bright ones in slightly different colours, and, when it fills the screen, a Milky Way band.
 struct StarField: View {
     var seed: UInt64 = 1
     var count = 90
@@ -90,11 +92,14 @@ struct StarField: View {
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
+        let light = scheme == .light
         ZStack {
             Theme.night
+            // Zenith to horizon: deeper overhead, a faint airglow (dark) or dawn warmth (light) below.
+            LinearGradient(stops: skyStops(light: light), startPoint: .top, endPoint: .bottom)
             if !theme.horizon.isEmpty {
                 LinearGradient(colors: [.clear] + theme.horizon, startPoint: .center, endPoint: .bottom)
-                    .opacity(scheme == .light ? 0.35 : 1)
+                    .opacity(light ? 0.35 : 1)
             }
             Canvas { ctx, size in
                 var rng = SeededGenerator(seed: seed)
@@ -107,24 +112,94 @@ struct StarField: View {
                     }
                 }
                 let bottom = size.height * depth
+                // Star colours by temperature; on the light atlas they stay in navy ink.
+                let tints: [Color] = light ? [ink, ink, ink, Theme.ice]
+                    : [ink, Color(hex: 0xF4F6FF), Color(hex: 0xCADBFF), Color(hex: 0xFFE4BE), Color(hex: 0xFFD2A8)]
+                func star(at p: CGPoint, mag u: CGFloat, fade: CGFloat) {
+                    // Most stars are faint pinpricks; brightness falls off steeply.
+                    let r = 0.35 + pow(u, 3) * 1.15
+                    let o = Double((0.18 + u * 0.7) * fade)
+                    let tint = tints.randomElement(using: &rng)!
+                    ctx.fill(Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)), with: .color(tint.opacity(o)))
+                }
+
+                if depth >= 0.6 {
+                    milkyWay(ctx: ctx, size: size, light: light) { p, u in
+                        star(at: p, mag: u * 0.55, fade: 1 - p.y / size.height * 0.35)
+                    }
+                }
+
                 for _ in 0..<count {
                     let x = CGFloat.random(in: 0...size.width, using: &rng)
                     let y = CGFloat.random(in: 0...bottom, using: &rng)
-                    let fade = 1 - y / max(1, bottom) * 0.75
-                    let r: CGFloat = [0.5, 0.6, 0.7, 0.8, 0.9, 1.1, 1.3].randomElement(using: &rng)!
-                    let o = Double(CGFloat.random(in: 0.25...0.85, using: &rng) * fade)
-                    ctx.fill(Path(ellipseIn: CGRect(x: x - r, y: y - r, width: r * 2, height: r * 2)), with: .color(ink.opacity(o)))
+                    // Fewer, dimmer stars towards the horizon, as the air thickens.
+                    let fade = 1 - y / max(1, bottom) * (depth >= 0.6 ? 0.45 : 0.75)
+                    star(at: CGPoint(x: x, y: y), mag: CGFloat.random(in: 0...1, using: &rng), fade: fade)
                 }
-                for _ in 0..<3 {
+                // A handful of bright stars with a soft halo.
+                for _ in 0..<(depth >= 0.6 ? 6 : 3) {
                     let x = CGFloat.random(in: 20...max(21, size.width - 20), using: &rng)
-                    let y = CGFloat.random(in: 0...max(1, bottom * 0.5), using: &rng)
-                    ctx.fill(Path(ellipseIn: CGRect(x: x - 3.5, y: y - 3.5, width: 7, height: 7)), with: .color(ink.opacity(0.08)))
-                    ctx.fill(Path(ellipseIn: CGRect(x: x - 1.3, y: y - 1.3, width: 2.6, height: 2.6)), with: .color(ink.opacity(0.9)))
+                    let y = CGFloat.random(in: 0...max(1, bottom * (depth >= 0.6 ? 0.8 : 0.5)), using: &rng)
+                    let tint = tints.randomElement(using: &rng)!
+                    let halo = CGFloat.random(in: 5...9, using: &rng)
+                    ctx.fill(Path(ellipseIn: CGRect(x: x - halo, y: y - halo, width: halo * 2, height: halo * 2)),
+                             with: .radialGradient(Gradient(colors: [tint.opacity(light ? 0.14 : 0.22), tint.opacity(0)]),
+                                                   center: CGPoint(x: x, y: y), startRadius: 0, endRadius: halo))
+                    ctx.fill(Path(ellipseIn: CGRect(x: x - 1.3, y: y - 1.3, width: 2.6, height: 2.6)), with: .color(tint.opacity(0.95)))
                 }
             }
         }
         .ignoresSafeArea()
         .accessibilityHidden(true)
+    }
+
+    private func skyStops(light: Bool) -> [Gradient.Stop] {
+        light
+            ? [.init(color: Color(hex: 0xD3DAEC), location: 0), .init(color: .clear, location: 0.45),
+               .init(color: Color(hex: 0xF4EEEA), location: 1)]
+            : [.init(color: Color(hex: 0x03050F), location: 0), .init(color: .clear, location: 0.5),
+               .init(color: Color(hex: 0x1A2350, opacity: 0.8), location: 1)]
+    }
+
+    /// A diagonal band of diffuse light split by a dark dust lane, dusted with faint stars.
+    private func milkyWay(ctx: GraphicsContext, size: CGSize, light: Bool, star: (CGPoint, CGFloat) -> Void) {
+        var rng = SeededGenerator(seed: seed &+ 202)
+        let center = CGPoint(x: size.width * 0.55, y: size.height * 0.42)
+        let angle = -0.95 + Double(CGFloat.random(in: -0.12...0.12, using: &rng))
+        let dir = CGPoint(x: cos(angle), y: sin(angle)), normal = CGPoint(x: -dir.y, y: dir.x)
+        let length = hypot(size.width, size.height)
+        let glow: Color = light ? .white : Color(hex: 0xB9C3EE)
+
+        ctx.drawLayer { layer in
+            layer.addFilter(.blur(radius: 26))
+            layer.translateBy(x: center.x, y: center.y)
+            layer.rotate(by: .radians(angle))
+            var g = SeededGenerator(seed: seed &+ 101)
+            for _ in 0..<9 {
+                let x = CGFloat.random(in: -length * 0.5...length * 0.4, using: &g)
+                let w = CGFloat.random(in: 140...260, using: &g), h = CGFloat.random(in: 60...120, using: &g)
+                let dy = CGFloat.random(in: -18...18, using: &g)
+                layer.fill(Path(ellipseIn: CGRect(x: x, y: dy - h / 2, width: w, height: h)),
+                           with: .color(glow.opacity(light ? 0.28 : 0.07)))
+            }
+            // Dust lane slightly off the band's spine.
+            for _ in 0..<5 {
+                let x = CGFloat.random(in: -length * 0.4...length * 0.3, using: &g)
+                let w = CGFloat.random(in: 120...220, using: &g)
+                layer.fill(Path(ellipseIn: CGRect(x: x, y: 4, width: w, height: 22)),
+                           with: .color(Theme.night.opacity(light ? 0.5 : 0.55)))
+            }
+        }
+
+        // Faint stars crowd along the band (offsets roughly Gaussian across it).
+        for _ in 0..<160 {
+            let t = CGFloat.random(in: -length * 0.55...length * 0.55, using: &rng)
+            let n = (CGFloat.random(in: -1...1, using: &rng) + CGFloat.random(in: -1...1, using: &rng)
+                     + CGFloat.random(in: -1...1, using: &rng)) * 32
+            let p = CGPoint(x: center.x + dir.x * t + normal.x * n, y: center.y + dir.y * t + normal.y * n)
+            guard p.x >= 0, p.x <= size.width, p.y >= 0, p.y <= size.height else { continue }
+            star(p, CGFloat.random(in: 0...1, using: &rng))
+        }
     }
 }
 
