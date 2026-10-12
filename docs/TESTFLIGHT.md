@@ -70,6 +70,9 @@ Her yeni yüklemede derleme numarası otomatik artar.
 edilir (`ci/asc_signing.py`). Apple bu yüzden sertifika e-postaları gönderebilir; yüklenen derlemeler
 etkilenmez. Xcode'un kendi bulut imzası kullanılmıyor, çünkü isimdeki “Ğ” gibi harfler imzayı bozuyor.
 
+Kilit ekranındaki odak sayacı (Live Activity) ayrı bir eklentide: `com.beyzaerdogan.derin.live-activity`.
+İş akışı bu kimliği ilk çalıştırmada kendisi kaydeder; elle bir şey yapmana gerek yok.
+
 ## 7. Uygulama engelleme için Apple izni (Family Controls)
 
 Diğer uygulamaları kilitlemek Apple'ın Screen Time API'sini kullanıyor. TestFlight ve App Store için

@@ -36,8 +36,10 @@ targets:
     sources:
       - path: App
       - path: Shared
+      - path: LiveActivity
     dependencies:
       - package: OdakCore
+      - target: DerinWidgets
     settings:
       groups: [derin]
       base:
@@ -53,3 +55,16 @@ targets:
     scheme:
       testTargets: []
       storeKitConfiguration: Config/Derin.storekit
+  # Live Activity for a running focus: lock screen and Dynamic Island.
+  DerinWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Widgets
+      - path: LiveActivity
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.live-activity
+        INFOPLIST_FILE: Widgets/Info.plist
+        GENERATE_INFOPLIST_FILE: NO

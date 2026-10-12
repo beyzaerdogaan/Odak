@@ -38,6 +38,7 @@ final class AppModel {
         store.start()
         screenTime.clearIfExpired()
         progress.reconcileClouds(now: .now)
+        if !Demo.isOn { LiveActivityController.sync(session) }
         NotificationCenter.default.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification,
                                                object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.lockedWhileAway = true }
@@ -61,6 +62,7 @@ final class AppModel {
         session = s
         screenTime.begin(mode: s.blockMode, strict: s.strict, until: s.end)
         Notifications.scheduleSessionEnd(at: s.end, task: s.task)
+        LiveActivityController.start(s)
         Task { await Notifications.requestPermission() }
         if !sounds.volumes.isEmpty { sounds.play() }
         if s.silenceCalls, settings.focusShortcutsReady {
@@ -77,6 +79,7 @@ final class AppModel {
             session = s
             screenTime.extend(until: s.end)
             Notifications.scheduleSessionEnd(at: s.end, task: s.task)
+            LiveActivityController.update(s, now: now)
         }
         if s.remaining(at: now) <= 0 { finish(at: s.end) }
     }
@@ -86,6 +89,7 @@ final class AppModel {
         s.startBreak(at: .now)
         session = s
         Notifications.cancelSessionEnd()
+        LiveActivityController.update(s)
     }
 
     func endBreak() {
@@ -94,6 +98,7 @@ final class AppModel {
         session = s
         screenTime.extend(until: s.end)
         Notifications.scheduleSessionEnd(at: s.end, task: s.task)
+        LiveActivityController.update(s)
     }
 
     func abandon() {
@@ -122,6 +127,7 @@ final class AppModel {
         session = nil
         screenTime.end()
         Notifications.cancelSessionEnd()
+        LiveActivityController.end()
         if settings.stopMusicAtEnd {
             sounds.stop()
             Task { await spotify.pause() }
@@ -209,6 +215,7 @@ final class AppModel {
         progress = SkyProgress()
         session = nil
         screenTime.end()
+        LiveActivityController.end()
     }
 
     // MARK: - Screenshot mode

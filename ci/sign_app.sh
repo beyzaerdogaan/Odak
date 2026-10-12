@@ -18,7 +18,8 @@ sign_bundle() {
   plutil -insert com\\.apple\\.developer\\.team-identifier -string "$TEAM_ID" "$ent"
   plutil -insert get-task-allow -bool NO "$ent"
   plutil -insert beta-reports-active -bool YES "$ent"
-  if [ "$SCREEN_TIME" = "YES" ]; then
+  # The Live Activity widget needs neither Family Controls nor the App Group.
+  if [ "$SCREEN_TIME" = "YES" ] && [ "$id" != "$BUNDLE_PREFIX.derin.live-activity" ]; then
     plutil -insert com\\.apple\\.developer\\.family-controls -bool YES "$ent"
     plutil -insert com\\.apple\\.security\\.application-groups -array "$ent"
     plutil -insert com\\.apple\\.security\\.application-groups.0 -string "group.$BUNDLE_PREFIX.derin" "$ent"
