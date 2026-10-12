@@ -97,7 +97,7 @@ struct RewardView: View {
                 Text("Yeni bir yıldız yaktın").meta()
                 Text(star.name).font(.serif(64, italic: true)).foregroundStyle(Theme.paper)
                     .minimumScaleFactor(0.5).lineLimit(1)
-                Text("\(c.name) takımyıldızında, \(summary.record.focusedMinutes) dakikalık derin odakla")
+                Text("\(c.name) takımyıldızı")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper)
             } else if summary.journeyStarted || model.progress.journeyUnlocked {
                 Text("Yolculuk sürüyor").meta()
