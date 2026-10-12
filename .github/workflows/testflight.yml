@@ -1,7 +1,8 @@
 name: TestFlight
 
-# Archives the app, signs it with Apple's cloud-managed certificates through an App Store Connect
-# API key, and uploads it to TestFlight. No Mac needed. See docs/TESTFLIGHT.md for the secrets.
+# Archives the app, signs it with a short-lived distribution certificate created through the
+# App Store Connect API (revoked again at the end), and uploads it to TestFlight. No Mac needed.
+# See docs/TESTFLIGHT.md for the secrets and ci/asc_signing.py for why signing is done by hand.
 on:
   workflow_dispatch:
     inputs:
@@ -58,27 +59,57 @@ jobs:
         run: |
           if [ "$SCREEN_TIME" = "YES" ]; then xcodegen generate --spec project-screentime.yml; else xcodegen generate; fi
 
-      - name: Archive
+      - name: Archive (unsigned)
         run: |
           set -o pipefail
           xcodebuild archive -project Odak.xcodeproj -scheme Odak -configuration Release \
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
             DEVELOPMENT_TEAM="$TEAM_ID" ODAK_BUNDLE_ID_PREFIX="$BUNDLE_PREFIX" \
             ODAK_SPOTIFY_CLIENT_ID="$SPOTIFY_CLIENT_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            -quiet
+            CODE_SIGNING_ALLOWED=NO -quiet
+
+      - name: Distribution certificate and profiles
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --quiet pyjwt cryptography
+          IDS="$BUNDLE_PREFIX.derin"
+          if [ "$SCREEN_TIME" = "YES" ]; then
+            for ext in activity-monitor shield-configuration shield-action; do IDS="$IDS $BUNDLE_PREFIX.derin.$ext"; done
+          fi
+          S="$RUNNER_TEMP/signing"
+          "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py setup "$S" $IDS
+
+          /usr/bin/openssl x509 -inform DER -in "$S/cert.cer" -out "$S/cert.pem"
+          /usr/bin/openssl pkcs12 -export -inkey "$S/key.pem" -in "$S/cert.pem" -out "$S/ci.p12" -passout pass:ci
+          KC="$RUNNER_TEMP/ci.keychain-db"
+          security create-keychain -p ci "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p ci "$KC"
+          security import "$S/ci.p12" -k "$KC" -P ci -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k ci "$KC" >/dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          SHA1=$(/usr/bin/openssl x509 -in "$S/cert.pem" -noout -fingerprint -sha1 | cut -d= -f2 | tr -d :)
+          echo "SIGN_IDENTITY=$SHA1" >> "$GITHUB_ENV"
+          echo "SIGN_KEYCHAIN=$KC" >> "$GITHUB_ENV"
+
+      - name: Sign
+        run: ci/sign_app.sh "$RUNNER_TEMP/Derin.xcarchive/Products/Applications/Derin.app" "$RUNNER_TEMP/signing" "$RUNNER_TEMP/Derin.ipa"
 
       - name: Upload to TestFlight
         run: |
-          set -o pipefail
-          cp ci/ExportOptions.plist "$RUNNER_TEMP/ExportOptions.plist"
-          plutil -replace teamID -string "$TEAM_ID" "$RUNNER_TEMP/ExportOptions.plist"
-          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          mkdir -p ~/.appstoreconnect/private_keys
+          cp "$ASC_KEY_PATH" ~/.appstoreconnect/private_keys/
+          xcrun altool --upload-app -f "$RUNNER_TEMP/Derin.ipa" -t ios \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Revoke CI certificate
+        if: always()
+        run: |
+          if [ -n "${SIGN_KEYCHAIN:-}" ]; then security delete-keychain "$SIGN_KEYCHAIN" || true; fi
+          if [ -x "$RUNNER_TEMP/venv/bin/python" ]; then
+            "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py cleanup "$RUNNER_TEMP/signing"
+          fi
 
       - name: Clean up key
         if: always()
-        run: rm -rf "$RUNNER_TEMP/keys"
+        run: rm -rf "$RUNNER_TEMP/keys" "$RUNNER_TEMP/signing" ~/.appstoreconnect/private_keys

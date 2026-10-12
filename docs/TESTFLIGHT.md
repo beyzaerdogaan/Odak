@@ -28,7 +28,7 @@ değişkenini değiştir (aşağıda), uygulama `<önek>.derin` olur.
 ## 4. App Store Connect API anahtarı (imzalama ve yükleme için)
 
 1. https://appstoreconnect.apple.com/access/integrations/api → **Team Keys** → **+**.
-2. Name: `GitHub Actions`, Access: **Admin** (sertifikaları otomatik oluşturabilmesi için gerekli).
+2. Name: `GitHub Actions`, Access: **Admin** (sertifika ve profil oluşturabilmesi için gerekli).
 3. **Download API Key** ile `.p8` dosyasını indir. Sadece bir kez indirilebilir, sakla.
 4. Sayfadaki **Issuer ID** ve anahtarın **Key ID** değerlerini not et.
 
@@ -65,6 +65,10 @@ Depo → **Settings → Secrets and variables → Actions**.
 4. İlk yüklemede **Export Compliance** sorulmaz (uygulama şifreleme kullanmıyor diye işaretli).
 
 Her yeni yüklemede derleme numarası otomatik artar.
+
+İmzalama için her yüklemede geçici bir dağıtım sertifikası ve profili oluşturulur, iş bitince iptal
+edilir (`ci/asc_signing.py`). Apple bu yüzden sertifika e-postaları gönderebilir; yüklenen derlemeler
+etkilenmez. Xcode'un kendi bulut imzası kullanılmıyor, çünkü isimdeki “Ğ” gibi harfler imzayı bozuyor.
 
 ## 7. Uygulama engelleme için Apple izni (Family Controls)
 
