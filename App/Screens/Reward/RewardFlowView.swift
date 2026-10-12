@@ -59,7 +59,10 @@ struct RewardView: View {
                         }
                         ConstellationFigure(constellation: c, progress: model.progress, highlight: summary.star?.id)
                             .frame(height: 190)
-                        if let note = brightNote(c) { Text(note).font(.system(size: 12)).foregroundStyle(Theme.paper2) }
+                        if let note = brightNote(c) {
+                            Text(note).font(.system(size: 12)).foregroundStyle(Theme.paper2)
+                                .padding(.top, 12) // keep clear of the star labels drawn at the figure's bottom edge
+                        }
                     }
                 }
                 Divider().overlay(Theme.hair)
