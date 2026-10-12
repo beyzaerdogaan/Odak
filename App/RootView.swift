@@ -14,6 +14,14 @@ struct RootView: View {
     @State private var universePath: [Route] = []
 
     var body: some View {
+        if Demo.screen == "lockscreen" {
+            LiveActivityPreview()
+        } else {
+            tabs
+        }
+    }
+
+    private var tabs: some View {
         TabView(selection: $tab) {
             Tab("Evren", systemImage: "circle.circle", value: .universe) {
                 NavigationStack(path: $universePath) { HomeView(tab: $tab).routes() }

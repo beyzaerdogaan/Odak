@@ -48,6 +48,8 @@
 	<string>$(ODAK_APP_GROUP)</string>
 	<key>DerinSpotifyClientID</key>
 	<string>$(ODAK_SPOTIFY_CLIENT_ID)</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
