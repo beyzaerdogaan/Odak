@@ -49,14 +49,6 @@ struct CollectionMapView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                BackHeader(title: "Koleksiyon haritası", subtitle: nil) {
-                    HStack(spacing: 5) { Spark(size: 10); Text("\(model.progress.totalFocusedMinutes / 60) sa") }
-                        .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
-                        .padding(.horizontal, 11).frame(height: 30)
-                        .glassEffect(.regular.tint(Theme.accent.opacity(0.15)), in: .capsule)
-                }
-                Text("Gökyüzün hiç bitmez").font(.serif(14, italic: true)).foregroundStyle(Theme.paper2).padding(.top, -14).padding(.leading, 56)
-
                 let active = MeteorShowers.active(on: .now)
                 NavigationLink(value: Route.event) {
                     EventBanner(shower: active ?? MeteorShowers.upcoming(after: .now, count: 1).first ?? MeteorShowers.all[0], active: active != nil)
@@ -70,11 +62,16 @@ struct CollectionMapView: View {
                     LinearGradient(colors: [Theme.accent, Theme.star.opacity(0.14), Theme.star.opacity(0.14)], startPoint: .top, endPoint: .bottom)
                         .frame(width: 1).padding(.leading, 14.5).padding(.vertical, 20)
                 }
-
-                Text("Işık, sözler ve seriler her katmanda çalışmaya devam eder.")
-                    .small().multilineTextAlignment(.center).frame(maxWidth: .infinity)
             }
             .padding(22)
+        }
+        .pinnedHeader {
+            BackHeader(title: "Koleksiyon haritası", subtitle: nil) {
+                HStack(spacing: 5) { Spark(size: 10); Text("\(model.progress.totalFocusedMinutes / 60) sa") }
+                    .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
+                    .padding(.horizontal, 11).frame(height: 30)
+                    .glassEffect(.regular.tint(Theme.accent.opacity(0.15)), in: .capsule)
+            }
         }
         .background(StarField(seed: 7, count: 70, grid: false, theme: model.progress.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
@@ -130,7 +127,6 @@ struct DeepSkyView: View {
         let unlocked = !found.isEmpty
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                BackHeader(title: "Derin gök", subtitle: nil)
                 VStack(spacing: 2) {
                     Text(unlocked ? "Derin gök nesnesi keşfettin" : "İlk keşfin seni bekliyor")
                         .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.nebula)
@@ -181,6 +177,7 @@ struct DeepSkyView: View {
             }
             .padding(22)
         }
+        .pinnedHeader { BackHeader(title: "Derin gök", subtitle: nil) }
         .background(StarField(seed: 8, count: 110, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -257,7 +254,6 @@ struct MeteorEventView: View {
         let done = model.progress.meteorProgress[shower.seasonKey(for: .now)] ?? 0
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                BackHeader(title: "Gökyüzü etkinliği", subtitle: nil)
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
                     Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText)" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
@@ -312,6 +308,7 @@ struct MeteorEventView: View {
             }
             .padding(22)
         }
+        .pinnedHeader(fade: .clear) { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
         .background {
             LinearGradient(colors: [Theme.meteor.opacity(0.25), Theme.night, Theme.night], startPoint: .top, endPoint: .bottom)
                 .background(Theme.night)
@@ -331,8 +328,6 @@ struct JourneyView: View {
         let prev = Journey.stops.last { p.reachedStops.contains($0.name) }?.lightYears ?? 0
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                BackHeader(title: "Işık yolculuğu",
-                           subtitle: "\(p.completedConstellations.count) / \(Catalog.constellations.count) takımyıldız")
                 Text(p.journeyUnlocked
                      ? "Gökyüzünü yaktın, şimdi oraya gitme zamanı. Her odak saatin seni 1 ışık yılı ileri taşır."
                      : "Başlangıç göğünü tamamladığında yolculuk başlar. Her odak saatin seni 1 ışık yılı ileri taşıyacak.")
@@ -375,6 +370,10 @@ struct JourneyView: View {
                     .small().multilineTextAlignment(.center).frame(maxWidth: .infinity)
             }
             .padding(22)
+        }
+        .pinnedHeader {
+            BackHeader(title: "Işık yolculuğu",
+                       subtitle: "\(p.completedConstellations.count) / \(Catalog.constellations.count) takımyıldız")
         }
         .background(StarField(seed: 10, count: 120, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)

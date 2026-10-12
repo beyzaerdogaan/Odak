@@ -211,7 +211,6 @@ struct ConstellationDetailView: View {
         if let c = Catalog.constellation(id) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    BackHeader(title: c.name, subtitle: "\(model.progress.litCount(in: c)) / \(c.stars.count) yıldız")
                     Text(c.latin).font(.serif(16, italic: true)).foregroundStyle(Theme.paper2)
                     ConstellationFigure(constellation: c, progress: model.progress)
                         .frame(height: 220)
@@ -233,6 +232,7 @@ struct ConstellationDetailView: View {
                 }
                 .padding(22)
             }
+            .pinnedHeader { BackHeader(title: c.name, subtitle: "\(model.progress.litCount(in: c)) / \(c.stars.count) yıldız") }
             .background(StarField(seed: 9, count: 80, grid: false, theme: model.progress.selectedTheme))
             .toolbar(.hidden, for: .navigationBar)
         }

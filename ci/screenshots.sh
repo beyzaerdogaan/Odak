@@ -35,4 +35,12 @@ for mode in dark light; do
     xcrun simctl io "$UDID" screenshot "$OUT/$mode-$s.png" >/dev/null
     echo "shot $mode-$s"
   done
+  # Pinned back header: the longest back-header screen, opened scrolled to the bottom.
+  for s in deepsky; do
+    xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+    xcrun simctl launch "$UDID" "$BID" -demo -screen "$s" -scrolled >/dev/null
+    sleep 6
+    xcrun simctl io "$UDID" screenshot "$OUT/$mode-$s-scrolled.png" >/dev/null
+    echo "shot $mode-$s-scrolled"
+  done
 done
