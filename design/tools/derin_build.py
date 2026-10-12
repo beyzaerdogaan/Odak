@@ -544,7 +544,7 @@ def reward_screen():
   <section aria-labelledby="isik" style="display:flex;flex-direction:column;gap:8px">
     <h2 id="isik" class="meta" style="font-weight:500">Kazandığın Işık</h2>
     {rows}
-    <div class="between" style="align-items:center;margin-top:2px"><span style="font-size:15px;font-weight:600">Toplam</span><span class="serif num acc row" style="font-size:34px;line-height:1;gap:6px">{spark(16)}+59</span></div>
+    <div class="between" style="align-items:center;margin-top:2px"><span style="font-size:15px;font-weight:600">Toplam</span><span class="serif num acc row" style="font-size:34px;line-height:1;gap:6px">{spark(16)}59</span></div>
   </section>
 
   <section aria-labelledby="soz" style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:20px;background:var(--plate)">

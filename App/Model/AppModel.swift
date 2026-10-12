@@ -288,6 +288,8 @@ final class AppModel {
             summary = p.complete(FocusInput(task: settings.task, start: now.addingTimeInterval(-60 * 60), end: now, plannedMinutes: 60,
                                             focusedMinutes: 60, strict: false, lookedAway: false), rng: &rng)
             progress = p
+        case "badges":
+            for b in Badge.allCases where b != .nightOwl && b != .pleiades { progress.badges[b.rawValue] = now }
         case "deepsky":
             progress.deepSky["m42"] = now
             progress.ownedThemes.insert(.nebula)

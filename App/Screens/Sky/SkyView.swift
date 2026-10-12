@@ -78,6 +78,7 @@ struct SkyView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
+        .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
         .background(StarField(seed: 5, count: 60, depth: 0.45, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
@@ -190,34 +191,9 @@ struct BadgeView: View {
     let badge: Badge
     let earned: Bool
 
-    private var icon: String {
-        switch badge {
-        case .firstLight: "sun.max"
-        case .marathon90: "timer"
-        case .streak7: "flame"
-        case .nightOwl: "moon"
-        case .proxima: "location.north"
-        case .pleiades: "sparkles"
-        case .meteor: "sparkle"
-        }
-    }
-
     var body: some View {
         VStack(spacing: 7) {
-            Image(systemName: earned ? icon : "lock")
-                .font(.system(size: earned ? 22 : 18))
-                .foregroundStyle(earned ? Theme.accentInk : Theme.paper3)
-                .frame(width: 56, height: 56)
-                .background {
-                    if earned {
-                        Circle().fill(RadialGradient(colors: [Theme.accent.opacity(0.32), Theme.accent.opacity(0.08)],
-                                                     center: .init(x: 0.35, y: 0.3), startRadius: 0, endRadius: 40))
-                    }
-                }
-                .overlay {
-                    Circle().strokeBorder(earned ? Theme.accent.opacity(0.45) : Theme.star.opacity(0.22),
-                                          style: StrokeStyle(lineWidth: 1, dash: earned ? [] : [3, 3]))
-                }
+            BadgeMedal(badge: badge, earned: earned, size: 60)
             Text(badge.title).font(.system(size: 12)).multilineTextAlignment(.center)
                 .foregroundStyle(earned ? Theme.paper : Theme.paper3)
         }
