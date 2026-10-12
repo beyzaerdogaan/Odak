@@ -23,6 +23,9 @@ settingGroups:
   derin:
     base:
       SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) $(ODAK_SCREEN_TIME_FLAG_$(ODAK_SCREEN_TIME))"
+      # XcodeGen's iOS preset sets "1,2" on every target, which overrides the project-level value
+      # and makes App Store Connect reject the portrait-only app as an iPad app.
+      TARGETED_DEVICE_FAMILY: "1"
 packages:
   OdakCore:
     path: Packages/OdakCore
