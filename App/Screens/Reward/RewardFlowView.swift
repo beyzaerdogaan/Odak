@@ -143,7 +143,7 @@ struct RewardView: View {
                 Spacer()
                 HStack(spacing: 6) {
                     Spark(size: 16)
-                    Text("+\(summary.ledger.total + summary.bonusLight)").font(.serif(34)).monospacedDigit()
+                    Text("\(summary.ledger.total + summary.bonusLight)").font(.serif(34)).monospacedDigit()
                 }
                 .foregroundStyle(Theme.accentInk)
             }
@@ -153,8 +153,14 @@ struct RewardView: View {
 
     @ViewBuilder private var extras: some View {
         let items = extraItems
-        if !items.isEmpty {
+        if !items.isEmpty || !summary.newBadges.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
+                ForEach(summary.newBadges) { b in
+                    HStack(spacing: 10) {
+                        BadgeMedal(badge: b, size: 34)
+                        Text("Rozet: \(b.title)").font(.system(size: 14, weight: .medium)).foregroundStyle(b.tone)
+                    }
+                }
                 ForEach(Array(items.enumerated()), id: \.offset) { _, item in
                     Label(item.1, systemImage: item.0).font(.system(size: 14, weight: .medium)).foregroundStyle(item.2)
                 }
@@ -165,7 +171,6 @@ struct RewardView: View {
 
     private var extraItems: [(String, String, Color)] {
         var items: [(String, String, Color)] = []
-        for b in summary.newBadges { items.append(("rosette", "Rozet: \(b.title)", Theme.meteor)) }
         for o in summary.newDeepSky { items.append(("sparkles", "\(o.name) keşfedildi, +\(o.light) Işık", Theme.nebula)) }
         for p in summary.newPlanets { items.append(("circle.fill", "\(p.name) açıldı", Theme.ice)) }
         for s in summary.reachedStops { items.append(("location.north.fill", "\(s.name) durağına vardın: \(s.rewardText)", Theme.accentInk)) }
@@ -252,7 +257,7 @@ struct ConstellationCompleteView: View {
                         if let s = c.unlocksSound {
                             prize(icon: AnyView(Image(systemName: "snowflake").foregroundStyle(Theme.ice)), value: s.title, label: "Ses paketi", color: Theme.ice)
                         }
-                        prize(icon: AnyView(Image(systemName: "rosette").foregroundStyle(Theme.meteor)), value: c.name, label: "Rozet", color: Theme.meteor)
+                        prize(icon: AnyView(ConstellationMedal(constellation: c, size: 44)), value: c.name, label: "Rozet", color: Theme.accentInk)
                     }
                 }
             }

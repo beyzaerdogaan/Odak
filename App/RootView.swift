@@ -50,7 +50,7 @@ struct RootView: View {
             model.applyDemoScreen()
             switch Demo.screen {
             case "focus": tab = .focus
-            case "sky": tab = .sky
+            case "sky", "badges": tab = .sky
             case "rewards": tab = .rewards
             case "map": universePath = [.collection]
             case "deepsky": universePath = [.deepSky]
