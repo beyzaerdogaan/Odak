@@ -19,15 +19,6 @@ değişkenini değiştir (aşağıda), uygulama `<önek>.derin` olur.
 2. Description: `Derin`, Bundle ID: **Explicit** → `com.beyzaerdogan.derin`.
 3. Capabilities listesinde şimdilik bir şey işaretleme. **Continue → Register**.
 
-### iPhone kaydı
-
-Apple, otomatik imzalama için hesapta en az bir kayıtlı cihaz ister (yoksa derleme “Your team has no
-devices” hatasıyla durur).
-
-1. Windows'ta Microsoft Store'dan **Apple Devices** (ya da iTunes) kur, iPhone'u kabloyla bağla.
-2. Cihaz sayfasında seri numarasına birkaç kez tıkla, **UDID** görünür. Kopyala.
-3. https://developer.apple.com/account/resources/devices/add → Platform **iOS**, adı ve UDID → **Register**.
-
 ## 3. App Store Connect'te uygulama kaydı
 
 1. https://appstoreconnect.apple.com/apps → **+** → **New App**.
