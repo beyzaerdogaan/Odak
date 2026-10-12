@@ -88,6 +88,11 @@ jobs:
           APP=Payload/Derin.app
           codesign -dvv "$APP" 2>&1 | grep -E "Identifier|Authority|TeamIdentifier|Format" || true
           codesign -d --entitlements - --xml "$APP" 2>/dev/null | plutil -p - || true
+          echo "-- designated requirement"; codesign -d -r- "$APP" 2>&1 | tail -2
+          echo "-- archive DR"; codesign -d -r- "$RUNNER_TEMP/Derin.xcarchive/Products/Applications/Derin.app" 2>&1 | tail -2
+          rm -f codesign0*; codesign -d --extract-certificates "$APP" >/dev/null 2>&1
+          echo "-- leaf subject"; openssl x509 -inform DER -in codesign0 -noout -subject -nameopt multiline,utf8,show_type | cat
+          openssl x509 -inform DER -in codesign0 -noout -subject -nameopt RFC2253,dump_all,dump_der | cat
           codesign --verify --deep --strict --verbose=2 "$APP"
           for f in "$APP"/Frameworks/* "$APP"/PlugIns/*; do [ -e "$f" ] && codesign -dv "$f" 2>&1 | grep -E "Identifier|Authority=Apple" ; done || true
 
