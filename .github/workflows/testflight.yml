@@ -58,6 +58,9 @@ jobs:
         run: |
           if [ "$SCREEN_TIME" = "YES" ]; then xcodegen generate --spec project-screentime.yml; else xcodegen generate; fi
 
+      # The archive is only ad-hoc signed (entitlements kept). Automatic signing here would need a
+      # development profile, which Apple refuses to create for a team with no registered devices.
+      # The export step below re-signs everything with a cloud-managed distribution certificate.
       - name: Archive
         run: |
           set -o pipefail
@@ -65,8 +68,8 @@ jobs:
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
             DEVELOPMENT_TEAM="$TEAM_ID" ODAK_BUNDLE_ID_PREFIX="$BUNDLE_PREFIX" \
             ODAK_SPOTIFY_CLIENT_ID="$SPOTIFY_CLIENT_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            CODE_SIGNING_REQUIRED=NO PROVISIONING_PROFILE_SPECIFIER= \
             -quiet
 
       - name: Upload to TestFlight
