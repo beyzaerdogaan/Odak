@@ -202,9 +202,17 @@ extension BackHeader where Trailing == EmptyView {
 
 extension View {
     /// Keeps a `BackHeader` pinned above a scroll view; content scrolls under it with the system edge effect.
-    func pinnedHeader<Header: View>(@ViewBuilder _ header: () -> Header) -> some View {
+    func pinnedHeader<Header: View>(fade: Color = Theme.night, @ViewBuilder _ header: () -> Header) -> some View {
         safeAreaBar(edge: .top, spacing: 0) {
             header().padding(.horizontal, 22).padding(.top, 8).padding(.bottom, 4)
+                .background {
+                    // Like BottomFade: scrolled text fades out before it reaches the title.
+                    LinearGradient(colors: [fade, fade.opacity(0.92), fade.opacity(0)],
+                                   startPoint: .top, endPoint: .bottom)
+                        .padding(.bottom, -28)
+                        .ignoresSafeArea(edges: .top)
+                        .allowsHitTesting(false)
+                }
         }
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
     }

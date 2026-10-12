@@ -308,7 +308,7 @@ struct MeteorEventView: View {
             }
             .padding(22)
         }
-        .pinnedHeader { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
+        .pinnedHeader(fade: .clear) { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
         .background {
             LinearGradient(colors: [Theme.meteor.opacity(0.25), Theme.night, Theme.night], startPoint: .top, endPoint: .bottom)
                 .background(Theme.night)
