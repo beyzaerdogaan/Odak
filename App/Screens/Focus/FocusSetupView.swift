@@ -9,6 +9,10 @@ struct FocusSetupView: View {
     @State private var showPicker = false
     @State private var showBlockingInfo = false
     @State private var showShortcutsGuide = false
+    /// The block-mode picker runs on local state so its Liquid Glass slide isn't interrupted by
+    /// model writes; the choice is committed once it settles (and always before starting).
+    @State private var blockMode: BlockMode = .selected
+    @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
 
     var body: some View {
@@ -31,6 +35,8 @@ struct FocusSetupView: View {
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
                 taskFocused = false
+                blockModeCommit?.cancel()
+                model.settings.blockMode = blockMode
                 model.startSession()
             }
             .padding(.horizontal, 22)
@@ -39,7 +45,22 @@ struct FocusSetupView: View {
         }
         .background(StarField(seed: 1, count: 46, depth: 0.28, grid: false, theme: model.progress.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
-        .onAppear { custom = !FocusSettings.presets.contains(model.settings.minutes) }
+        .onAppear {
+            custom = !FocusSettings.presets.contains(model.settings.minutes)
+            blockMode = model.settings.blockMode
+        }
+        .onChange(of: blockMode) { _, mode in
+            blockModeCommit?.cancel()
+            blockModeCommit = Task {
+                try? await Task.sleep(for: .milliseconds(450))
+                guard !Task.isCancelled, model.settings.blockMode != mode else { return }
+                model.settings.blockMode = mode
+            }
+        }
+        .onDisappear {
+            blockModeCommit?.cancel()
+            if model.settings.blockMode != blockMode { model.settings.blockMode = blockMode }
+        }
         .sheet(isPresented: $showPicker) { AppPickerSheet() }
         .sheet(isPresented: $showBlockingInfo) { BlockingInfoSheet() }
         .sheet(isPresented: $showShortcutsGuide) { FocusShortcutsGuide() }
@@ -109,8 +130,7 @@ struct FocusSetupView: View {
     }
 
     private var blockingSection: some View {
-        @Bindable var model = model
-        return VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Engellenecek uygulamalar").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                 Spacer()
@@ -119,13 +139,13 @@ struct FocusSetupView: View {
                     .foregroundStyle(Theme.accentInk)
                     .frame(minHeight: 44)
             }
-            Picker("Engelleme modu", selection: $model.settings.blockMode) {
+            Picker("Engelleme modu", selection: $blockMode) {
                 ForEach(BlockMode.allCases) { Text($0.title).tag($0) }
             }
             .pickerStyle(.segmented)
             .padding(.top, -6)
             HStack(spacing: 6) {
-                switch model.settings.blockMode {
+                switch blockMode {
                 case .selected: Chip(text: model.screenTime.selectionSummary, systemImage: "lock")
                 case .all: Chip(text: "Telefon ve izin verdiklerin dışında her şey", systemImage: "lock")
                 case .none: Chip(text: "Hiçbir uygulama kilitlenmez", systemImage: "lock.open")
