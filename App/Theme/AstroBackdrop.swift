@@ -72,8 +72,8 @@ private struct AstroScene: View {
         }
     }
 
-    /// Where the scene's main body sits: upper right, clear of the title.
-    private func focus(_ size: CGSize) -> CGPoint { CGPoint(x: size.width * 0.7, y: size.height * 0.34) }
+    /// Where the scene's main body sits: lower right, below the page's text so it never sits behind it.
+    private func focus(_ size: CGSize) -> CGPoint { CGPoint(x: size.width * 0.66, y: size.height * 0.7) }
 
     /// 0...1 through a loop of `period` seconds.
     private func loop(_ period: Double) -> Double { (time / period).truncatingRemainder(dividingBy: 1) }
@@ -212,7 +212,7 @@ private struct AstroScene: View {
     private func conjunction(_ ctx: inout GraphicsContext, _ size: CGSize, _ light: Bool) {
         horizon(&ctx, size, light, sky: event.sky)
         let a = event.bodies.first ?? "venus", b = event.bodies.dropFirst().first ?? "jupiter"
-        let mid = CGPoint(x: size.width * 0.66, y: size.height * 0.36)
+        let mid = CGPoint(x: size.width * 0.62, y: size.height * 0.7)
         let p = loop(22)
         let gap = 18 + 110 * abs(cos(p * .pi)) // closest in the middle of the loop
         let angle = -0.45
@@ -235,10 +235,10 @@ private struct AstroScene: View {
     private func elongation(_ ctx: inout GraphicsContext, _ size: CGSize, _ light: Bool) {
         horizon(&ctx, size, light, sky: event.sky)
         let body = event.bodies.first ?? "venus"
-        let ground = size.height * 0.78
+        let ground = size.height * 0.9
         let morning = event.sky == .morning
         let sun = CGPoint(x: size.width * (morning ? 0.82 : 0.18), y: ground + 30)
-        let planet = CGPoint(x: size.width * (morning ? 0.56 : 0.44), y: size.height * (body == "venus" ? 0.34 : 0.5))
+        let planet = CGPoint(x: size.width * (morning ? 0.56 : 0.44), y: size.height * (body == "venus" ? 0.64 : 0.74))
         let breathe = 0.8 + 0.2 * sin(time / 3)
         glow(&ctx, at: sun, radius: size.width * 0.5, color: morning ? Theme.accent : Theme.ember, alpha: 0.35 * breathe)
 
@@ -260,7 +260,7 @@ private struct AstroScene: View {
     /// A large full Moon with a wide halo; a faint ring breathes out to the size of an ordinary full
     /// Moon so the difference shows.
     private func supermoon(_ ctx: inout GraphicsContext, _ size: CGSize, _ light: Bool) {
-        let c = CGPoint(x: size.width * 0.66, y: size.height * 0.34 + CGFloat(sin(time / 6)) * 3)
+        let c = CGPoint(x: size.width * 0.6, y: size.height * 0.7 + CGFloat(sin(time / 6)) * 3)
         let r = size.width * 0.21
         glow(&ctx, at: c, radius: r * 3, color: AstroStyle.color("moon"), alpha: light ? 0.3 : 0.38)
         drawMoon(&ctx, center: c, radius: r, light: light)
@@ -309,7 +309,7 @@ private struct AstroScene: View {
 
     /// Dawn or dusk light along the bottom of the screen, with a dark ground line.
     private func horizon(_ ctx: inout GraphicsContext, _ size: CGSize, _ light: Bool, sky: AstroEvent.Sky) {
-        let ground = size.height * 0.78
+        let ground = size.height * 0.9
         let colors: [Color] = switch sky {
         case .morning: [Color(hex: 0xE9A27A, opacity: light ? 0.35 : 0.3), Color(hex: 0x6A5AA0, opacity: 0.12), .clear]
         case .evening: [Color(hex: 0xF0905A, opacity: light ? 0.4 : 0.35), Color(hex: 0x8A3A6A, opacity: 0.14), .clear]
