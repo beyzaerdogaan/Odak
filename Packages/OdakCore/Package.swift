@@ -8,7 +8,7 @@ let package = Package(
     platforms: [.iOS("26.0"), .macOS(.v14)],
     products: [.library(name: "OdakCore", targets: ["OdakCore"])],
     targets: [
-        .target(name: "OdakCore", resources: [.copy("Resources/meteor-calendar.json")]),
+        .target(name: "OdakCore", resources: [.copy("Resources/sky-calendar.json")]),
         .testTarget(name: "OdakCoreTests", dependencies: ["OdakCore"]),
     ],
     swiftLanguageModes: [.v5]

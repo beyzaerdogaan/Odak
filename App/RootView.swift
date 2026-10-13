@@ -6,6 +6,8 @@ enum AppTab: Hashable { case universe, focus, sky, rewards }
 enum Route: Hashable {
     case collection, deepSky, event, journey, skyCalendar
     case constellation(String)
+    /// A meteor shower or an eclipse, planet event or supermoon opened from the sky calendar.
+    case meteor(String), astro(String)
 }
 
 struct RootView: View {
@@ -58,6 +60,7 @@ struct RootView: View {
             case "event": universePath = [.event]
             case "journey": universePath = [.journey]
             case "calendar": universePath = [.event, .skyCalendar]
+            case let s? where s.hasPrefix("astro-"): universePath = [.skyCalendar, .astro(String(s.dropFirst(6)))]
             default: break
             }
         }
@@ -75,6 +78,8 @@ extension View {
                 case .journey: JourneyView()
                 case .skyCalendar: SkyCalendarView()
                 case let .constellation(id): ConstellationDetailView(id: id)
+                case let .meteor(id): MeteorEventView(showerID: id)
+                case let .astro(id): AstroEventView(id: id)
                 }
             }
             .toolbar(.hidden, for: .tabBar)

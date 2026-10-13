@@ -43,8 +43,8 @@ final class AppModel {
         progress.reconcileClouds(now: .now)
         if !Demo.isOn {
             LiveActivityController.sync(session)
-            MeteorCalendarUpdater.loadCached()
-            Task { await MeteorCalendarUpdater.refresh() }
+            SkyCalendarUpdater.loadCached()
+            Task { await SkyCalendarUpdater.refresh() }
         }
         NotificationCenter.default.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification,
                                                object: nil, queue: .main) { [weak self] _ in

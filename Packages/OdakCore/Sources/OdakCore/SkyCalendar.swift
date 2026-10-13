@@ -1,10 +1,11 @@
 import Foundation
 
-/// Dated meteor shower windows from the IMO's yearly Meteor Shower Calendar. The app ships a copy
-/// (`Resources/meteor-calendar.json`) and can swap in a newer one fetched from the repository, so
-/// next year's dates arrive without a release. Outside the dates it covers, `MeteorShower` falls
-/// back to its fixed month/day table.
-public struct MeteorCalendar: Codable, Equatable, Sendable {
+/// The sky's dated events: meteor shower windows from the IMO's yearly Meteor Shower Calendar, and
+/// eclipses (NASA's tables) and planet events (computed from VSOP87) as seen from Turkey. The app
+/// ships a copy (`Resources/sky-calendar.json`) and can swap in a newer one fetched from the
+/// repository, so next year's dates arrive without a release. Outside the dates it covers,
+/// `MeteorShower` falls back to its fixed month/day table.
+public struct SkyCalendar: Codable, Equatable, Sendable {
     public struct Occurrence: Codable, Equatable, Sendable {
         public let id: String
         /// First and last active day, as yyyy-MM-dd in the viewer's own time zone.
@@ -32,11 +33,16 @@ public struct MeteorCalendar: Codable, Equatable, Sendable {
     public let updated: String
     public let source: String
     public let occurrences: [Occurrence]
+    /// Eclipses, planet events and supermoons. Optional so an older copy without them still loads.
+    public let events: [AstroEvent]?
 
-    public static func decode(_ data: Data) throws -> MeteorCalendar {
+    /// The events the app knows how to show; kinds added by a newer calendar are skipped.
+    public var astroEvents: [AstroEvent] { (events ?? []).filter { $0.kind != nil }.sorted { $0.peak < $1.peak } }
+
+    public static func decode(_ data: Data) throws -> SkyCalendar {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let c = try decoder.decode(MeteorCalendar.self, from: data)
+        let c = try decoder.decode(SkyCalendar.self, from: data)
         guard c.version == 1 else { throw Invalid.version }
         guard !c.occurrences.isEmpty else { throw Invalid.empty }
         let gregorian = Calendar(identifier: .gregorian)
@@ -47,7 +53,7 @@ public struct MeteorCalendar: Codable, Equatable, Sendable {
     }
 
     /// The copy bundled with the app.
-    public static let bundled: MeteorCalendar? = Bundle.module.url(forResource: "meteor-calendar", withExtension: "json")
+    public static let bundled: SkyCalendar? = Bundle.module.url(forResource: "sky-calendar", withExtension: "json")
         .flatMap { try? Data(contentsOf: $0) }
         .flatMap { try? decode($0) }
 
@@ -72,6 +78,37 @@ public struct MeteorCalendar: Codable, Equatable, Sendable {
         let parts = text.split(separator: "-").compactMap { Int($0) }
         guard parts.count == 3, (1...12).contains(parts[1]), (1...31).contains(parts[2]) else { return nil }
         return calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))
+    }
+}
+
+/// One eclipse, planet event or supermoon.
+public struct AstroEvent: Codable, Hashable, Identifiable, Sendable {
+    public enum Kind: String, Sendable {
+        case lunarEclipse, solarEclipse, opposition, conjunction, elongation, supermoon
+    }
+
+    /// When in the day to look.
+    public enum Sky: String, Codable, Sendable { case morning, evening, night, day }
+
+    public let id: String
+    /// Stored as text so a calendar with kinds this version does not know still decodes.
+    let kindName: String
+    public let title: String
+    /// The moment of the event: greatest eclipse, opposition, closest approach, full moon.
+    public let peak: Date
+    public let sky: Sky
+    /// "sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn".
+    public let bodies: [String]
+    public let detail: String
+    public let tip: String
+    /// Eclipses only: the fraction of the Sun's diameter covered, or the Moon's umbral magnitude
+    /// (negative for a penumbral eclipse, above 1 for a total one).
+    public let magnitude: Double?
+
+    public var kind: Kind? { Kind(rawValue: kindName) }
+
+    enum CodingKeys: String, CodingKey {
+        case id, kindName = "kind", title, peak, sky, bodies, detail, tip, magnitude
     }
 }
 

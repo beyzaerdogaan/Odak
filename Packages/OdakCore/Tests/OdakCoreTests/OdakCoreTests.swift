@@ -153,8 +153,8 @@ final class OdakCoreTests: XCTestCase {
 
     func shower(_ id: String) -> MeteorShower { MeteorShowers.all.first { $0.id == id }! }
 
-    func testBundledMeteorCalendarDrivesDates() throws {
-        let c = try XCTUnwrap(MeteorCalendar.bundled)
+    func testBundledSkyCalendarDrivesDates() throws {
+        let c = try XCTUnwrap(SkyCalendar.bundled)
         XCTAssertTrue(c.covers(date(2026, 10, 13), calendar: cal))
         XCTAssertEqual(Set(c.occurrences.map(\.id)), Set(MeteorShowers.all.map(\.id)))
         let now = date(2026, 10, 13)
@@ -176,20 +176,45 @@ final class OdakCoreTests: XCTestCase {
     func testSkyCalendarScheduleMixesDatedAndTableWindows() {
         let from = date(2026, 10, 13), to = date(2028, 10, 13)
         let events = MeteorShowers.schedule(from: from, to: to, calendar: cal)
-        XCTAssertEqual(events.first?.shower.id, "orionids")
+        XCTAssertEqual(events.first?.shower?.id, "orionids")
         XCTAssertTrue(events.first!.contains(from))
         XCTAssertEqual(events.first?.zhr, 20)
-        XCTAssertEqual(events.first?.peakText(calendar: cal), "21–22 Ekim gecesi")
+        XCTAssertEqual(events.first?.whenText(calendar: cal), "21–22 Ekim gecesi")
         // Once a year each, with no duplicate where the dated calendar and the table meet.
-        XCTAssertEqual(events.filter { $0.shower.id == "quadrantids" }.count, 2)
-        XCTAssertEqual(events.filter { $0.shower.id == "lyrids" }.count, 2)
-        XCTAssertEqual(events.filter { $0.shower.id == "orionids" }.count, 3)
-        XCTAssertEqual(events.map(\.start), events.map(\.start).sorted())
+        XCTAssertEqual(events.filter { $0.shower?.id == "quadrantids" }.count, 2)
+        XCTAssertEqual(events.filter { $0.shower?.id == "lyrids" }.count, 2)
+        XCTAssertEqual(events.filter { $0.shower?.id == "orionids" }.count, 3)
+        XCTAssertEqual(events.map(\.day), events.map(\.day).sorted())
         // After the calendar runs out, the table carries on: Lyrids 2028 without a ZHR.
-        let lyrids2028 = events.last { $0.shower.id == "lyrids" }
+        let lyrids2028 = events.last { $0.shower?.id == "lyrids" }
         XCTAssertEqual(cal.component(.year, from: lyrids2028!.start), 2028)
         XCTAssertNil(lyrids2028?.zhr)
         XCTAssertEqual(Moon.phase(at: events.first!.peak), 10.4 / 29.53, accuracy: 0.02)
+    }
+
+    func testSkyCalendarHasEclipsesAndPlanetEvents() throws {
+        let c = try XCTUnwrap(SkyCalendar.bundled)
+        let kinds = Set(c.astroEvents.compactMap(\.kind))
+        XCTAssertEqual(kinds, [.lunarEclipse, .solarEclipse, .opposition, .conjunction, .elongation, .supermoon])
+        XCTAssertEqual(Set(c.astroEvents.map(\.id)).count, c.astroEvents.count)
+        let events = MeteorShowers.schedule(from: date(2026, 10, 13), to: date(2029, 1, 1), calendar: cal)
+        // The 2027 solar eclipse, at 12:46 in Istanbul, reminded half an hour before.
+        let solar = try XCTUnwrap(events.first { $0.astro?.kind == .solarEclipse })
+        XCTAssertEqual(solar.whenText(calendar: cal), "2 Ağustos, 12:46")
+        XCTAssertEqual(solar.reminderDate(calendar: cal), cal.date(from: DateComponents(year: 2027, month: 8, day: 2, hour: 12, minute: 16)))
+        // The penumbral lunar eclipse of 20 Feb UT falls on 21 Feb in Istanbul.
+        let lunar = try XCTUnwrap(events.first { $0.astro?.id == "eclipse-lunar-2027-02" })
+        XCTAssertEqual(cal.component(.day, from: lunar.day), 21)
+        XCTAssertEqual(MeteorShowers.astroEvent(id: "opposition-mars-2027")?.bodies, ["mars"])
+        // Supermoons really are full.
+        for e in events where e.astro?.kind == .supermoon { XCTAssertGreaterThan(e.moon, 97, e.id) }
+    }
+
+    func testSkyCalendarSkipsUnknownKinds() throws {
+        let json = #"{"version":1,"updated":"2031-01-01","source":"t","occurrences":[{"id":"lyrids","start":"2031-04-14","end":"2031-04-30","peak":"2031-04-22T12:00:00Z"}],"events":[{"id":"x","kind":"comet","title":"Kuyrukluyıldız","peak":"2031-05-01T00:00:00Z","sky":"night","bodies":[],"detail":"","tip":""}]}"#
+        let c = try SkyCalendar.decode(Data(json.utf8))
+        XCTAssertEqual(c.events?.count, 1)
+        XCTAssertTrue(c.astroEvents.isEmpty)
     }
 
     func testMeteorShowersFallBackWithoutCalendar() {
@@ -201,16 +226,16 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(shower("orionids").seasonKey(for: date(2030, 10, 13), calendar: cal), "orionids-2030")
     }
 
-    func testMeteorCalendarAdoptsOnlyNewerValidCopies() throws {
+    func testSkyCalendarAdoptsOnlyNewerValidCopies() throws {
         let saved = MeteorShowers.calendar
         defer { MeteorShowers.calendar = saved }
         func json(_ updated: String, start: String = "2031-10-02") -> Data {
             Data(#"{"version":1,"updated":"\#(updated)","source":"test","occurrences":[{"id":"orionids","start":"\#(start)","end":"2031-11-07","peak":"2031-10-21T18:00:00Z"}]}"#.utf8)
         }
-        XCTAssertFalse(MeteorShowers.adopt(try MeteorCalendar.decode(json("2020-01-01"))))
-        XCTAssertTrue(MeteorShowers.adopt(try MeteorCalendar.decode(json("2099-01-01"))))
+        XCTAssertFalse(MeteorShowers.adopt(try SkyCalendar.decode(json("2020-01-01"))))
+        XCTAssertTrue(MeteorShowers.adopt(try SkyCalendar.decode(json("2099-01-01"))))
         XCTAssertEqual(MeteorShowers.calendar?.updated, "2099-01-01")
-        XCTAssertThrowsError(try MeteorCalendar.decode(json("2099-01-02", start: "2031-13-02")))
+        XCTAssertThrowsError(try SkyCalendar.decode(json("2099-01-02", start: "2031-13-02")))
     }
 
     func testShopAndBoosters() throws {

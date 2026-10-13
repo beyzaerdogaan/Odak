@@ -1,4 +1,5 @@
 import Foundation
+import OdakCore
 import UserNotifications
 
 /// Local notifications: the end of a session and meteor shower peak nights.
@@ -20,6 +21,19 @@ enum Notifications {
 
     static func cancelSessionEnd() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sessionID])
+    }
+
+    /// A reminder for an eclipse, planet event or supermoon from the sky calendar.
+    static func remind(_ event: SkyEvent, at date: Date) async {
+        guard date > .now else { return }
+        await requestPermission()
+        let content = UNMutableNotificationContent()
+        content.title = event.title
+        content.body = event.astro?.tip ?? "Gökyüzüne bakma zamanı."
+        content.sound = .default
+        let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "derin.sky.\(event.id)", content: content, trigger: trigger))
     }
 
     static func remindPeak(name: String, at date: Date) async {
