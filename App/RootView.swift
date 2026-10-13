@@ -70,19 +70,16 @@ struct RootView: View {
 extension View {
     func routes() -> some View {
         navigationDestination(for: Route.self) { route in
-            Group {
-                switch route {
-                case .collection: CollectionMapView()
-                case .deepSky: DeepSkyView()
-                case .event: MeteorEventView()
-                case .journey: JourneyView()
-                case .skyCalendar: SkyCalendarView()
-                case let .constellation(id): ConstellationDetailView(id: id)
-                case let .meteor(id): MeteorEventView(showerID: id)
-                case let .astro(id): AstroEventView(id: id)
-                }
+            switch route {
+            case .collection: CollectionMapView()
+            case .deepSky: DeepSkyView()
+            case .event: MeteorEventView()
+            case .journey: JourneyView()
+            case .skyCalendar: SkyCalendarView()
+            case let .constellation(id): ConstellationDetailView(id: id)
+            case let .meteor(id): MeteorEventView(showerID: id)
+            case let .astro(id): AstroEventView(id: id)
             }
-            .toolbar(.hidden, for: .tabBar)
         }
     }
 }
