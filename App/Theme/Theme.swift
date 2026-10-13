@@ -92,7 +92,7 @@ struct StarField: View {
     /// fading into the horizon haze. Used behind the content screens (Evren, Odak, Ödüller).
     var falloff = false
     /// How far, in points, the stars and the Milky Way drift as the phone tilts; 0 keeps them still.
-    var parallax: CGFloat = 0
+    var parallax: CGFloat = 20
 
     @Environment(\.colorScheme) private var scheme
 
