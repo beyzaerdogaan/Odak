@@ -29,7 +29,6 @@ struct SkyView: View {
                 .fadesOnScroll()
 
                 SkyChart(progress: p)
-                    .frame(height: 300)
 
                 StatStrip(items: [
                     (stats.minutes.minutesText, period == .day ? "bugün" : period == .week ? "bu hafta" : "toplam"),
@@ -143,30 +142,95 @@ struct SkyView: View {
     }
 }
 
-/// Up to three constellations on one chart: the latest finished one and those still open.
+/// The sky chart, three constellations at a time. The first page holds the latest finished one and those still
+/// open; swiping sideways turns the dome to the rest of the catalog, and wraps around after the last page.
 struct SkyChart: View {
     var progress: SkyProgress
+    /// Copies of the page ring laid side by side, so the pager can keep turning either way.
+    private static let laps = 200
+    @State private var position: Int?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var pages: [[Constellation]] {
+        let first = Array((progress.completedConstellations.suffix(1) + progress.openConstellations).compactMap(Catalog.constellation(_:)).prefix(3))
+        let shown = Set(first.map(\.id))
+        let rest = Catalog.constellations.filter { !shown.contains($0.id) }
+        return (first.isEmpty ? [] : [first]) + stride(from: 0, to: rest.count, by: 3).map { Array(rest[$0..<min($0 + 3, rest.count)]) }
+    }
 
     var body: some View {
-        let shown = Array((progress.completedConstellations.suffix(1) + progress.openConstellations).compactMap(Catalog.constellation(_:)).prefix(3))
-        let slots = [CGRect(x: 0.04, y: 0.08, width: 0.40, height: 0.32), CGRect(x: 0.50, y: 0.10, width: 0.42, height: 0.52),
-                     CGRect(x: 0.08, y: 0.62, width: 0.40, height: 0.26)]
-        GeometryReader { geo in
-            let w = geo.size.width, h = geo.size.height
-            ZStack(alignment: .topLeading) {
+        let pages = pages
+        let count = pages.count
+        let start = count * (Self.laps / 2)
+        let current = ((position ?? start) % count + count) % count
+        let bends = !reduceMotion
+        VStack(spacing: 4) {
+            ZStack {
                 Canvas { ctx, size in
                     var grid = Path()
                     for r in [420.0, 520, 620] {
                         grid.addEllipse(in: CGRect(x: size.width / 2 - r, y: 640 - r, width: r * 2, height: r * 2))
                     }
                     ctx.stroke(grid, with: .color(Theme.star.opacity(0.07)))
-                    for (i, c) in shown.enumerated() {
+                }
+                .allowsHitTesting(false)
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 0) {
+                        ForEach(0..<(count * Self.laps), id: \.self) { i in
+                            SkyChartPage(constellations: pages[i % count], progress: progress)
+                                .containerRelativeFrame(.horizontal)
+                                .visualEffect { content, proxy in
+                                    // Pages bend away like the inside of a dome as they slide off.
+                                    let turn = bends ? proxy.frame(in: .scrollView).minX / max(proxy.size.width, 1) : 0
+                                    return content
+                                        .rotation3DEffect(.degrees(-turn * 35), axis: (x: 0, y: 1, z: 0), perspective: 0.6)
+                                        .offset(y: abs(turn) * 24)
+                                        .opacity(1 - min(abs(turn), 1) * 0.5)
+                                }
+                        }
+                    }
+                    .scrollTargetLayout()
+                }
+                .scrollTargetBehavior(.paging)
+                .scrollPosition(id: $position)
+                .scrollIndicators(.hidden)
+                .onAppear { if position == nil { position = start } }
+            }
+            .frame(height: 300)
+
+            if count > 1 {
+                HStack(spacing: 6) {
+                    ForEach(0..<count, id: \.self) { i in
+                        Circle().fill(i == current ? Theme.accentInk : Theme.paper3.opacity(0.5))
+                            .frame(width: 5, height: 5)
+                    }
+                }
+                .accessibilityElement()
+                .accessibilityLabel(Text("Gökyüzü sayfası \(current + 1) / \(count), diğer takımyıldızlar için yana kaydır"))
+            }
+        }
+    }
+}
+
+/// One page of the sky chart: up to three constellations in fixed slots, each labelled with its progress.
+private struct SkyChartPage: View {
+    let constellations: [Constellation]
+    var progress: SkyProgress
+
+    var body: some View {
+        let slots = [CGRect(x: 0.04, y: 0.08, width: 0.40, height: 0.32), CGRect(x: 0.50, y: 0.10, width: 0.42, height: 0.52),
+                     CGRect(x: 0.08, y: 0.62, width: 0.40, height: 0.26)]
+        GeometryReader { geo in
+            let w = geo.size.width, h = geo.size.height
+            ZStack(alignment: .topLeading) {
+                Canvas { ctx, size in
+                    for (i, c) in constellations.enumerated() {
                         let s = slots[i]
                         SkyDrawing.draw(c, lit: { progress.isLit($0) }, in: CGRect(x: s.minX * w, y: s.minY * h, width: s.width * w, height: s.height * h),
                                         ctx: ctx, accent: Theme.accent, ink: Theme.star, missing: Theme.ember)
                     }
                 }
-                ForEach(Array(shown.enumerated()), id: \.offset) { i, c in
+                ForEach(Array(constellations.enumerated()), id: \.offset) { i, c in
                     NavigationLink(value: Route.constellation(c.id)) {
                         HStack(spacing: 6) {
                             Text(c.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
