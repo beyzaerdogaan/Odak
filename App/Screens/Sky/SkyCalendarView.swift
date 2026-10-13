@@ -1,41 +1,86 @@
 import OdakCore
 import SwiftUI
 
-/// "Gökyüzü takvimi": the coming year's sky events. A ribbon across the months shows when each
-/// shower is active and marks eclipses and planet events, then the events follow month by month
-/// with when to look, how full the Moon will be and a reminder. Each opens its own event page.
+/// "Gökyüzü takvimi": a real calendar of the sky, by month or by week. Each day shows the events on
+/// it in their own colour: a shower's active days as a soft band with its peak night filled, an
+/// eclipse or planet event as a dot. Below the calendar the period's events follow as cards with
+/// when to look, how full the Moon will be and a reminder; tapping a day narrows them to that day.
 struct SkyCalendarView: View {
-    @State private var reminded: Set<String> = []
+    enum Mode: String, CaseIterable { case month = "Ay", week = "Hafta" }
 
-    private let cal = Calendar.current
+    @State private var reminded: Set<String> = []
+    @State private var mode: Mode = .month
+    /// The first day of the month or week on screen.
+    @State private var anchor: Date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: .now)) ?? .now
+    @State private var selected: Date?
+
+    private var cal: Calendar {
+        var c = Calendar.current
+        c.firstWeekday = 2 // Pazartesi
+        return c
+    }
     private let now = Date.now
 
-    private var months: [Date] {
+    /// Everything from this month to the end of the data, so paging needs no reload.
+    private var events: [SkyEvent] {
         let first = cal.date(from: cal.dateComponents([.year, .month], from: now)) ?? now
-        return (0..<12).compactMap { cal.date(byAdding: .month, value: $0, to: first) }
+        let end = cal.date(byAdding: .month, value: 27, to: first) ?? now
+        return MeteorShowers.schedule(from: first, to: end, calendar: cal)
     }
 
-    private var events: [SkyEvent] {
-        guard let first = months.first, let last = months.last,
-              let end = cal.date(byAdding: .month, value: 1, to: last) else { return [] }
-        return MeteorShowers.schedule(from: max(first, cal.startOfDay(for: now)), to: end, calendar: cal)
+    private var period: DateInterval {
+        let unit: Calendar.Component = mode == .month ? .month : .weekOfYear
+        return cal.dateInterval(of: unit, for: anchor) ?? DateInterval(start: anchor, duration: 86_400)
     }
 
     var body: some View {
         let events = events
+        let period = period
+        let shown = events.filter { e in
+            if let selected { return occurs(e, on: selected) }
+            return e.day >= period.start && e.day < period.end || (e.shower != nil && e.start < period.end && e.end > period.start)
+        }
         ScrollView {
-            VStack(alignment: .leading, spacing: 22) {
-                YearRibbon(months: months, events: events, now: now)
-                    .padding(.top, 8)
-                ForEach(months, id: \.self) { month in
-                    let inMonth = events.filter { cal.isDate($0.day, equalTo: month, toGranularity: .month) }
-                    if !inMonth.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(monthTitle(month)).font(.serif(22)).foregroundStyle(Theme.paper)
-                            ForEach(inMonth) { e in row(e) }
+            VStack(alignment: .leading, spacing: 18) {
+                Picker("Görünüm", selection: $mode) {
+                    ForEach(Mode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .padding(.top, 8)
+                .onChange(of: mode) { _, new in
+                    selected = nil
+                    let unit: Calendar.Component = new == .month ? .month : .weekOfYear
+                    let focus = new == .week && cal.isDate(now, equalTo: anchor, toGranularity: .month) ? now : anchor
+                    anchor = cal.dateInterval(of: unit, for: focus)?.start ?? anchor
+                }
+
+                VStack(spacing: 12) {
+                    pager(period)
+                    weekdayHeader
+                    let days = mode == .month ? monthDays(period) : weekDays(period)
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 7), spacing: 4) {
+                        ForEach(Array(days.enumerated()), id: \.offset) { _, day in
+                            if let day { dayCell(day, events: events) } else { Color.clear.frame(height: cellHeight) }
                         }
                     }
                 }
+                .plate(radius: 22, padding: 14)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text(selected.map(dayTitle) ?? (mode == .month ? "Bu ay" : "Bu hafta"))
+                            .font(.serif(22)).foregroundStyle(Theme.paper)
+                        Spacer()
+                        if selected != nil {
+                            Button("Tümü") { selected = nil }.font(.system(size: 13, weight: .semibold)).tint(Theme.accent)
+                        }
+                    }
+                    if shown.isEmpty {
+                        Text("Bu tarihlerde bir gökyüzü etkinliği yok.").font(.system(size: 14)).foregroundStyle(Theme.paper3)
+                    }
+                    ForEach(shown) { e in row(e) }
+                }
+
                 Text("Meteor yağmurları Uluslararası Meteor Örgütü'nün (IMO) yıllık takviminden, tutulmalar NASA'nın tutulma tablolarından; gezegen olayları ve saatler Türkiye'den görüldüğü gibi hesaplandı. Saatte görülen meteor sayısı karanlık bir gökyüzü için.")
                     .font(.system(size: 12)).foregroundStyle(Theme.paper3)
                     .fixedSize(horizontal: false, vertical: true)
@@ -45,6 +90,117 @@ struct SkyCalendarView: View {
         .pinnedHeader { BackHeader(title: "Gökyüzü takvimi", subtitle: nil) }
         .background(StarField(seed: 47, count: 90, grid: false))
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    // MARK: Calendar grid
+
+    private var cellHeight: CGFloat { mode == .month ? 48 : 86 }
+
+    private func pager(_ period: DateInterval) -> some View {
+        let unit: Calendar.Component = mode == .month ? .month : .weekOfYear
+        return HStack {
+            Button { step(-1, unit) } label: { Image(systemName: "chevron.left").frame(width: 36, height: 36) }
+                .accessibilityLabel("Önceki")
+            Spacer()
+            Text(periodTitle(period)).font(.serif(20)).foregroundStyle(Theme.paper)
+            Spacer()
+            Button { step(1, unit) } label: { Image(systemName: "chevron.right").frame(width: 36, height: 36) }
+                .accessibilityLabel("Sonraki")
+        }
+        .font(.system(size: 15, weight: .semibold))
+        .tint(Theme.accent)
+    }
+
+    private func step(_ by: Int, _ unit: Calendar.Component) {
+        selected = nil
+        anchor = cal.date(byAdding: unit, value: by, to: anchor) ?? anchor
+    }
+
+    private var weekdayHeader: some View {
+        HStack(spacing: 4) {
+            ForEach(["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"], id: \.self) { d in
+                Text(d).font(.system(size: 11, weight: .semibold)).foregroundStyle(Theme.paper3).frame(maxWidth: .infinity)
+            }
+        }
+    }
+
+    /// The month's days, padded with blanks so the 1st lands on its weekday.
+    private func monthDays(_ period: DateInterval) -> [Date?] {
+        let lead = (cal.component(.weekday, from: period.start) - cal.firstWeekday + 7) % 7
+        let count = cal.range(of: .day, in: .month, for: period.start)?.count ?? 30
+        let days: [Date?] = (0..<count).map { cal.date(byAdding: .day, value: $0, to: period.start) }
+        return Array(repeating: nil, count: lead) + days
+    }
+
+    private func weekDays(_ period: DateInterval) -> [Date?] {
+        (0..<7).map { cal.date(byAdding: .day, value: $0, to: period.start) }
+    }
+
+    private func occurs(_ e: SkyEvent, on day: Date) -> Bool {
+        if e.shower != nil { return e.contains(cal.date(byAdding: .hour, value: 12, to: cal.startOfDay(for: day)) ?? day) }
+        return cal.isDate(e.day, inSameDayAs: day)
+    }
+
+    private func dayCell(_ day: Date, events: [SkyEvent]) -> some View {
+        let here = events.filter { occurs($0, on: day) }
+        let showers = here.filter { $0.shower != nil }
+        let peaks = showers.filter { cal.isDate($0.day, inSameDayAs: day) }
+        let astro = here.filter { $0.astro != nil }
+        let isToday = cal.isDateInToday(day)
+        let isSelected = selected.map { cal.isDate($0, inSameDayAs: day) } ?? false
+        let band = showers.first.map(Self.tint)
+        let peak = peaks.first.map(Self.tint)
+        return Button {
+            selected = isSelected ? nil : day
+        } label: {
+            VStack(spacing: 4) {
+                Text("\(cal.component(.day, from: day))")
+                    .font(.system(size: 15, weight: isToday || peak != nil ? .bold : .regular)).monospacedDigit()
+                    .foregroundStyle(peak != nil ? Theme.onAccent : Theme.paper)
+                    .frame(width: 30, height: 30)
+                    .background { if let peak { Circle().fill(peak) } }
+                    .overlay { if isToday { Circle().strokeBorder(Theme.accent, lineWidth: 1.5) } }
+                if mode == .week {
+                    VStack(spacing: 2) {
+                        ForEach(here.prefix(3)) { e in
+                            Text(e.shower?.name ?? AstroEventView.kindName(e.astro?.kind))
+                                .font(.system(size: 9, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
+                                .foregroundStyle(Self.tint(e))
+                        }
+                    }
+                } else {
+                    HStack(spacing: 3) {
+                        ForEach(astro.prefix(3)) { e in Circle().fill(Self.tint(e)).frame(width: 5, height: 5) }
+                    }
+                    .frame(height: 5)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: cellHeight, alignment: .top)
+            .padding(.top, 4)
+            .background {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(band.map { $0.opacity(0.14) } ?? .clear)
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(Theme.paper2, lineWidth: 1)
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(dayTitle(day) + (here.isEmpty ? "" : ", " + here.map(\.title).joined(separator: ", ")))
+    }
+
+    private func periodTitle(_ p: DateInterval) -> String {
+        if mode == .month { return monthTitle(p.start) }
+        let last = cal.date(byAdding: .day, value: 6, to: p.start) ?? p.start
+        let a = cal.dateComponents([.day, .month], from: p.start), b = cal.dateComponents([.day, .month], from: last)
+        let ma = MeteorShower.monthNames[(a.month ?? 1) - 1], mb = MeteorShower.monthNames[(b.month ?? 1) - 1]
+        return a.month == b.month ? "\(a.day ?? 1)–\(b.day ?? 1) \(mb)" : "\(a.day ?? 1) \(ma) – \(b.day ?? 1) \(mb)"
+    }
+
+    private func dayTitle(_ day: Date) -> String {
+        let c = cal.dateComponents([.day, .month], from: day)
+        return "\(c.day ?? 1) \(MeteorShower.monthNames[(c.month ?? 1) - 1])"
     }
 
     private func row(_ e: SkyEvent) -> some View {
@@ -137,89 +293,6 @@ struct SkyCalendarView: View {
     private func monthTitle(_ month: Date) -> String {
         let c = cal.dateComponents([.year, .month], from: month)
         return "\(MeteorShower.monthNames[(c.month ?? 1) - 1]) \(c.year ?? 0)"
-    }
-}
-
-/// Twelve months side by side, each shower a coloured band across the days it is active, a bright
-/// tick on its peak and a gold line for today: the year's sky at a glance.
-private struct YearRibbon: View {
-    let months: [Date]
-    let events: [SkyEvent]
-    let now: Date
-
-    private let cal = Calendar.current
-
-    var body: some View {
-        let lanes = laneAssignment()
-        let laneCount = max(1, (lanes.values.max() ?? 0) + 1)
-        VStack(alignment: .leading, spacing: 6) {
-            GeometryReader { geo in
-                let w = geo.size.width
-                let span = interval
-                let x: (Date) -> CGFloat = { d in
-                    CGFloat(d.timeIntervalSince(span.start) / span.duration) * w
-                }
-                ZStack(alignment: .topLeading) {
-                    ForEach(Array(months.enumerated()), id: \.offset) { i, m in
-                        Rectangle().fill(i.isMultiple(of: 2) ? Theme.plate : .clear)
-                            .frame(width: max(0, x(next(m)) - x(m)))
-                            .offset(x: x(m))
-                    }
-                    ForEach(events.filter { $0.shower == nil }) { e in
-                        let tint = SkyCalendarView.tint(e)
-                        Rectangle().fill(tint).frame(width: 7, height: 7).rotationEffect(.degrees(45))
-                            .shadow(color: tint.opacity(0.8), radius: 3)
-                            .offset(x: x(e.peak) - 3.5, y: 4)
-                    }
-                    ForEach(events.filter { $0.shower != nil }) { e in
-                        let tint = SkyCalendarView.tint(e)
-                        let x0 = max(0, x(e.start)), x1 = min(w, x(e.end))
-                        let y = CGFloat(lanes[e.id] ?? 0) * 14 + 22
-                        Capsule().fill(tint.opacity(0.55))
-                            .frame(width: max(4, x1 - x0), height: 6)
-                            .offset(x: x0, y: y)
-                        Circle().fill(tint).frame(width: 9, height: 9)
-                            .shadow(color: tint.opacity(0.8), radius: 4)
-                            .offset(x: x(e.peak) - 4.5, y: y - 1.5)
-                    }
-                    Rectangle().fill(Theme.accent).frame(width: 1.5)
-                        .offset(x: x(now))
-                }
-            }
-            .frame(height: CGFloat(laneCount) * 14 + 28)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-            HStack(spacing: 0) {
-                ForEach(months, id: \.self) { m in
-                    Text(MeteorShower.monthNames[cal.component(.month, from: m) - 1].prefix(1))
-                        .font(.system(size: 10, weight: .semibold)).foregroundStyle(Theme.paper3)
-                        .frame(maxWidth: .infinity)
-                }
-            }
-        }
-        .plate(radius: 20, padding: 14)
-        .accessibilityHidden(true)
-    }
-
-    private var interval: DateInterval {
-        let start = months.first ?? now
-        return DateInterval(start: start, end: months.last.map(next) ?? now)
-    }
-
-    private func next(_ month: Date) -> Date { cal.date(byAdding: .month, value: 1, to: month) ?? month }
-
-    /// Overlapping showers (Orionidler and Leonidler, say) go on separate lanes.
-    private func laneAssignment() -> [String: Int] {
-        var laneEnds: [Date] = []
-        var result: [String: Int] = [:]
-        for e in events.filter({ $0.shower != nil }).sorted(by: { $0.start < $1.start }) {
-            if let free = laneEnds.firstIndex(where: { $0 <= e.start }) {
-                laneEnds[free] = e.end; result[e.id] = free
-            } else {
-                laneEnds.append(e.end); result[e.id] = laneEnds.count - 1
-            }
-        }
-        return result
     }
 }
 

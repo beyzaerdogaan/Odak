@@ -16,7 +16,7 @@ struct AstroBackdrop: View {
             LinearGradient(colors: [AstroStyle.tint(event).opacity(0.2), .clear], startPoint: .top, endPoint: .center)
                 .ignoresSafeArea()
             TimelineView(.animation(paused: reduceMotion)) { context in
-                AstroScene(event: event, time: reduceMotion ? 9 : context.date.timeIntervalSinceReferenceDate)
+                AstroScene(event: event, time: reduceMotion ? 13 : context.date.timeIntervalSinceReferenceDate)
             }
             .ignoresSafeArea()
         }
@@ -90,27 +90,32 @@ private struct AstroScene: View {
         let m = event.magnitude ?? 0.5
         // Closest approach of the shadow's centre to the Moon's: m = (umbra + r - d) / 2r.
         let d = max(0, umbra + r - 2 * r * m)
-        let p = loop(26)
-        let x = (p * 2 - 1) * (penumbra + r) * 1.2
+        // Ease through the middle so the deepest part of the eclipse lingers on screen.
+        let q = loop(26) * 2 - 1
+        let x = (q < 0 ? -1 : 1) * pow(abs(q), 2.2) * (penumbra + r) * 1.2
         let center = CGPoint(x: c.x + x, y: c.y + d)
         let total = m >= 1
 
         let moonDisc = Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r))
         let covered = max(0, min(1, (umbra + r - hypot(x, d)) / (2 * r)))
         glow(&ctx, at: c, radius: r * 2.6, color: AstroStyle.color("moon"), alpha: (light ? 0.25 : 0.32) * (1 - covered * 0.8))
-        drawMoon(&ctx, center: c, radius: r, light: light)
-
+        // The Moon and Earth's shadow are drawn into one layer so the shadow multiplies the Moon's
+        // own surface: maria and craters stay visible through the copper of the umbra, as in photos.
         ctx.drawLayer { layer in
+            drawMoon(&layer, center: c, radius: r, light: light)
             layer.clip(to: moonDisc)
+            layer.blendMode = .multiply
+            let k = umbra / penumbra
+            let core = total ? Color(hex: 0x4A160A) : Color(hex: 0x24100A)
+            let rim = total ? Color(hex: 0xB4542C) : Color(hex: 0x6A3422)
             layer.fill(Path(ellipseIn: CGRect(x: center.x - penumbra, y: center.y - penumbra, width: 2 * penumbra, height: 2 * penumbra)),
                        with: .radialGradient(Gradient(stops: [
-                           .init(color: .black.opacity(0.45), location: umbra / penumbra),
-                           .init(color: .black.opacity(0), location: 1),
+                           .init(color: core, location: 0),
+                           .init(color: rim, location: k * 0.93),
+                           .init(color: Color(white: 0.5), location: k * 1.02),
+                           .init(color: Color(white: 0.8), location: k + (1 - k) * 0.45),
+                           .init(color: .white, location: 1),
                        ]), center: center, startRadius: 0, endRadius: penumbra))
-            let shade = total ? Color(hex: 0x8C3A1C, opacity: 0.9) : Color(hex: 0x24120C, opacity: 0.88)
-            layer.fill(Path(ellipseIn: CGRect(x: center.x - umbra, y: center.y - umbra, width: 2 * umbra, height: 2 * umbra)),
-                       with: .radialGradient(Gradient(colors: [shade, shade.opacity(0.75)]),
-                                             center: center, startRadius: umbra * 0.6, endRadius: umbra))
         }
         if total, covered > 0.95 {
             glow(&ctx, at: c, radius: r * 2.2, color: Color(hex: 0xC4502A), alpha: 0.25 * (covered - 0.95) / 0.05)
@@ -273,22 +278,12 @@ private struct AstroScene: View {
 
     // MARK: Pieces
 
+    /// The near side of the full Moon, from NASA's LRO maps (`Moon` in the asset catalog), with a
+    /// faint cool limb so it sits in the sky rather than on it.
     private func drawMoon(_ ctx: inout GraphicsContext, center c: CGPoint, radius r: CGFloat, light: Bool) {
-        let disc = Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r))
-        ctx.fill(disc, with: .color(AstroStyle.color("moon")))
-        ctx.drawLayer { layer in
-            layer.clip(to: disc)
-            // The maria, the dark "face" of the full Moon.
-            let maria: [(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat)] = [
-                (-0.45, -0.45, 0.5, 0.42), (0.0, -0.35, 0.38, 0.3), (-0.2, 0.0, 0.42, 0.36), (0.18, 0.1, 0.3, 0.26), (-0.6, 0.2, 0.3, 0.38),
-            ]
-            for m in maria {
-                layer.fill(Path(ellipseIn: CGRect(x: c.x + m.x * r, y: c.y + m.y * r, width: m.w * r, height: m.h * r)),
-                           with: .color(Color(hex: 0x6E6A60, opacity: light ? 0.16 : 0.22)))
-            }
-            layer.fill(disc, with: .radialGradient(Gradient(colors: [.clear, .black.opacity(0.12)]), center: c, startRadius: r * 0.6, endRadius: r))
-        }
-        if light { ctx.stroke(disc, with: .color(Theme.star.opacity(0.35)), lineWidth: 1) }
+        let rect = CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r)
+        ctx.draw(Image("Moon"), in: rect)
+        if light { ctx.stroke(Path(ellipseIn: rect), with: .color(Theme.star.opacity(0.3)), lineWidth: 1) }
     }
 
     private func glow(_ ctx: inout GraphicsContext, at c: CGPoint, radius: CGFloat, color: Color, alpha: Double) {
