@@ -134,14 +134,21 @@ public enum Journey {
 public struct MeteorShower: Hashable, Identifiable, Sendable {
     public let id: String
     public let name: String
-    /// Active window and peak as (month, day). Dates drift a little each year; a later release can
-    /// read them from a remote config instead of this table.
+    /// Active window and peak as (month, day). Only a fallback: where `MeteorShowers.calendar`
+    /// (the IMO calendar) covers a date, its dated windows are used instead.
     public let start: (Int, Int)
     public let end: (Int, Int)
     public let peak: (Int, Int)
-    public let peakText: String
+    /// Peak wording for dates the calendar does not cover.
+    public let approxPeakText: String
     public let radiant: String
     public let watchTip: String
+
+    public init(id: String, name: String, start: (Int, Int), end: (Int, Int), peak: (Int, Int), peakText: String,
+                radiant: String, watchTip: String) {
+        self.id = id; self.name = name; self.start = start; self.end = end; self.peak = peak
+        self.approxPeakText = peakText; self.radiant = radiant; self.watchTip = watchTip
+    }
 
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
     public func hash(into h: inout Hasher) { h.combine(id) }
@@ -151,7 +158,17 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
     /// Chance a completed session during the shower catches a shooting star (×2 Işık).
     public static let shootingStarChance = 0.25
 
+    /// The calendar's window under way at `date`, or else its next one. Nil when the calendar does
+    /// not cover `date` or has no later window for this shower; callers then use the fixed table.
+    public func window(around date: Date, calendar: Calendar = .current) -> MeteorCalendar.Window? {
+        guard let c = MeteorShowers.calendar, c.covers(date, calendar: calendar) else { return nil }
+        return c.windows(of: id, calendar: calendar).first { date < $0.end }
+    }
+
     public func isActive(on date: Date, calendar: Calendar = .current) -> Bool {
+        if let c = MeteorShowers.calendar, c.covers(date, calendar: calendar) {
+            return window(around: date, calendar: calendar)?.contains(date) ?? false
+        }
         let c = calendar.dateComponents([.month, .day], from: date)
         let today = (c.month ?? 1) * 100 + (c.day ?? 1)
         let s = start.0 * 100 + start.1, e = end.0 * 100 + end.1
@@ -160,12 +177,16 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
 
     /// Key for per-year progress, using the year the shower started in.
     public func seasonKey(for date: Date, calendar: Calendar = .current) -> String {
+        if let w = window(around: date, calendar: calendar), w.contains(date) {
+            return "\(id)-\(calendar.component(.year, from: w.start))"
+        }
         var year = calendar.component(.year, from: date)
         if start.0 > end.0, calendar.component(.month, from: date) <= end.0 { year -= 1 }
         return "\(id)-\(year)"
     }
 
     public func nextStart(after date: Date, calendar: Calendar = .current) -> Date {
+        if let w = window(around: date, calendar: calendar), w.start > date { return w.start }
         let year = calendar.component(.year, from: date)
         for y in [year, year + 1] {
             if let d = calendar.date(from: DateComponents(year: y, month: start.0, day: start.1)), d > date { return d }
@@ -173,14 +194,63 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
         return date
     }
 
+    /// 23:00 on the evening the peak night begins, for the reminder.
     public func peakDate(around date: Date, calendar: Calendar = .current) -> Date? {
+        if let w = window(around: date, calendar: calendar) {
+            let night = Self.peakNight(of: w.peak, calendar: calendar)
+            return calendar.date(bySettingHour: 23, minute: 0, second: 0, of: night)
+        }
         var year = calendar.component(.year, from: date)
         if start.0 > peak.0, calendar.component(.month, from: date) >= start.0 { year += 1 }
         return calendar.date(from: DateComponents(year: year, month: peak.0, day: peak.1, hour: 23))
     }
+
+    /// "21–22 Ekim gecesi" from the calendar, else the approximate wording.
+    public func peakText(around date: Date = Date(), calendar: Calendar = .current) -> String {
+        guard let w = window(around: date, calendar: calendar) else { return approxPeakText }
+        let night = Self.peakNight(of: w.peak, calendar: calendar)
+        guard let next = calendar.date(byAdding: .day, value: 1, to: night) else { return approxPeakText }
+        let a = calendar.dateComponents([.month, .day], from: night), b = calendar.dateComponents([.month, .day], from: next)
+        let months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+        let ma = months[(a.month ?? 1) - 1], mb = months[(b.month ?? 1) - 1]
+        let span = a.month == b.month ? "\(a.day ?? 1)–\(b.day ?? 1) \(mb)" : "\(a.day ?? 1) \(ma)–\(b.day ?? 1) \(mb)"
+        return "\(span) gecesi"
+    }
+
+    /// Moon illumination (0–100) at the peak, so the event can warn when moonlight hides faint meteors.
+    public func moonAtPeak(around date: Date = Date(), calendar: Calendar = .current) -> Int? {
+        if let w = window(around: date, calendar: calendar) { return Moon.illumination(at: w.peak) }
+        return peakDate(around: date, calendar: calendar).map(Moon.illumination(at:))
+    }
+
+    /// The local day whose evening starts the night of `peak`: a peak before noon belongs to the night before.
+    static func peakNight(of peak: Date, calendar: Calendar) -> Date {
+        let day = calendar.startOfDay(for: peak)
+        guard calendar.component(.hour, from: peak) < 12 else { return day }
+        return calendar.date(byAdding: .day, value: -1, to: day) ?? day
+    }
 }
 
 public enum MeteorShowers {
+    private static let lock = NSLock()
+    nonisolated(unsafe) private static var current: MeteorCalendar? = MeteorCalendar.bundled
+
+    /// The dated IMO calendar in use: the bundled copy, or a newer one adopted at run time.
+    public static var calendar: MeteorCalendar? {
+        get { lock.withLock { current } }
+        set { lock.withLock { current = newValue } }
+    }
+
+    /// Switches to `candidate` when it is newer than the calendar in use. Returns whether it did.
+    @discardableResult
+    public static func adopt(_ candidate: MeteorCalendar) -> Bool {
+        lock.withLock {
+            if let c = current, c.updated >= candidate.updated { return false }
+            current = candidate
+            return true
+        }
+    }
+
     public static let all: [MeteorShower] = [
         MeteorShower(id: "quadrantids", name: "Kuadrantidler", start: (12, 28), end: (1, 12), peak: (1, 3), peakText: "Ocak başı",
                      radiant: "Çoban'ın kuzeyi", watchTip: "Zirve kısa sürer; gece yarısından sonra kuzeydoğuya bak."),

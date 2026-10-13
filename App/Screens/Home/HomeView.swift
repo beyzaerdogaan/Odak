@@ -133,7 +133,7 @@ struct EventBanner: View {
             Image(systemName: "sparkles").font(.system(size: 22)).foregroundStyle(Theme.meteor)
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(shower.name) meteor yağmuru").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                Text(active ? "Etkinlik sürüyor, zirve \(shower.peakText)" : "Sıradaki etkinlik, zirve \(shower.peakText)")
+                Text(active ? "Etkinlik sürüyor, zirve \(shower.peakText())" : "Sıradaki etkinlik, zirve \(shower.peakText())")
                     .font(.system(size: 12)).foregroundStyle(Theme.meteor2)
             }
             Spacer()

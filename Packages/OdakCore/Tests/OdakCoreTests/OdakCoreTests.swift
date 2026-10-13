@@ -151,6 +151,49 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertFalse(q.isActive(on: date(2026, 6, 1), calendar: cal))
     }
 
+    func shower(_ id: String) -> MeteorShower { MeteorShowers.all.first { $0.id == id }! }
+
+    func testBundledMeteorCalendarDrivesDates() throws {
+        let c = try XCTUnwrap(MeteorCalendar.bundled)
+        XCTAssertTrue(c.covers(date(2026, 10, 13), calendar: cal))
+        XCTAssertEqual(Set(c.occurrences.map(\.id)), Set(MeteorShowers.all.map(\.id)))
+        let now = date(2026, 10, 13)
+        XCTAssertEqual(MeteorShowers.active(on: now, calendar: cal)?.id, "orionids")
+        XCTAssertEqual(shower("orionids").peakText(around: now, calendar: cal), "21–22 Ekim gecesi")
+        XCTAssertEqual(MeteorShowers.upcoming(after: now, calendar: cal).map(\.id), ["leonids", "geminids", "quadrantids"])
+        // A morning peak belongs to the night before: Quadrantids peak 4 Jan 2027, 06:25 in Istanbul.
+        XCTAssertEqual(shower("quadrantids").peakText(around: now, calendar: cal), "3–4 Ocak gecesi")
+        XCTAssertEqual(shower("quadrantids").peakDate(around: now, calendar: cal), date(2027, 1, 3, 23))
+        XCTAssertEqual(shower("geminids").peakText(around: now, calendar: cal), "14–15 Aralık gecesi")
+        XCTAssertEqual(shower("lyrids").nextStart(after: now, calendar: cal), cal.date(from: DateComponents(year: 2027, month: 4, day: 14)))
+        // The last active day counts in full.
+        XCTAssertTrue(shower("orionids").isActive(on: date(2026, 11, 7, 23), calendar: cal))
+        XCTAssertFalse(shower("orionids").isActive(on: date(2026, 11, 8, 1), calendar: cal))
+        // Moonlight at the 2026 Orionid peak: about 80 %, as in the IMO calendar.
+        XCTAssertEqual(Double(try XCTUnwrap(shower("orionids").moonAtPeak(around: now, calendar: cal))), 80, accuracy: 4)
+    }
+
+    func testMeteorShowersFallBackWithoutCalendar() {
+        let saved = MeteorShowers.calendar
+        defer { MeteorShowers.calendar = saved }
+        MeteorShowers.calendar = nil
+        XCTAssertEqual(shower("orionids").peakText(around: date(2026, 10, 13), calendar: cal), "21–22 Ekim civarı")
+        XCTAssertTrue(shower("orionids").isActive(on: date(2030, 10, 13), calendar: cal))
+        XCTAssertEqual(shower("orionids").seasonKey(for: date(2030, 10, 13), calendar: cal), "orionids-2030")
+    }
+
+    func testMeteorCalendarAdoptsOnlyNewerValidCopies() throws {
+        let saved = MeteorShowers.calendar
+        defer { MeteorShowers.calendar = saved }
+        func json(_ updated: String, start: String = "2031-10-02") -> Data {
+            Data(#"{"version":1,"updated":"\#(updated)","source":"test","occurrences":[{"id":"orionids","start":"\#(start)","end":"2031-11-07","peak":"2031-10-21T18:00:00Z"}]}"#.utf8)
+        }
+        XCTAssertFalse(MeteorShowers.adopt(try MeteorCalendar.decode(json("2020-01-01"))))
+        XCTAssertTrue(MeteorShowers.adopt(try MeteorCalendar.decode(json("2099-01-01"))))
+        XCTAssertEqual(MeteorShowers.calendar?.updated, "2099-01-01")
+        XCTAssertThrowsError(try MeteorCalendar.decode(json("2099-01-02", start: "2031-13-02")))
+    }
+
     func testShopAndBoosters() throws {
         var p = SkyProgress()
         XCTAssertThrowsError(try p.buy(.booster(.telescope))) { XCTAssertEqual($0 as? ShopError, .notEnoughLight) }

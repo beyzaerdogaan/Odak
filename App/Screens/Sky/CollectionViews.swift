@@ -273,7 +273,7 @@ struct MeteorEventView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
-                    Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText)" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
+                    Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText())" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
                         .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                 }
                 .padding(.top, 24)
@@ -299,6 +299,11 @@ struct MeteorEventView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Gerçekte de izle").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                     Text(shower.watchTip).font(.system(size: 14)).foregroundStyle(Theme.paperBody)
+                    if let moon = shower.moonAtPeak() {
+                        Text(moon >= 50 ? "Zirve gecesi Ay %\(moon) dolu olacak; sönük meteorlar ay ışığında kaybolabilir."
+                                        : "Zirve gecesi Ay yalnızca %\(moon) dolu, gökyüzü karanlık olacak.")
+                            .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
+                    }
                     Button {
                         guard let peak = shower.peakDate(around: .now) else { return }
                         Task { await Notifications.remindPeak(name: shower.name, at: peak); reminded = true }
@@ -316,7 +321,7 @@ struct MeteorEventView: View {
                         HStack {
                             Text(s.name).font(.system(size: 15)).foregroundStyle(Theme.paper)
                             Spacer()
-                            Text(s.peakText).font(.system(size: 13)).foregroundStyle(Theme.paper2)
+                            Text(s.peakText()).font(.system(size: 13)).foregroundStyle(Theme.paper2)
                         }
                         .frame(minHeight: 40)
                         Divider().overlay(Theme.hair)

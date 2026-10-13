@@ -41,7 +41,11 @@ final class AppModel {
         store.start()
         screenTime.clearIfExpired()
         progress.reconcileClouds(now: .now)
-        if !Demo.isOn { LiveActivityController.sync(session) }
+        if !Demo.isOn {
+            LiveActivityController.sync(session)
+            MeteorCalendarUpdater.loadCached()
+            Task { await MeteorCalendarUpdater.refresh() }
+        }
         NotificationCenter.default.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification,
                                                object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.didLock() }
