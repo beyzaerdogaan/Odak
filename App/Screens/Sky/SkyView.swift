@@ -26,6 +26,7 @@ struct SkyView: View {
                     .frame(width: 170)
                 }
                 .padding(.horizontal, 22)
+                .fadesOnScroll()
 
                 SkyChart(progress: p)
                     .frame(height: 300)
@@ -79,6 +80,7 @@ struct SkyView: View {
         }
         .scrollIndicators(.hidden)
         .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
+        .collapsingTitle("Gökyüzüm")
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }

@@ -221,6 +221,62 @@ extension View {
     }
 }
 
+/// A tab page's big title that collapses while scrolling, like a large navigation title becoming
+/// an inline one: the header marked `fadesOnScroll()` fades out as it rises and a compact title
+/// bar fades in at the top, so scrolled content never reaches the status bar.
+struct CollapsingTitle: ViewModifier {
+    let title: String
+    /// How far the page has scrolled, capped where both fades are long finished.
+    @State private var offset: CGFloat = Demo.scrolled ? 200 : 0
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.titleScrollOffset, offset)
+            .onScrollGeometryChange(for: CGFloat.self) { g in
+                // Steps of 4 pt: smooth enough for the fades without redrawing the page every point.
+                min(200, max(0, ((g.contentOffset.y + g.contentInsets.top) / 4).rounded() * 4))
+            } action: { _, value in
+                withAnimation(.linear(duration: 0.08)) { offset = value }
+            }
+            .overlay(alignment: .top) {
+                bar.allowsHitTesting(false).accessibilityHidden(offset < 30)
+            }
+    }
+
+    private var bar: some View {
+        Text(title)
+            .font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.paper)
+            .opacity(Double(min(1, max(0, (offset - 16) / 24))))
+            .frame(maxWidth: .infinity).frame(height: 44)
+            .background {
+                LinearGradient(colors: [Theme.night, Theme.night.opacity(0.94), Theme.night.opacity(0)],
+                               startPoint: .top, endPoint: .bottom)
+                    .padding(.bottom, -28)
+                    .ignoresSafeArea(edges: .top)
+                    .opacity(Double(min(1, max(0, offset / 8))))
+            }
+    }
+}
+
+private struct FadesOnScroll: ViewModifier {
+    @Environment(\.titleScrollOffset) private var offset
+    func body(content: Content) -> some View {
+        content.opacity(Double(max(0, 1 - offset / 40)))
+    }
+}
+
+extension EnvironmentValues {
+    @Entry var titleScrollOffset: CGFloat = 0
+}
+
+extension View {
+    /// On a tab page's scroll view: collapses its big title into a compact `title` bar while scrolling.
+    func collapsingTitle(_ title: String) -> some View { modifier(CollapsingTitle(title: title)) }
+
+    /// On the big header inside a `collapsingTitle` scroll view: fades it out as it scrolls up.
+    func fadesOnScroll() -> some View { modifier(FadesOnScroll()) }
+}
+
 extension Int {
     /// "1 sa 10 dk", "45 dk"
     var minutesText: String {
