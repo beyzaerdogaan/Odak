@@ -228,10 +228,11 @@ private struct InfoButton: View {
         .accessibilityLabel("Bilgi")
         .popover(isPresented: $shown, arrowEdge: .bottom) {
             Text(text)
-                .font(.system(size: 14)).foregroundStyle(Theme.paper)
+                .font(.system(size: 13)).foregroundStyle(Theme.paper)
                 .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: 260, alignment: .leading)
-                .padding(14)
+                .frame(maxWidth: 220, alignment: .leading)
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .presentationBackground(Theme.night2)
                 .presentationCompactAdaptation(.popover)
         }
     }
