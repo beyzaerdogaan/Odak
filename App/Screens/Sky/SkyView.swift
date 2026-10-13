@@ -23,7 +23,14 @@ struct SkyView: View {
                         Text("Tümü").tag(SkyProgress.Period.all)
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 170)
+                    .frame(width: 150)
+                    NavigationLink(value: Route.skyCalendar) {
+                        Image(systemName: "calendar").font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.accentInk)
+                            .frame(width: 36, height: 36)
+                            .glassEffect(.regular.interactive(), in: .circle)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Gökyüzü takvimi")
                 }
                 .padding(.horizontal, 22)
                 .fadesOnScroll()
@@ -52,7 +59,8 @@ struct SkyView: View {
                     .buttonStyle(.plain)
                     Divider().overlay(Theme.hair)
                     NavigationLink(value: Route.skyCalendar) {
-                        HStack {
+                        HStack(spacing: 12) {
+                            Image(systemName: "calendar").font(.system(size: 20)).foregroundStyle(Theme.accentInk)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("Gökyüzü etkinlikleri").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                                 if let next = nextEvent {
