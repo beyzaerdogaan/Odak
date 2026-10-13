@@ -302,18 +302,16 @@ private struct AstroScene: View {
         }
     }
 
-    /// Dawn or dusk light along the bottom of the screen, with a dark ground line.
+    /// Dawn or dusk light rising from the bottom edge of the screen.
     private func horizon(_ ctx: inout GraphicsContext, _ size: CGSize, _ light: Bool, sky: AstroEvent.Sky) {
-        let ground = size.height * 0.9
         let colors: [Color] = switch sky {
         case .morning: [Color(hex: 0xE9A27A, opacity: light ? 0.35 : 0.3), Color(hex: 0x6A5AA0, opacity: 0.12), .clear]
         case .evening: [Color(hex: 0xF0905A, opacity: light ? 0.4 : 0.35), Color(hex: 0x8A3A6A, opacity: 0.14), .clear]
         default: [Theme.ice.opacity(0.1), .clear]
         }
-        ctx.fill(Path(CGRect(x: 0, y: ground - size.height * 0.4, width: size.width, height: size.height * 0.4)),
-                 with: .linearGradient(Gradient(colors: colors.reversed()), startPoint: CGPoint(x: 0, y: ground - size.height * 0.4),
-                                       endPoint: CGPoint(x: 0, y: ground)))
-        ctx.fill(Path(CGRect(x: 0, y: ground, width: size.width, height: size.height - ground)),
-                 with: .color(light ? Color(hex: 0x1B2140, opacity: 0.12) : Color(hex: 0x03050F, opacity: 0.85)))
+        let top = size.height * 0.55
+        ctx.fill(Path(CGRect(x: 0, y: top, width: size.width, height: size.height - top)),
+                 with: .linearGradient(Gradient(colors: colors.reversed()), startPoint: CGPoint(x: 0, y: top),
+                                       endPoint: CGPoint(x: 0, y: size.height)))
     }
 }
