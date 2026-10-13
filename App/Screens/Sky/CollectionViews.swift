@@ -316,7 +316,14 @@ struct MeteorEventView: View {
                     .disabled(reminded)
                 }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Sıradaki etkinlikler").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
+                    HStack {
+                        Text("Sıradaki etkinlikler").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
+                        Spacer()
+                        NavigationLink(value: Route.skyCalendar) {
+                            Label("Takvim", systemImage: "calendar").font(.system(size: 13, weight: .semibold))
+                        }
+                        .tint(Theme.meteor)
+                    }
                     ForEach(MeteorShowers.upcoming(after: .now, count: 3).filter { $0 != shower }) { s in
                         HStack {
                             Text(s.name).font(.system(size: 15)).foregroundStyle(Theme.paper)

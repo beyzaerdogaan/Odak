@@ -5,7 +5,7 @@ set -euo pipefail
 
 APP="${1:-build/dd/Build/Products/Debug-iphonesimulator/Derin.app}"
 OUT="${2:-screenshots}"
-SCREENS="home focus active sounds reward constellation sky badges rewards map deepsky event journey lockscreen"
+SCREENS="home focus active sounds reward constellation sky badges rewards map deepsky event calendar journey lockscreen"
 
 UDID=$(xcrun simctl list devices available -j | python3 -c '
 import json, sys

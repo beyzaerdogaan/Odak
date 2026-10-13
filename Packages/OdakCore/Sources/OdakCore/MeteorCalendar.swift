@@ -82,8 +82,13 @@ public enum Moon {
     static let synodicDays = 29.530588853
 
     public static func illumination(at date: Date) -> Int {
+        Int((50 * (1 - cos(2 * .pi * phase(at: date)))).rounded())
+    }
+
+    /// Where in its cycle the Moon is: 0 new, 0.25 first quarter, 0.5 full, 0.75 last quarter.
+    public static func phase(at date: Date) -> Double {
         let days = date.timeIntervalSince(referenceNewMoon) / 86_400
         let age = days.truncatingRemainder(dividingBy: synodicDays)
-        return Int((50 * (1 - cos(2 * .pi * age / synodicDays))).rounded())
+        return (age < 0 ? age + synodicDays : age) / synodicDays
     }
 }

@@ -173,6 +173,25 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(Double(try XCTUnwrap(shower("orionids").moonAtPeak(around: now, calendar: cal))), 80, accuracy: 4)
     }
 
+    func testSkyCalendarScheduleMixesDatedAndTableWindows() {
+        let from = date(2026, 10, 13), to = date(2028, 10, 13)
+        let events = MeteorShowers.schedule(from: from, to: to, calendar: cal)
+        XCTAssertEqual(events.first?.shower.id, "orionids")
+        XCTAssertTrue(events.first!.contains(from))
+        XCTAssertEqual(events.first?.zhr, 20)
+        XCTAssertEqual(events.first?.peakText(calendar: cal), "21–22 Ekim gecesi")
+        // Once a year each, with no duplicate where the dated calendar and the table meet.
+        XCTAssertEqual(events.filter { $0.shower.id == "quadrantids" }.count, 2)
+        XCTAssertEqual(events.filter { $0.shower.id == "lyrids" }.count, 2)
+        XCTAssertEqual(events.filter { $0.shower.id == "orionids" }.count, 3)
+        XCTAssertEqual(events.map(\.start), events.map(\.start).sorted())
+        // After the calendar runs out, the table carries on: Lyrids 2028 without a ZHR.
+        let lyrids2028 = events.last { $0.shower.id == "lyrids" }
+        XCTAssertEqual(cal.component(.year, from: lyrids2028!.start), 2028)
+        XCTAssertNil(lyrids2028?.zhr)
+        XCTAssertEqual(Moon.phase(at: events.first!.peak), 10.4 / 29.53, accuracy: 0.02)
+    }
+
     func testMeteorShowersFallBackWithoutCalendar() {
         let saved = MeteorShowers.calendar
         defer { MeteorShowers.calendar = saved }

@@ -208,13 +208,37 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
     /// "21–22 Ekim gecesi" from the calendar, else the approximate wording.
     public func peakText(around date: Date = Date(), calendar: Calendar = .current) -> String {
         guard let w = window(around: date, calendar: calendar) else { return approxPeakText }
-        let night = Self.peakNight(of: w.peak, calendar: calendar)
-        guard let next = calendar.date(byAdding: .day, value: 1, to: night) else { return approxPeakText }
+        return Self.nightText(of: w.peak, calendar: calendar)
+    }
+
+    public static let monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+
+    /// "21–22 Ekim gecesi" for the night that holds `peak`.
+    public static func nightText(of peak: Date, calendar: Calendar) -> String {
+        let night = peakNight(of: peak, calendar: calendar)
+        let next = calendar.date(byAdding: .day, value: 1, to: night) ?? night
         let a = calendar.dateComponents([.month, .day], from: night), b = calendar.dateComponents([.month, .day], from: next)
-        let months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
-        let ma = months[(a.month ?? 1) - 1], mb = months[(b.month ?? 1) - 1]
+        let ma = monthNames[(a.month ?? 1) - 1], mb = monthNames[(b.month ?? 1) - 1]
         let span = a.month == b.month ? "\(a.day ?? 1)–\(b.day ?? 1) \(mb)" : "\(a.day ?? 1) \(ma)–\(b.day ?? 1) \(mb)"
         return "\(span) gecesi"
+    }
+
+    /// Every window of this shower that overlaps `from..<to`: the calendar's dated ones, and the fixed
+    /// table's for the years the calendar does not cover (their peak is put at 23:00 on the table's day).
+    public func windows(from: Date, to: Date, calendar: Calendar = .current) -> [MeteorCalendar.Window] {
+        let dated = MeteorShowers.calendar
+        var all = dated?.windows(of: id, calendar: calendar) ?? []
+        let first = calendar.component(.year, from: from), last = calendar.component(.year, from: to)
+        for y in (first - 1)...last {
+            guard let s = calendar.date(from: DateComponents(year: y, month: start.0, day: start.1)),
+                  let lastDay = calendar.date(from: DateComponents(year: start.0 > end.0 ? y + 1 : y, month: end.0, day: end.1)),
+                  let e = calendar.date(byAdding: .day, value: 1, to: lastDay),
+                  let p = calendar.date(from: DateComponents(year: start.0 > peak.0 ? y + 1 : y, month: peak.0, day: peak.1, hour: 23))
+            else { continue }
+            if dated?.covers(s, calendar: calendar) == true { continue }
+            all.append(MeteorCalendar.Window(start: s, end: e, peak: p, zhr: nil))
+        }
+        return all.filter { $0.end > from && $0.start < to }.sorted { $0.start < $1.start }
     }
 
     /// Moon illumination (0–100) at the peak, so the event can warn when moonlight hides faint meteors.
@@ -266,6 +290,17 @@ public enum MeteorShowers {
                      radiant: "İkizler", watchTip: "Akşamdan itibaren izlenebilir, en iyisi gece yarısı civarı."),
     ]
 
+    /// The sky calendar: every shower window overlapping `from..<to`, in date order.
+    public static func schedule(from: Date, to: Date, calendar: Calendar = .current) -> [SkyEvent] {
+        all.flatMap { shower in
+            shower.windows(from: from, to: to, calendar: calendar).map { w in
+                SkyEvent(shower: shower, start: w.start, end: w.end, peak: w.peak,
+                         peakNight: MeteorShower.peakNight(of: w.peak, calendar: calendar), zhr: w.zhr)
+            }
+        }
+        .sorted { $0.start < $1.start }
+    }
+
     public static func active(on date: Date, calendar: Calendar = .current) -> MeteorShower? {
         all.first { $0.isActive(on: date, calendar: calendar) }
     }
@@ -274,6 +309,28 @@ public enum MeteorShowers {
         all.filter { !$0.isActive(on: date, calendar: calendar) }
             .sorted { $0.nextStart(after: date, calendar: calendar) < $1.nextStart(after: date, calendar: calendar) }
             .prefix(count).map { $0 }
+    }
+}
+
+/// One dated meteor shower on the sky calendar.
+public struct SkyEvent: Identifiable, Hashable, Sendable {
+    public let shower: MeteorShower
+    /// First active moment and the midnight after the last active day.
+    public let start: Date
+    public let end: Date
+    public let peak: Date
+    /// Start of the local day whose evening opens the peak night.
+    public let peakNight: Date
+    /// Meteors per hour under a perfect dark sky, when the calendar gives it.
+    public let zhr: Int?
+
+    public var id: String { "\(shower.id)-\(Int(start.timeIntervalSince1970))" }
+    public var moon: Int { Moon.illumination(at: peak) }
+    public func contains(_ date: Date) -> Bool { start <= date && date < end }
+    public func peakText(calendar: Calendar = .current) -> String { MeteorShower.nightText(of: peak, calendar: calendar) }
+    /// 23:00 on the peak evening, for the reminder.
+    public func reminderDate(calendar: Calendar = .current) -> Date? {
+        calendar.date(bySettingHour: 23, minute: 0, second: 0, of: peakNight)
     }
 }
 

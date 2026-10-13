@@ -4,7 +4,7 @@ import SwiftUI
 enum AppTab: Hashable { case universe, focus, sky, rewards }
 
 enum Route: Hashable {
-    case collection, deepSky, event, journey
+    case collection, deepSky, event, journey, skyCalendar
     case constellation(String)
 }
 
@@ -57,6 +57,7 @@ struct RootView: View {
             case "deepsky": universePath = [.deepSky]
             case "event": universePath = [.event]
             case "journey": universePath = [.journey]
+            case "calendar": universePath = [.event, .skyCalendar]
             default: break
             }
         }
@@ -72,6 +73,7 @@ extension View {
                 case .deepSky: DeepSkyView()
                 case .event: MeteorEventView()
                 case .journey: JourneyView()
+                case .skyCalendar: SkyCalendarView()
                 case let .constellation(id): ConstellationDetailView(id: id)
                 }
             }
