@@ -202,4 +202,12 @@ final class OdakCoreTests: XCTestCase {
         let round = try JSONDecoder().decode(SkyProgress.self, from: JSONEncoder().encode(p))
         XCTAssertEqual(round, p)
     }
+
+    func testRetiredSoundDoesNotDropOwnedSounds() throws {
+        let data = #"{"ownedSounds": ["rain", "library", "cafe"]}"#.data(using: .utf8)!
+        let p = try JSONDecoder().decode(SkyProgress.self, from: data)
+        XCTAssertTrue(p.ownedSounds.contains(.library))
+        XCTAssertTrue(p.ownedSounds.contains(.forest))
+        XCTAssertFalse(SoundID.allCases.map(\.rawValue).contains("cafe"))
+    }
 }
