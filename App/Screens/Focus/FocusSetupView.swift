@@ -215,25 +215,38 @@ struct FocusSetupView: View {
     }
 }
 
-/// A small "i" next to a title that shows its explanation in a popover bubble.
+/// A small "i" next to a title that shows its explanation in a slim bubble just above it.
+/// A custom bubble rather than a popover: the system popover adds tall insets around one line of text.
 private struct InfoButton: View {
     let text: String
     @State private var shown = Demo.info
 
     var body: some View {
-        Button { shown = true } label: {
+        Button { withAnimation(.easeOut(duration: 0.15)) { shown.toggle() } } label: {
             Image(systemName: "info.circle").font(.system(size: 14)).foregroundStyle(Theme.paper3)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Bilgi")
-        .popover(isPresented: $shown, arrowEdge: .bottom) {
-            Text(text)
-                .font(.system(size: 13)).foregroundStyle(Theme.paper)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: 220, alignment: .leading)
-                .padding(.horizontal, 10).padding(.vertical, 6)
-                .presentationBackground(Theme.night2)
-                .presentationCompactAdaptation(.popover)
+        .accessibilityHint(text)
+        .overlay(alignment: .top) {
+            if shown {
+                Text(text)
+                    .font(.system(size: 12)).foregroundStyle(Theme.paper)
+                    .lineLimit(1)
+                    .fixedSize()
+                    .padding(.horizontal, 9).padding(.vertical, 4)
+                    .background(Theme.night2, in: .rect(cornerRadius: 8))
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.hair))
+                    .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
+                    .alignmentGuide(.top) { $0[.bottom] + 6 }
+                    .onTapGesture { withAnimation(.easeOut(duration: 0.15)) { shown = false } }
+                    .transition(.opacity)
+            }
+        }
+        .task(id: shown) {
+            guard shown, !Demo.info else { return }
+            try? await Task.sleep(for: .seconds(4))
+            withAnimation(.easeOut(duration: 0.15)) { shown = false }
         }
     }
 }
