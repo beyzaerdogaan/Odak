@@ -1,0 +1,377 @@
+{
+  "version": 1,
+  "updated": "2026-10-13",
+  "source": "Meteor yağmurları: IMO Meteor Shower Calendar 2026 ve 2027 (sterngucker.de üzerinden); Orionidler, Leonidler, Geminidler 2027 ve Kuadrantidler 2028 zirveleri güneş boylamından hesaplandı, IMO 2028 takvimi çıkınca güncellenmeli. Tutulmalar: NASA GSFC tutulma tabloları (Espenak), Türkiye'den görünürlük ve kapanma oranı PyEphem ile hesaplandı. Gezegen olayları ve süper Aylar: PyEphem (VSOP87) ile hesaplandı.",
+  "occurrences": [
+    {
+      "id": "orionids",
+      "start": "2026-10-02",
+      "end": "2026-11-07",
+      "peak": "2026-10-21T18:27:00Z",
+      "zhr": 20
+    },
+    {
+      "id": "leonids",
+      "start": "2026-11-06",
+      "end": "2026-11-30",
+      "peak": "2026-11-17T23:49:00Z",
+      "zhr": 15
+    },
+    {
+      "id": "geminids",
+      "start": "2026-12-04",
+      "end": "2026-12-20",
+      "peak": "2026-12-14T13:44:00Z",
+      "zhr": 150
+    },
+    {
+      "id": "quadrantids",
+      "start": "2026-12-28",
+      "end": "2027-01-12",
+      "peak": "2027-01-04T03:25:00Z",
+      "zhr": 80
+    },
+    {
+      "id": "lyrids",
+      "start": "2027-04-14",
+      "end": "2027-04-30",
+      "peak": "2027-04-23T01:41:00Z",
+      "zhr": 18
+    },
+    {
+      "id": "perseids",
+      "start": "2027-07-17",
+      "end": "2027-08-24",
+      "peak": "2027-08-13T08:12:00Z",
+      "zhr": 100
+    },
+    {
+      "id": "orionids",
+      "start": "2027-10-02",
+      "end": "2027-11-07",
+      "peak": "2027-10-22T00:15:00Z",
+      "zhr": 20
+    },
+    {
+      "id": "leonids",
+      "start": "2027-11-06",
+      "end": "2027-11-30",
+      "peak": "2027-11-18T05:40:00Z",
+      "zhr": 15
+    },
+    {
+      "id": "geminids",
+      "start": "2027-12-04",
+      "end": "2027-12-20",
+      "peak": "2027-12-14T19:30:00Z",
+      "zhr": 150
+    },
+    {
+      "id": "quadrantids",
+      "start": "2027-12-28",
+      "end": "2028-01-12",
+      "peak": "2028-01-04T09:15:00Z",
+      "zhr": 80
+    }
+  ],
+  "events": [
+    {
+      "id": "conjunction-mars-jupiter-2026",
+      "kind": "conjunction",
+      "title": "Mars ile Jüpiter yan yana",
+      "peak": "2026-11-16T02:10:00Z",
+      "sky": "morning",
+      "bodies": [
+        "mars",
+        "jupiter"
+      ],
+      "detail": "İki gezegen arasında yalnızca 1,2° kalıyor, aşağı yukarı iki dolunay genişliği.",
+      "tip": "Gece yarısından sonra doğuya bak: göz alıcı olan Jüpiter, hemen yanındaki kızıl nokta Mars."
+    },
+    {
+      "id": "supermoon-2026-12",
+      "kind": "supermoon",
+      "title": "Süper Ay",
+      "peak": "2026-12-24T01:28:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Yılın en yakın dolunayı: Ay 356.738 km uzakta, sıradan bir dolunaydan belirgin biçimde büyük ve parlak.",
+      "tip": "Ay doğarken ufka yakınken izle; ağaçların, binaların yanında en büyük görünür."
+    },
+    {
+      "id": "elongation-venus-2027-01",
+      "kind": "elongation",
+      "title": "Venüs sabahın en yükseğinde",
+      "peak": "2027-01-03T18:00:00Z",
+      "sky": "morning",
+      "bodies": [
+        "venus"
+      ],
+      "detail": "Venüs Güneş'ten 47° uzakta: şafaktan önce yılın en uzun süre görünür.",
+      "tip": "Gün ağarmadan önce güneydoğuya bak; gökyüzündeki en parlak nokta Venüs."
+    },
+    {
+      "id": "supermoon-2027-01",
+      "kind": "supermoon",
+      "title": "Süper Ay",
+      "peak": "2027-01-22T12:17:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Art arda ikinci süper Ay: 357.644 km.",
+      "tip": "Akşam doğuda doğarken izle; kış göğünde yüksekten geçer."
+    },
+    {
+      "id": "opposition-jupiter-2027",
+      "kind": "opposition",
+      "title": "Jüpiter karşı konumda",
+      "peak": "2027-02-11T00:14:00Z",
+      "sky": "night",
+      "bodies": [
+        "jupiter"
+      ],
+      "detail": "Jüpiter Güneş'in tam karşısında: bütün gece görünür ve yılın en parlak hâlinde.",
+      "tip": "Akşam doğuda doğar, gece yarısı en yüksekte olur. Dürbünle dört büyük uydusu seçilir."
+    },
+    {
+      "id": "opposition-mars-2027",
+      "kind": "opposition",
+      "title": "Mars karşı konumda",
+      "peak": "2027-02-19T15:38:00Z",
+      "sky": "night",
+      "bodies": [
+        "mars"
+      ],
+      "detail": "Mars bütün gece gökte, iki yılda bir yakaladığı en parlak hâline yakın.",
+      "tip": "Kızıl, titreşmeyen bir nokta ara. Akşam doğudan yükselir."
+    },
+    {
+      "id": "eclipse-lunar-2027-02",
+      "kind": "lunarEclipse",
+      "title": "Yarı gölgeli Ay tutulması",
+      "peak": "2027-02-20T23:13:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Ay Dünya'nın yarı gölgesinin kıyısından geçer; kuzey kenarı çok hafifçe kararır.",
+      "tip": "Ay gece yarısından sonra yüksekte. Kararma ince, dikkatle bak; fotoğrafta daha kolay seçilir.",
+      "magnitude": -0.057
+    },
+    {
+      "id": "elongation-mercury-2027-03",
+      "kind": "elongation",
+      "title": "Merkür sabah gökyüzünde",
+      "peak": "2027-03-17T07:00:00Z",
+      "sky": "morning",
+      "bodies": [
+        "mercury"
+      ],
+      "detail": "Merkür Güneş'ten 27,6° uzakta; bu küçük gezegeni görmek için yılın iyi fırsatlarından.",
+      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak."
+    },
+    {
+      "id": "conjunction-venus-saturn-2027",
+      "kind": "conjunction",
+      "title": "Venüs ile Satürn kavuşumu",
+      "peak": "2027-05-07T18:40:00Z",
+      "sky": "morning",
+      "bodies": [
+        "venus",
+        "saturn"
+      ],
+      "detail": "İki gezegen 0,6° yakında, bir dolunaydan biraz fazla.",
+      "tip": "Şafaktan önce doğu ufkunun üstünde. Venüs göz kamaştırır, Satürn yanında sönük ve sarımsı."
+    },
+    {
+      "id": "eclipse-solar-2027-08",
+      "kind": "solarEclipse",
+      "title": "Güneş tutulması",
+      "peak": "2027-08-02T09:46:00Z",
+      "sky": "day",
+      "bodies": [
+        "sun",
+        "moon"
+      ],
+      "detail": "Türkiye'den parçalı: Ay Güneş çapının üçte ikisini örter (İstanbul %67, Antalya %76). Tam tutulma Mısır ve Libya'dan görülür.",
+      "tip": "Güneş'e asla çıplak gözle, güneş gözlüğüyle ya da filtresiz dürbünle bakma; ISO 12312-2 belgeli tutulma gözlüğü kullan.",
+      "magnitude": 0.67
+    },
+    {
+      "id": "elongation-mercury-2027-09",
+      "kind": "elongation",
+      "title": "Merkür akşam gökyüzünde",
+      "peak": "2027-09-24T22:00:00Z",
+      "sky": "evening",
+      "bodies": [
+        "mercury"
+      ],
+      "detail": "Merkür Güneş'ten 26,3° uzakta.",
+      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak."
+    },
+    {
+      "id": "opposition-saturn-2027",
+      "kind": "opposition",
+      "title": "Satürn karşı konumda",
+      "peak": "2027-10-18T00:20:00Z",
+      "sky": "night",
+      "bodies": [
+        "saturn"
+      ],
+      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlinde.",
+      "tip": "Küçük bir teleskopla halkaları seçilir. Gece yarısı güneyde."
+    },
+    {
+      "id": "conjunction-venus-mars-2027",
+      "kind": "conjunction",
+      "title": "Venüs ile Mars kavuşumu",
+      "peak": "2027-11-25T00:40:00Z",
+      "sky": "evening",
+      "bodies": [
+        "venus",
+        "mars"
+      ],
+      "detail": "Venüs ile Mars yalnızca 0,3° yakında; dürbünün aynı karesine sığarlar.",
+      "tip": "Gün batımından sonra güneybatıda, alçakta."
+    },
+    {
+      "id": "eclipse-lunar-2028-01",
+      "kind": "lunarEclipse",
+      "title": "Parçalı Ay tutulması",
+      "peak": "2028-01-12T04:13:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Ay'ın küçük bir kenarı Dünya'nın tam gölgesine girer.",
+      "tip": "Şafağa doğru batıda, alçakta. Ufku açık bir yer seç.",
+      "magnitude": 0.066
+    },
+    {
+      "id": "supermoon-2028-02",
+      "kind": "supermoon",
+      "title": "Süper Ay",
+      "peak": "2028-02-10T15:04:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Yılın en yakın dolunayı: 356.721 km.",
+      "tip": "Akşam doğuda doğarken izle."
+    },
+    {
+      "id": "elongation-mercury-2028-02",
+      "kind": "elongation",
+      "title": "Merkür sabah gökyüzünde",
+      "peak": "2028-02-27T17:00:00Z",
+      "sky": "morning",
+      "bodies": [
+        "mercury"
+      ],
+      "detail": "Merkür Güneş'ten 26,9° uzakta.",
+      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak."
+    },
+    {
+      "id": "opposition-jupiter-2028",
+      "kind": "opposition",
+      "title": "Jüpiter karşı konumda",
+      "peak": "2028-03-12T15:22:00Z",
+      "sky": "night",
+      "bodies": [
+        "jupiter"
+      ],
+      "detail": "Jüpiter bütün gece görünür ve yılın en parlak hâlinde.",
+      "tip": "Dürbünle dört büyük uydusu seçilir."
+    },
+    {
+      "id": "elongation-venus-2028-03",
+      "kind": "elongation",
+      "title": "Venüs akşamın en yükseğinde",
+      "peak": "2028-03-22T12:00:00Z",
+      "sky": "evening",
+      "bodies": [
+        "venus"
+      ],
+      "detail": "Venüs Güneş'ten 46° uzakta: gün batımından sonra saatlerce görünür.",
+      "tip": "Akşam batıya bak; gökyüzündeki en parlak nokta Venüs."
+    },
+    {
+      "id": "eclipse-lunar-2028-07",
+      "kind": "lunarEclipse",
+      "title": "Parçalı Ay tutulması",
+      "peak": "2028-07-06T18:20:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Ay'ın üçte birinden fazlası Dünya'nın tam gölgesine girer.",
+      "tip": "Ay tutulmuş hâlde doğar; güneydoğuda, ufkun hemen üstünde.",
+      "magnitude": 0.389
+    },
+    {
+      "id": "elongation-venus-2028-08",
+      "kind": "elongation",
+      "title": "Venüs sabahın en yükseğinde",
+      "peak": "2028-08-10T16:00:00Z",
+      "sky": "morning",
+      "bodies": [
+        "venus"
+      ],
+      "detail": "Venüs Güneş'ten 46° uzakta.",
+      "tip": "Şafaktan önce doğuya bak."
+    },
+    {
+      "id": "elongation-mercury-2028-09",
+      "kind": "elongation",
+      "title": "Merkür akşam gökyüzünde",
+      "peak": "2028-09-06T10:00:00Z",
+      "sky": "evening",
+      "bodies": [
+        "mercury"
+      ],
+      "detail": "Merkür Güneş'ten 27,1° uzakta.",
+      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak."
+    },
+    {
+      "id": "opposition-saturn-2028",
+      "kind": "opposition",
+      "title": "Satürn karşı konumda",
+      "peak": "2028-10-30T17:18:00Z",
+      "sky": "night",
+      "bodies": [
+        "saturn"
+      ],
+      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlinde.",
+      "tip": "Küçük bir teleskopla halkaları seçilir."
+    },
+    {
+      "id": "conjunction-venus-jupiter-2028",
+      "kind": "conjunction",
+      "title": "Venüs ile Jüpiter kavuşumu",
+      "peak": "2028-11-10T00:50:00Z",
+      "sky": "morning",
+      "bodies": [
+        "venus",
+        "jupiter"
+      ],
+      "detail": "Gökyüzünün en parlak iki gezegeni 0,6° yakında.",
+      "tip": "Şafaktan önce doğuya bak."
+    },
+    {
+      "id": "eclipse-lunar-2028-12",
+      "kind": "lunarEclipse",
+      "title": "Tam Ay tutulması",
+      "peak": "2028-12-31T16:52:00Z",
+      "sky": "night",
+      "bodies": [
+        "moon"
+      ],
+      "detail": "Ay bütünüyle Dünya'nın gölgesine girip bakır kızılına döner.",
+      "tip": "Yılbaşı akşamı, Ay doğuda yükselirken. Çıplak gözle güvenle izlenir.",
+      "magnitude": 1.246
+    }
+  ]
+}

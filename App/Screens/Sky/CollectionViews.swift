@@ -262,18 +262,23 @@ struct NebulaArt: View {
 
 /// "Meteor yağmuru": the current (or next) shower, its rules and the real-sky viewing tip.
 struct MeteorEventView: View {
+    /// A shower picked on the sky calendar; otherwise the current or next one.
+    var showerID: String? = nil
+
     @Environment(AppModel.self) private var model
     @State private var reminded = false
 
     var body: some View {
-        let active = MeteorShowers.active(on: .now)
-        let shower = active ?? MeteorShowers.upcoming(after: .now, count: 1).first ?? MeteorShowers.all[0]
+        let current = MeteorShowers.active(on: .now)
+        let shower = showerID.flatMap { id in MeteorShowers.all.first { $0.id == id } }
+            ?? current ?? MeteorShowers.upcoming(after: .now, count: 1).first ?? MeteorShowers.all[0]
+        let active: MeteorShower? = shower.isActive(on: .now) ? shower : nil
         let done = model.progress.meteorProgress[shower.seasonKey(for: .now)] ?? 0
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
-                    Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText)" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
+                    Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText())" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
                         .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                 }
                 .padding(.top, 24)
@@ -299,6 +304,11 @@ struct MeteorEventView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Gerçekte de izle").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                     Text(shower.watchTip).font(.system(size: 14)).foregroundStyle(Theme.paperBody)
+                    if let moon = shower.moonAtPeak() {
+                        Text(moon >= 50 ? "Zirve gecesi Ay %\(moon) dolu olacak; sönük meteorlar ay ışığında kaybolabilir."
+                                        : "Zirve gecesi Ay yalnızca %\(moon) dolu, gökyüzü karanlık olacak.")
+                            .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
+                    }
                     Button {
                         guard let peak = shower.peakDate(around: .now) else { return }
                         Task { await Notifications.remindPeak(name: shower.name, at: peak); reminded = true }
@@ -311,14 +321,26 @@ struct MeteorEventView: View {
                     .disabled(reminded)
                 }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Sıradaki etkinlikler").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
-                    ForEach(MeteorShowers.upcoming(after: .now, count: 3).filter { $0 != shower }) { s in
-                        HStack {
-                            Text(s.name).font(.system(size: 15)).foregroundStyle(Theme.paper)
-                            Spacer()
-                            Text(s.peakText).font(.system(size: 13)).foregroundStyle(Theme.paper2)
+                    HStack {
+                        Text("Sıradaki etkinlikler").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
+                        Spacer()
+                        NavigationLink(value: Route.skyCalendar) {
+                            Label("Takvim", systemImage: "calendar").font(.system(size: 13, weight: .semibold))
                         }
-                        .frame(minHeight: 40)
+                        .tint(Theme.meteor)
+                    }
+                    ForEach(upcoming(excluding: shower)) { e in
+                        NavigationLink(value: e.shower.map { Route.meteor($0.id) } ?? Route.astro(e.id)) {
+                            HStack {
+                                Circle().fill(SkyCalendarView.tint(e)).frame(width: 6, height: 6)
+                                Text(e.shower?.name ?? e.title).font(.system(size: 15)).foregroundStyle(Theme.paper)
+                                Spacer()
+                                Text(e.whenText()).font(.system(size: 13)).foregroundStyle(Theme.paper2)
+                            }
+                            .frame(minHeight: 40)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
                         Divider().overlay(Theme.hair)
                     }
                 }
@@ -328,6 +350,14 @@ struct MeteorEventView: View {
         .pinnedHeader(fade: .clear) { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
         .background { EventBackdrop(shower: shower, active: active != nil) }
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    /// The next three sky events of any kind after this shower, eclipses and planet events included.
+    private func upcoming(excluding shower: MeteorShower) -> [SkyEvent] {
+        let now = Date.now
+        let soon = Calendar.current.date(byAdding: .year, value: 1, to: now) ?? now
+        return MeteorShowers.schedule(from: now, to: soon).filter { $0.shower != shower && $0.day >= Calendar.current.startOfDay(for: now) }
+            .prefix(3).map { $0 }
     }
 }
 
