@@ -75,7 +75,7 @@ struct HomeView: View {
         }
         .scrollIndicators(.hidden)
         .collapsingTitle("Evrenin")
-        .background(StarField(seed: 12, count: 40, depth: 0.25, grid: false, theme: p.selectedTheme))
+        .background(StarField(seed: 12, count: 90, depth: 0.7, grid: false, theme: p.selectedTheme, falloff: true))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showSettings) { SettingsView() }
     }

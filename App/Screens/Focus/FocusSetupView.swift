@@ -44,7 +44,7 @@ struct FocusSetupView: View {
             .padding(.bottom, 8)
             .bottomFade()
         }
-        .background(StarField(seed: 1, count: 46, depth: 0.28, grid: false, theme: model.progress.selectedTheme))
+        .background(StarField(seed: 1, count: 90, depth: 0.7, grid: false, theme: model.progress.selectedTheme, falloff: true))
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             custom = !FocusSettings.presets.contains(model.settings.minutes)

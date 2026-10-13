@@ -88,6 +88,9 @@ struct StarField: View {
     var depth: CGFloat = 1
     var grid = true
     var theme: SkyTheme = .night
+    /// Instead of stopping at `depth`, the stars thin out and dim gradually towards it, like a real sky
+    /// fading into the horizon haze. Used behind the content screens (Evren, Odak, Ödüller).
+    var falloff = false
 
     @Environment(\.colorScheme) private var scheme
 
@@ -121,6 +124,11 @@ struct StarField: View {
                     let o = Double((0.18 + u * 0.7) * fade)
                     let tint = tints.randomElement(using: &rng)!
                     ctx.fill(Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)), with: .color(tint.opacity(o)))
+                }
+
+                if falloff {
+                    fadingSky(ctx: ctx, size: size, light: light, tints: tints, rng: &rng)
+                    return
                 }
 
                 if depth >= 0.6 {
@@ -159,6 +167,65 @@ struct StarField: View {
                .init(color: Color(hex: 0xF4EEEA), location: 1)]
             : [.init(color: Color(hex: 0x03050F), location: 0), .init(color: .clear, location: 0.5),
                .init(color: Color(hex: 0x1A2350, opacity: 0.8), location: 1)]
+    }
+
+    /// Stars that come down from the top of the screen and fade out gradually: density and brightness
+    /// both fall off with height, most stars are faint (a steep magnitude distribution) with a fine
+    /// dust of barely visible ones, and a few bright stars carry a soft halo and faint diffraction spikes.
+    private func fadingSky(ctx: GraphicsContext, size: CGSize, light: Bool, tints: [Color], rng: inout SeededGenerator) {
+        let bottom = size.height * depth
+        func dot(_ p: CGPoint, r: CGFloat, _ color: Color) {
+            ctx.fill(Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)), with: .color(color))
+        }
+        // Height sample biased towards the top, with a long, thin tail down to `bottom`.
+        func height(_ bias: Double) -> CGFloat {
+            bottom * CGFloat(pow(Double.random(in: 0...1, using: &rng), bias))
+        }
+        func fade(_ y: CGFloat) -> CGFloat { pow(max(0, 1 - y / max(1, bottom)), 1.4) }
+
+        // Unresolved background stars: tiny, dim, numerous.
+        for _ in 0..<(count * 2) {
+            let p = CGPoint(x: CGFloat.random(in: 0...size.width, using: &rng), y: height(1.3))
+            let o = Double(CGFloat.random(in: 0.08...0.26, using: &rng) * fade(p.y)) * (light ? 0.8 : 1)
+            dot(p, r: CGFloat.random(in: 0.25...0.45, using: &rng), tints.randomElement(using: &rng)!.opacity(o))
+        }
+        // Resolved stars with a steep magnitude distribution.
+        for _ in 0..<count {
+            let p = CGPoint(x: CGFloat.random(in: 0...size.width, using: &rng), y: height(1.6))
+            let u = CGFloat(pow(Double.random(in: 0...1, using: &rng), 2.2))
+            let f = 0.25 + 0.75 * fade(p.y)
+            let tint = tints.randomElement(using: &rng)!
+            let r = 0.4 + u * 1.1
+            if u > 0.55 && !light {
+                // Slight bloom around the brighter ones.
+                ctx.fill(Path(ellipseIn: CGRect(x: p.x - r * 3, y: p.y - r * 3, width: r * 6, height: r * 6)),
+                         with: .radialGradient(Gradient(colors: [tint.opacity(0.12 * f), tint.opacity(0)]),
+                                               center: p, startRadius: 0, endRadius: r * 3))
+            }
+            dot(p, r: r, tint.opacity(Double((0.22 + u * 0.7) * f * fade(p.y * 0.6))))
+        }
+        // A few bright stars high up, with halo and faint four-way diffraction spikes.
+        for _ in 0..<4 {
+            let p = CGPoint(x: CGFloat.random(in: 24...max(25, size.width - 24), using: &rng),
+                            y: CGFloat.random(in: 10...max(11, bottom * 0.45), using: &rng))
+            let tint = tints.randomElement(using: &rng)!
+            let f = Double(0.4 + 0.6 * fade(p.y))
+            let halo = CGFloat.random(in: 7...11, using: &rng)
+            ctx.fill(Path(ellipseIn: CGRect(x: p.x - halo, y: p.y - halo, width: halo * 2, height: halo * 2)),
+                     with: .radialGradient(Gradient(colors: [tint.opacity((light ? 0.14 : 0.24) * f), tint.opacity(0)]),
+                                           center: p, startRadius: 0, endRadius: halo))
+            let spike = halo * 1.3
+            for (dx, dy) in [(spike, CGFloat(0)), (0, spike)] {
+                var line = Path()
+                line.move(to: CGPoint(x: p.x - dx, y: p.y - dy))
+                line.addLine(to: CGPoint(x: p.x + dx, y: p.y + dy))
+                ctx.stroke(line, with: .linearGradient(
+                    Gradient(colors: [tint.opacity(0), tint.opacity((light ? 0.2 : 0.35) * f), tint.opacity(0)]),
+                    startPoint: line.boundingRect.origin,
+                    endPoint: CGPoint(x: line.boundingRect.maxX, y: line.boundingRect.maxY)), lineWidth: 0.6)
+            }
+            dot(p, r: 1.3, tint.opacity(0.95 * f))
+        }
     }
 
     /// A diagonal band of diffuse light split by a dark dust lane, dusted with faint stars.
