@@ -51,6 +51,22 @@ struct SkyView: View {
                     }
                     .buttonStyle(.plain)
                     Divider().overlay(Theme.hair)
+                    NavigationLink(value: Route.skyCalendar) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Gökyüzü etkinlikleri").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
+                                if let next = nextEvent {
+                                    Text("Sıradaki: \(next.title), \(next.whenText())").small().lineLimit(1)
+                                }
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
+                        }
+                        .frame(minHeight: 62)
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    Divider().overlay(Theme.hair)
                     HStack(spacing: 12) {
                         Image(systemName: "cloud").font(.system(size: 22)).foregroundStyle(Theme.ice)
                         VStack(alignment: .leading, spacing: 2) {
@@ -83,6 +99,11 @@ struct SkyView: View {
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
+    }
+
+    /// The meteor shower, eclipse or planet event happening now or next.
+    private var nextEvent: SkyEvent? {
+        MeteorShowers.schedule(from: .now, to: .now.addingTimeInterval(400 * 86400)).first { $0.end > .now }
     }
 
     @ViewBuilder private func detailedStats(_ p: SkyProgress) -> some View {
