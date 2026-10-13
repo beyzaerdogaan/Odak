@@ -5,7 +5,8 @@ import WidgetKit
 /// The few design tokens the Live Activity needs (see App/Theme/Theme.swift): night sky in dark,
 /// dawn atlas in navy ink in light.
 enum ActivityInk {
-    static let background = dynamic(light: 0xF6F7FB, dark: 0x090D22)
+    /// See-through, so the lock screen wallpaper shows behind the system's blur.
+    static let background = dynamic(light: 0xF6F7FB, lightAlpha: 0.55, dark: 0x090D22, darkAlpha: 0.45)
     static let paper = dynamic(light: 0x1B2140, dark: 0xECE6D6)
     static let paper2 = dynamic(light: 0x4F5779, dark: 0xA7ADC6)
     static let track = dynamic(light: 0x1B2140, lightAlpha: 0.12, dark: 0xECE6D6, darkAlpha: 0.12)

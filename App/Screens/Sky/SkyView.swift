@@ -80,7 +80,7 @@ struct SkyView: View {
         .scrollIndicators(.hidden)
         .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
         .collapsingTitle("Gökyüzüm")
-        .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
+        .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme, parallax: 14))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
     }

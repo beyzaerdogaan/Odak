@@ -91,6 +91,8 @@ struct StarField: View {
     /// Instead of stopping at `depth`, the stars thin out and dim gradually towards it, like a real sky
     /// fading into the horizon haze. Used behind the content screens (Evren, Odak, Ödüller).
     var falloff = false
+    /// How far, in points, the stars and the Milky Way drift as the phone tilts; 0 keeps them still.
+    var parallax: CGFloat = 0
 
     @Environment(\.colorScheme) private var scheme
 
@@ -156,6 +158,7 @@ struct StarField: View {
                     ctx.fill(Path(ellipseIn: CGRect(x: x - 1.3, y: y - 1.3, width: 2.6, height: 2.6)), with: .color(tint.opacity(0.95)))
                 }
             }
+            .tiltParallax(parallax)
         }
         .ignoresSafeArea()
         .accessibilityHidden(true)
