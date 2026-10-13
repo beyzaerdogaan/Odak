@@ -46,5 +46,6 @@ struct LiveActivityPreview: View {
     private func card<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
         content()
             .background(ActivityInk.background, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
