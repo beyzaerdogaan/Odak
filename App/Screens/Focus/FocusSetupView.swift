@@ -180,10 +180,7 @@ struct FocusSetupView: View {
 
     private func toggleRow(_ title: String, info: String? = nil, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            HStack(spacing: 6) {
-                Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
-                if let info { InfoButton(text: info) }
-            }
+            InfoTitle(title: title, info: info)
         }
         .tint(Theme.accent)
         .frame(minHeight: 52)
@@ -215,29 +212,38 @@ struct FocusSetupView: View {
     }
 }
 
-/// A small "i" next to a title that shows its explanation in a slim bubble just above it.
+/// A row title with an optional small "i" that shows its explanation in a slim bubble just above.
 /// A custom bubble rather than a popover: the system popover adds tall insets around one line of text.
-private struct InfoButton: View {
-    let text: String
+/// The bubble starts at the title's leading edge and wraps to two lines, so it never leaves the screen.
+private struct InfoTitle: View {
+    let title: String
+    let info: String?
     @State private var shown = Demo.info
 
     var body: some View {
-        Button { withAnimation(.easeOut(duration: 0.15)) { shown.toggle() } } label: {
-            Image(systemName: "info.circle").font(.system(size: 14)).foregroundStyle(Theme.paper3)
+        HStack(spacing: 6) {
+            Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
+            if let info {
+                Button { withAnimation(.easeOut(duration: 0.15)) { shown.toggle() } } label: {
+                    Image(systemName: "info.circle").font(.system(size: 14)).foregroundStyle(Theme.paper3)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Bilgi")
+                .accessibilityHint(info)
+            }
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Bilgi")
-        .accessibilityHint(text)
-        .overlay(alignment: .top) {
-            if shown {
-                Text(text)
+        .overlay(alignment: .topLeading) {
+            if shown, let info {
+                Text(info)
                     .font(.system(size: 12)).foregroundStyle(Theme.paper)
-                    .lineLimit(1)
-                    .fixedSize()
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: 220, alignment: .leading)
                     .padding(.horizontal, 9).padding(.vertical, 4)
                     .background(Theme.night2, in: .rect(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.hair))
                     .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
+                    .frame(width: 240, alignment: .leading)
                     .alignmentGuide(.top) { $0[.bottom] + 6 }
                     .onTapGesture { withAnimation(.easeOut(duration: 0.15)) { shown = false } }
                     .transition(.opacity)
