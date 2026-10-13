@@ -134,7 +134,9 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         armedShootingStar = v(.armedShootingStar, d.armedShootingStar)
         armedBrightTicket = v(.armedBrightTicket, d.armedBrightTicket)
         telescopeTarget = v(.telescopeTarget, d.telescopeTarget)
-        ownedSounds = v(.ownedSounds, d.ownedSounds)
+        // Read leniently so a sound that was later retired (e.g. "cafe") doesn't drop the others.
+        ownedSounds = (try? c.decodeIfPresent([String].self, forKey: .ownedSounds))
+            .map { Set($0.compactMap(SoundID.init(rawValue:))).union(d.ownedSounds) } ?? d.ownedSounds
         ownedThemes = v(.ownedThemes, d.ownedThemes)
         selectedTheme = v(.selectedTheme, d.selectedTheme)
         ownedDials = v(.ownedDials, d.ownedDials)

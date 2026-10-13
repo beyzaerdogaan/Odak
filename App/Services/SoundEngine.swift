@@ -220,15 +220,42 @@ private final class Voice {
             hpOut = 0.9 * (hpOut + w - hpPrev); hpPrev = w
             return lp * 0.5 + hpOut * burst * 0.25
 
-        case .cafe:
-            // murmur of voices and a cup now and then
-            lp += 0.04 * (pink - lp)
-            phase += (3 + (white() + 1)) / sr; if phase > 1 { phase -= 1 }
-            let syllables = 0.55 + 0.45 * sin(phase * twoPi)
-            if toneEnv < 0.001, chance(0.12, sr) { toneFreq = 2200 + (white() + 1) * 800; toneEnv = 0.12 }
+        case .summerNight:
+            // crickets chirping over a warm, still night
+            lp += 0.01 * (pink - lp)
+            phase += 1 / (sr * 0.85); if phase > 1 { phase -= 1 }
+            let gate: Float = phase < 0.22 ? sin(phase / 0.22 * .pi) : 0
+            phase2 += 30 / sr; if phase2 > 1 { phase2 -= 1 }
+            let pulse = max(0, sin(phase2 * twoPi))
+            tonePhase += 4400 / sr; if tonePhase > 1 { tonePhase -= 1 }
+            // a second, farther cricket a little out of step
+            toneSweep += 1 / (sr * 1.1); if toneSweep > 1 { toneSweep -= 1 }
+            let gate2: Float = toneSweep < 0.18 ? sin(toneSweep / 0.18 * .pi) : 0
+            toneFreq += 3900 / sr; if toneFreq > 1 { toneFreq -= 1 }
+            let chirp = sin(tonePhase * twoPi) * gate * pulse * pulse * 0.16
+                + sin(toneFreq * twoPi) * gate2 * pulse * 0.07
+            return lp * 1.6 + chirp
+
+        case .stream:
+            // water running over stones: shimmering mid noise and small bubbles
+            lp += 0.25 * (w - lp)
+            hpOut = 0.92 * (hpOut + lp - hpPrev); hpPrev = lp
+            let ripple = max(0.2, 0.7 + brown * 5)
+            if toneEnv < 0.002, chance(7, sr) { toneFreq = 500 + (white() + 1) * 450; toneEnv = 0.09 }
+            toneFreq *= 1.00004
             tonePhase += toneFreq / sr; if tonePhase > 1 { tonePhase -= 1 }
-            toneEnv *= 0.9996
-            return lp * syllables * 2.2 + brown * 0.8 + sin(tonePhase * twoPi) * toneEnv
+            toneEnv *= 0.9992
+            return hpOut * ripple * 0.8 + sin(tonePhase * twoPi) * toneEnv
+
+        case .distantStorm:
+            // soft rain with thunder rolling far away now and then
+            hpOut = 0.9 * (hpOut + pink - hpPrev); hpPrev = pink
+            lp += 0.15 * (hpOut - lp)
+            if burst < 0.01, chance(0.045, sr) { burst = 0.6 + (white() + 1) * 0.3 }
+            burst *= 0.999992
+            tone += (burst - tone) * 0.00008
+            lp2 += 0.02 * (brown - lp2)
+            return lp * 2 + lp2 * tone * 6
         }
     }
 }

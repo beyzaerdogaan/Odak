@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Sounds
 
 public enum SoundID: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
-    case rain, forest, waves, fire, brownNoise, winterNight, library, cafe
+    case rain, forest, waves, fire, brownNoise, winterNight, library, summerNight, stream, distantStorm
     public var id: String { rawValue }
 
     public var title: String {
@@ -15,7 +15,9 @@ public enum SoundID: String, Codable, CaseIterable, Hashable, Sendable, Identifi
         case .brownNoise: "Kahverengi gürültü"
         case .winterNight: "Kış gecesi"
         case .library: "Kütüphane"
-        case .cafe: "Kahvehane"
+        case .summerNight: "Yaz gecesi"
+        case .stream: "Dere"
+        case .distantStorm: "Uzak fırtına"
         }
     }
 
@@ -299,7 +301,7 @@ public enum ShopItem: Hashable, Sendable, Identifiable {
     public var price: Int? {
         switch self {
         case let .booster(b): b.price
-        case .sound(.library), .sound(.cafe): 300
+        case .sound(.library), .sound(.summerNight), .sound(.stream), .sound(.distantStorm): 300
         case .sound: nil
         case .theme(.aurora): 600
         case .theme(.twilight): 400

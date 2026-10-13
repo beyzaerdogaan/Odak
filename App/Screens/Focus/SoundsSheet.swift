@@ -11,7 +11,8 @@ struct SoundsSheet: View {
 
     private let icons: [SoundID: String] = [
         .rain: "cloud.rain", .forest: "tree", .waves: "water.waves", .fire: "flame",
-        .brownNoise: "waveform", .winterNight: "snowflake", .library: "books.vertical", .cafe: "cup.and.saucer",
+        .brownNoise: "waveform", .winterNight: "snowflake", .library: "books.vertical",
+        .summerNight: "moon.stars", .stream: "drop", .distantStorm: "cloud.bolt.rain",
     ]
 
     var body: some View {

@@ -155,8 +155,8 @@ struct RewardsView: View {
     private func soundPacks(_ p: SkyProgress) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Ses paketleri").font(.serif(24)).foregroundStyle(Theme.paper)
-            HStack(spacing: 8) {
-                ForEach([SoundID.library, .cafe, .winterNight]) { s in
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 8) {
+                ForEach([SoundID.library, .summerNight, .stream, .distantStorm, .winterNight]) { s in
                     VStack(alignment: .leading, spacing: 10) {
                         Text(s.title).font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.paper)
                         if model.canUse(s) {
