@@ -167,7 +167,9 @@ struct SkyCalendarView: View {
                     .overlay { if isToday { Circle().strokeBorder(Theme.accent, lineWidth: 1.5) } }
                 if mode == .week {
                     VStack(spacing: 2) {
-                        ForEach(here.prefix(3)) { e in
+                        // Only the peak night and one-night events get a name; the rest of a shower's
+                        // weeks-long active window is the colour band alone.
+                        ForEach((peaks + peakMornings + astro).prefix(3)) { e in
                             Text(e.shower?.name ?? AstroEventView.kindName(e.astro?.kind))
                                 .font(.system(size: 9, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
                                 .foregroundStyle(Self.tint(e))
