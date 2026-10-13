@@ -144,12 +144,17 @@ struct SkyCalendarView: View {
     private func dayCell(_ day: Date, events: [SkyEvent]) -> some View {
         let here = events.filter { occurs($0, on: day) }
         let showers = here.filter { $0.shower != nil }
+        // A peak night runs from one evening into the next morning, so it marks both days:
+        // the evening it begins in full, the morning it ends in a lighter tone.
         let peaks = showers.filter { cal.isDate($0.day, inSameDayAs: day) }
+        let peakMornings = showers.filter { e in
+            cal.date(byAdding: .day, value: 1, to: e.day).map { cal.isDate($0, inSameDayAs: day) } ?? false
+        }
         let astro = here.filter { $0.astro != nil }
         let isToday = cal.isDateInToday(day)
         let isSelected = selected.map { cal.isDate($0, inSameDayAs: day) } ?? false
         let band = showers.first.map(Self.tint)
-        let peak = peaks.first.map(Self.tint)
+        let peak = peaks.first.map(Self.tint) ?? peakMornings.first.map { Self.tint($0).opacity(0.55) }
         return Button {
             selected = isSelected ? nil : day
         } label: {
