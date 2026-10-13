@@ -14,15 +14,12 @@ struct FocusSetupView: View {
     @State private var blockMode: BlockMode = .selected
     @State private var blockModeCommit: Task<Void, Never>?
     @FocusState private var taskFocused: Bool
-    /// How far the page has scrolled. The big title fades out as it goes up and the compact
-    /// "Odak" bar fades in, like a large navigation title collapsing into an inline one.
-    @State private var scrollOffset: CGFloat = Demo.scrolled ? 200 : 0
 
     var body: some View {
         @Bindable var model = model
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                header.opacity(Double(max(0, 1 - scrollOffset / 40)))
+                header.fadesOnScroll()
                 taskField($model.settings.task)
                 durationSection
                 blockingSection
@@ -35,15 +32,7 @@ struct FocusSetupView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
-        .onScrollGeometryChange(for: CGFloat.self) { g in
-            // Steps of 4 pt: smooth enough for the fades without redrawing the page every point.
-            min(200, max(0, ((g.contentOffset.y + g.contentInsets.top) / 4).rounded() * 4))
-        } action: { _, offset in
-            withAnimation(.linear(duration: 0.08)) { scrollOffset = offset }
-        }
-        .overlay(alignment: .top) {
-            compactTitleBar.allowsHitTesting(false).accessibilityHidden(scrollOffset < 30)
-        }
+        .collapsingTitle("Odak")
         .safeAreaInset(edge: .bottom) {
             PrimaryButton(title: "Odaklanmaya başla") {
                 taskFocused = false
@@ -76,22 +65,6 @@ struct FocusSetupView: View {
         .sheet(isPresented: $showPicker) { AppPickerSheet() }
         .sheet(isPresented: $showBlockingInfo) { BlockingInfoSheet() }
         .sheet(isPresented: $showShortcutsGuide) { FocusShortcutsGuide() }
-    }
-
-    /// Like a navigation bar's inline title: content scrolling up fades out under it and never
-    /// reaches the status bar.
-    private var compactTitleBar: some View {
-        Text("Odak")
-            .font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.paper)
-            .opacity(Double(min(1, max(0, (scrollOffset - 16) / 24))))
-            .frame(maxWidth: .infinity).frame(height: 44)
-            .background {
-                LinearGradient(colors: [Theme.night, Theme.night.opacity(0.94), Theme.night.opacity(0)],
-                               startPoint: .top, endPoint: .bottom)
-                    .padding(.bottom, -28)
-                    .ignoresSafeArea(edges: .top)
-                    .opacity(Double(min(1, max(0, scrollOffset / 8))))
-            }
     }
 
     private var header: some View {

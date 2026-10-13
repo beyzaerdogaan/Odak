@@ -44,6 +44,7 @@ struct HomeView: View {
                     }
                 }
                 .padding(.horizontal, 22)
+                .fadesOnScroll()
 
                 NavigationLink(value: Route.collection) {
                     Planisphere(progress: p)
@@ -73,6 +74,7 @@ struct HomeView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
+        .collapsingTitle("Evrenin")
         .background(StarField(seed: 12, count: 40, depth: 0.25, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showSettings) { SettingsView() }

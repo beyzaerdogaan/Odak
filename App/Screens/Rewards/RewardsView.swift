@@ -24,6 +24,7 @@ struct RewardsView: View {
                     Spacer()
                     LightPill(amount: p.light)
                 }
+                .fadesOnScroll()
                 promises(p)
                 categoryBar
                 if category == .all || category == .boosters { boosters(p) }
@@ -36,6 +37,7 @@ struct RewardsView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
+        .collapsingTitle("Ödüller")
         .background(StarField(seed: 6, count: 60, depth: 0.2, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showNewPromise) { NewPromiseSheet(onNeedZenit: { showZenit = true }) }
