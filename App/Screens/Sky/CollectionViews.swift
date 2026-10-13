@@ -46,6 +46,9 @@ struct CollectionMapView: View {
         ]
     }
 
+    /// How far the layer rail runs past the last layer to reach the bottom edge of the screen.
+    @State private var railTail: CGFloat = 22
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
@@ -59,11 +62,25 @@ struct CollectionMapView: View {
                     ForEach(layers) { layer in row(layer) }
                 }
                 .background(alignment: .leading) {
+                    // The rail runs on past the last layer to the bottom edge of the screen and fades out there.
                     LinearGradient(colors: [Theme.accent, Theme.star.opacity(0.14), Theme.star.opacity(0.14)], startPoint: .top, endPoint: .bottom)
-                        .frame(width: 1).padding(.leading, 14.5).padding(.vertical, 20)
+                        .mask {
+                            VStack(spacing: 0) {
+                                Color.black
+                                LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom).frame(height: 140)
+                            }
+                        }
+                        .frame(width: 1).padding(.leading, 14.5)
+                        .padding(.top, 20).padding(.bottom, -railTail)
                 }
             }
             .padding(22)
+        }
+        .onScrollGeometryChange(for: CGFloat.self) { g in
+            // Bottom padding + the inset under the content + any empty space left below it on a tall screen.
+            22 + g.contentInsets.bottom + max(0, g.containerSize.height - g.contentInsets.top - g.contentInsets.bottom - g.contentSize.height)
+        } action: { _, tail in
+            railTail = tail
         }
         .pinnedHeader {
             BackHeader(title: "Koleksiyon haritası", subtitle: nil) {
