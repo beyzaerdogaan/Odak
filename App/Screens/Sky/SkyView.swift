@@ -23,7 +23,14 @@ struct SkyView: View {
                         Text("Tümü").tag(SkyProgress.Period.all)
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 170)
+                    .frame(width: 150)
+                    NavigationLink(value: Route.skyCalendar) {
+                        Image(systemName: "calendar").font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.accentInk)
+                            .frame(width: 36, height: 36)
+                            .glassEffect(.regular.interactive(), in: .circle)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Gökyüzü takvimi")
                 }
                 .padding(.horizontal, 22)
                 .fadesOnScroll()
@@ -47,6 +54,23 @@ struct SkyView: View {
                             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
                         }
                         .frame(minHeight: 56)
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    Divider().overlay(Theme.hair)
+                    NavigationLink(value: Route.skyCalendar) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "calendar").font(.system(size: 20)).foregroundStyle(Theme.accentInk)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Gökyüzü etkinlikleri").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
+                                if let next = nextEvent {
+                                    Text("Sıradaki: \(next.title), \(next.whenText())").small().lineLimit(1)
+                                }
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
+                        }
+                        .frame(minHeight: 62)
                         .contentShape(.rect)
                     }
                     .buttonStyle(.plain)
@@ -83,6 +107,11 @@ struct SkyView: View {
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
+    }
+
+    /// The meteor shower, eclipse or planet event happening now or next.
+    private var nextEvent: SkyEvent? {
+        MeteorShowers.schedule(from: .now, to: .now.addingTimeInterval(400 * 86400)).first { $0.end > .now }
     }
 
     @ViewBuilder private func detailedStats(_ p: SkyProgress) -> some View {
