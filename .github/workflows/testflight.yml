@@ -55,6 +55,33 @@ jobs:
           printf '%s\n' "$ASC_KEY_P8" > "$KEY"
           echo "ASC_KEY_PATH=$KEY" >> "$GITHUB_ENV"
 
+      - name: Firebase config (accounts)
+        env:
+          GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        run: |
+          if [ -z "$GOOGLE_SERVICE_INFO_PLIST" ]; then
+            echo "::warning::GOOGLE_SERVICE_INFO_PLIST secret yok: bu sürümde hesaplar kapalı olur (docs/ACCOUNTS.md)"
+            exit 0
+          fi
+          P=App/Support/GoogleService-Info.plist
+          # The secret can be the plist itself or its base64.
+          if printf '%s' "$GOOGLE_SERVICE_INFO_PLIST" | grep -q '<plist'; then
+            printf '%s\n' "$GOOGLE_SERVICE_INFO_PLIST" > "$P"
+          else
+            printf '%s' "$GOOGLE_SERVICE_INFO_PLIST" | base64 --decode > "$P"
+          fi
+          plutil -lint "$P"
+          BID=$(/usr/libexec/PlistBuddy -c "Print :BUNDLE_ID" "$P")
+          if [ "$BID" != "$BUNDLE_PREFIX.derin" ]; then
+            echo "::error::GoogleService-Info.plist $BID için, uygulama $BUNDLE_PREFIX.derin"; exit 1
+          fi
+          REV=$(/usr/libexec/PlistBuddy -c "Print :REVERSED_CLIENT_ID" "$P" 2>/dev/null || true)
+          if [ -z "$REV" ]; then
+            echo "::warning::Plist'te REVERSED_CLIENT_ID yok: Firebase'de Google girişini açıp plist'i yeniden indir"
+          else
+            echo "GOOGLE_REVERSED_CLIENT_ID=$REV" >> "$GITHUB_ENV"
+          fi
+
       - name: Generate project
         run: |
           if [ "$SCREEN_TIME" = "YES" ]; then xcodegen generate --spec project-screentime.yml; else xcodegen generate; fi
@@ -62,17 +89,20 @@ jobs:
       - name: Archive (unsigned)
         run: |
           set -o pipefail
+          EXTRA=()
+          if [ -n "${GOOGLE_REVERSED_CLIENT_ID:-}" ]; then EXTRA+=(ODAK_GOOGLE_REVERSED_CLIENT_ID="$GOOGLE_REVERSED_CLIENT_ID"); fi
           xcodebuild archive -project Odak.xcodeproj -scheme Odak -configuration Release \
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Derin.xcarchive" \
             DEVELOPMENT_TEAM="$TEAM_ID" ODAK_BUNDLE_ID_PREFIX="$BUNDLE_PREFIX" \
             ODAK_SPOTIFY_CLIENT_ID="$SPOTIFY_CLIENT_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-            CODE_SIGNING_ALLOWED=NO -quiet
+            -skipPackagePluginValidation -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO -quiet "${EXTRA[@]}"
 
       - name: Distribution certificate and profiles
         run: |
           python3 -m venv "$RUNNER_TEMP/venv"
           "$RUNNER_TEMP/venv/bin/pip" install --quiet pyjwt cryptography
-          IDS="$BUNDLE_PREFIX.derin $BUNDLE_PREFIX.derin.live-activity"
+          IDS="$BUNDLE_PREFIX.derin+APPLE_ID_AUTH $BUNDLE_PREFIX.derin.live-activity"
           if [ "$SCREEN_TIME" = "YES" ]; then
             for ext in activity-monitor shield-configuration shield-action; do IDS="$IDS $BUNDLE_PREFIX.derin.$ext"; done
           fi

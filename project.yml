@@ -29,6 +29,13 @@ settingGroups:
 packages:
   OdakCore:
     path: Packages/OdakCore
+  # Accounts: Firebase Auth (Sign in with Apple, Google) and Firestore for the sky's copy in the cloud.
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 12.0.0
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: 9.0.0
 targets:
   Odak:
     type: application
@@ -39,6 +46,11 @@ targets:
       - path: LiveActivity
     dependencies:
       - package: OdakCore
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseFirestore
+      - package: GoogleSignIn
       - target: DerinWidgets
     settings:
       groups: [derin]
@@ -52,6 +64,7 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         INFOPLIST_FILE: App/Support/Info.plist
         GENERATE_INFOPLIST_FILE: NO
+        OTHER_LDFLAGS: "$(inherited) -ObjC"
     scheme:
       testTargets: []
       storeKitConfiguration: Config/Derin.storekit
