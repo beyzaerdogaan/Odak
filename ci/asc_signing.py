@@ -74,7 +74,7 @@ CAPABILITY_SETTINGS = {
 
 
 def ensure_capability(bundle_pk, capability):
-    caps = call("GET", f"/bundleIds/{bundle_pk}/bundleIdCapabilities", query={"limit": 200})["data"]
+    caps = call("GET", f"/bundleIds/{bundle_pk}/bundleIdCapabilities")["data"]
     if any(c["attributes"]["capabilityType"] == capability for c in caps):
         return
     print(f"Enabling {capability}")
