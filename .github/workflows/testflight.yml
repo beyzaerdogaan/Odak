@@ -2,7 +2,7 @@ name: TestFlight
 
 # Archives the app, signs it with a short-lived distribution certificate created through the
 # App Store Connect API (revoked again at the end), and uploads it to TestFlight. No Mac needed.
-# See docs/TESTFLIGHT.md for the secrets and ci/asc_signing.py for why signing is done by hand.
+# Needs the secrets APPLE_TEAM_ID, ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (and GOOGLE_SERVICE_INFO_PLIST for accounts); see ci/asc_signing.py for why signing is done by hand.
 on:
   workflow_dispatch:
     inputs:
@@ -36,7 +36,7 @@ jobs:
             [ -z "${!v}" ] && missing="$missing $v"
           done
           if [ -n "$missing" ]; then
-            echo "::error::Eksik GitHub secret:$missing (docs/TESTFLIGHT.md)"; exit 1
+            echo "::error::Eksik GitHub secret:$missing"; exit 1
           fi
 
       - name: Select Xcode 26
@@ -60,7 +60,7 @@ jobs:
           GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         run: |
           if [ -z "$GOOGLE_SERVICE_INFO_PLIST" ]; then
-            echo "::warning::GOOGLE_SERVICE_INFO_PLIST secret yok: bu sürümde hesaplar kapalı olur (docs/ACCOUNTS.md)"
+            echo "::warning::GOOGLE_SERVICE_INFO_PLIST secret yok: bu sürümde hesaplar kapalı olur"
             exit 0
           fi
           P=App/Support/GoogleService-Info.plist
