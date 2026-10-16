@@ -3,7 +3,9 @@
 
   setup <out_dir> <bundle_id>...   creates a distribution certificate from a fresh key, an App Store
                                    profile per bundle ID (registering missing IDs), and writes
-                                   key.pem, cert.cer, <bundle_id>.mobileprovision and state.json to out_dir
+                                   key.pem, cert.cer, <bundle_id>.mobileprovision and state.json to out_dir.
+                                   <bundle_id>+CAPABILITY (e.g. +APPLE_ID_AUTH) also turns that
+                                   capability on for the ID first, so the profile carries it
   cleanup <out_dir>                revokes the certificate and deletes the profiles from state.json
 
 Why not Xcode's cloud-managed signing: when the account holder's name has non-ASCII letters
@@ -66,6 +68,24 @@ def bundle_id(identifier):
     return created["data"]["id"]
 
 
+CAPABILITY_SETTINGS = {
+    "APPLE_ID_AUTH": [{"key": "APPLE_ID_AUTH_APP_CONSENT", "options": [{"key": "PRIMARY_APP_CONSENT"}]}],
+}
+
+
+def ensure_capability(bundle_pk, capability):
+    caps = call("GET", f"/bundleIds/{bundle_pk}/bundleIdCapabilities", query={"limit": 200})["data"]
+    if any(c["attributes"]["capabilityType"] == capability for c in caps):
+        return
+    print(f"Enabling {capability}")
+    attributes = {"capabilityType": capability}
+    if capability in CAPABILITY_SETTINGS:
+        attributes["settings"] = CAPABILITY_SETTINGS[capability]
+    call("POST", "/bundleIdCapabilities", {"data": {
+        "type": "bundleIdCapabilities", "attributes": attributes,
+        "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": bundle_pk}}}}})
+
+
 def delete_profiles(name):
     for item in call("GET", "/profiles", query={"filter[name]": name, "limit": 200})["data"]:
         if item["attributes"]["name"] == name:
@@ -91,14 +111,18 @@ def setup(out_dir, identifiers):
     with open(os.path.join(out_dir, "cert.cer"), "wb") as f:
         f.write(base64.b64decode(cert["attributes"]["certificateContent"]))
 
-    for identifier in identifiers:
+    for arg in identifiers:
+        identifier, *capabilities = arg.split("+")
+        bundle_pk = bundle_id(identifier)
+        for capability in capabilities:
+            ensure_capability(bundle_pk, capability)
         name = PROFILE_PREFIX + identifier
         delete_profiles(name)
         profile = call("POST", "/profiles", {"data": {
             "type": "profiles",
             "attributes": {"name": name, "profileType": "IOS_APP_STORE"},
             "relationships": {
-                "bundleId": {"data": {"type": "bundleIds", "id": bundle_id(identifier)}},
+                "bundleId": {"data": {"type": "bundleIds", "id": bundle_pk}},
                 "certificates": {"data": [{"type": "certificates", "id": cert["id"]}]}}}})["data"]
         state["profiles"].append(profile["id"])
         with open(os.path.join(out_dir, "state.json"), "w") as f:

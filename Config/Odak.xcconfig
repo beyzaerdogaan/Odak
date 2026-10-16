@@ -18,4 +18,8 @@ ODAK_SCREEN_TIME_FLAG_NO =
 // Spotify app client ID from developer.spotify.com. Empty keeps Spotify in "open in Spotify" mode.
 ODAK_SPOTIFY_CLIENT_ID =
 
+// REVERSED_CLIENT_ID from GoogleService-Info.plist, Google sign-in's return URL scheme. The TestFlight
+// workflow reads it from the plist; the placeholder keeps builds without Firebase valid.
+ODAK_GOOGLE_REVERSED_CLIENT_ID = com.beyzaerdogan.derin.google-unset
+
 #include? "Local.xcconfig"

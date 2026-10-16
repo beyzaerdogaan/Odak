@@ -297,4 +297,73 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertTrue(p.ownedSounds.contains(.forest))
         XCTAssertFalse(SoundID.allCases.map(\.rawValue).contains("cafe"))
     }
+
+    // MARK: - Merging two copies of a sky (account sync)
+
+    func testMergeKeepsSessionsFromBothPhonesAndAddsUpLight() {
+        var base = SkyProgress()
+        var rng = SeededGenerator(seed: 3)
+        _ = base.complete(input(45, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        var phone = base, account = base
+        _ = phone.complete(input(30, at: date(2026, 10, 2)), calendar: cal, rng: &rng)
+        _ = account.complete(input(60, at: date(2026, 10, 3)), calendar: cal, rng: &rng)
+        account.light -= 20  // spent in the shop on the other phone
+
+        let m = SkyProgress.merge(base: base, local: phone, remote: account)
+        XCTAssertEqual(m.records.count, 3)
+        XCTAssertEqual(m.records.map(\.start), m.records.map(\.start).sorted())
+        XCTAssertEqual(m.light, base.light + (phone.light - base.light) + (account.light - base.light))
+        XCTAssertEqual(Set(m.litStars.keys), Set(phone.litStars.keys).union(account.litStars.keys))
+        XCTAssertEqual(m.totalFocusedMinutes, 135)
+    }
+
+    func testFirstSignInAddsThePhoneSkyToTheAccount() {
+        var rng = SeededGenerator(seed: 9)
+        var phone = SkyProgress(), account = SkyProgress()
+        _ = phone.complete(input(25, at: date(2026, 10, 5)), calendar: cal, rng: &rng)
+        _ = account.complete(input(50, at: date(2026, 9, 5)), calendar: cal, rng: &rng)
+        account.ownedThemes.insert(.aurora)
+        let m = SkyProgress.merge(base: SkyProgress(), local: phone, remote: account)
+        XCTAssertEqual(m.records.count, 2)
+        XCTAssertEqual(m.light, phone.light + account.light)
+        XCTAssertTrue(m.ownedThemes.contains(.aurora))
+        XCTAssertEqual(m.openConstellations.count, 3)
+    }
+
+    func testMergeWithAnUntouchedSideTakesTheOther() {
+        var rng = SeededGenerator(seed: 1)
+        var changed = SkyProgress()
+        _ = changed.complete(input(45, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        XCTAssertEqual(SkyProgress.merge(base: SkyProgress(), local: SkyProgress(), remote: changed), changed)
+        XCTAssertEqual(SkyProgress.merge(base: SkyProgress(), local: changed, remote: SkyProgress()), changed)
+    }
+
+    func testMergeRespectsDeletedPromisesAndSpentBoosters() {
+        var base = SkyProgress()
+        base.promises = [SelfPromise(title: "Sinema", goal: .focusHours(5), createdAt: date(2026, 9, 1), baselineMinutes: 0)]
+        base.add(.telescope, 2)
+        var phone = base, account = base
+        phone.promises = []
+        phone.add(.telescope, -1)
+        account.add(.telescope, -1)
+        account.promises.append(SelfPromise(title: "Kitap", goal: .streakDays(7), createdAt: date(2026, 9, 2), baselineMinutes: 0))
+        let m = SkyProgress.merge(base: base, local: phone, remote: account)
+        XCTAssertEqual(m.promises.map(\.title), ["Kitap"])
+        XCTAssertEqual(m.count(.telescope), 0)
+    }
+
+    func testStarsLitOnTwoPhonesCanFinishAConstellation() {
+        let orion = Catalog.constellation("orion")!
+        var base = SkyProgress()
+        base.openConstellations = ["orion", "cassiopeia", "cygnus"]
+        var phone = base, account = base
+        for (i, s) in orion.stars.enumerated() {
+            if i % 2 == 0 { phone.litStars[s.id] = date(2026, 10, 1) } else { account.litStars[s.id] = date(2026, 10, 2) }
+        }
+        let m = SkyProgress.merge(base: base, local: phone, remote: account)
+        XCTAssertTrue(m.isComplete("orion"))
+        XCTAssertFalse(m.openConstellations.contains("orion"))
+        XCTAssertEqual(m.openConstellations.count, 3)
+        XCTAssertEqual(m.light, LightRules.constellationReward)
+    }
 }

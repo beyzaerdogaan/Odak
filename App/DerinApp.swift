@@ -1,3 +1,4 @@
+import GoogleSignIn
 import SwiftUI
 
 @main
@@ -10,6 +11,7 @@ struct DerinApp: App {
             RootView()
                 .environment(model)
                 .tint(Theme.accent)
+                .onOpenURL { _ = GIDSignIn.sharedInstance.handle($0) }
         }
         .onChange(of: phase) { _, new in
             switch new {

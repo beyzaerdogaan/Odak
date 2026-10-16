@@ -1,0 +1,13 @@
+rules_version = '2';
+// Derin: each user can read and write only their own sky, at users/{uid}.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['progress', 'revision', 'updatedAt', 'schema'])
+        && request.resource.data.progress is bytes
+        && request.resource.data.revision is int;
+    }
+  }
+}

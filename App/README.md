@@ -11,4 +11,3 @@ SwiftUI, iOS 26, Liquid Glass. Tasarım: `design/derin/*.dc.html` (yeni gök atl
 | `Extensions` | Screen Time eklentileri (yalnızca `project-screentime.yml` derlemesinde) |
 | `.github/workflows` | `ios.yml` her push'ta test eder ve derler; `testflight.yml` TestFlight'a yükler |
 
-Kurulum ve TestFlight adımları: [`docs/TESTFLIGHT.md`](../docs/TESTFLIGHT.md).

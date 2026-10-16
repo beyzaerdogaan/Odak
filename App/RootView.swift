@@ -14,6 +14,7 @@ struct RootView: View {
     @Environment(AppModel.self) private var model
     @State private var tab: AppTab = .universe
     @State private var universePath: [Route] = []
+    @State private var showSignIn = false
 
     var body: some View {
         if Demo.screen == "lockscreen" {
@@ -49,7 +50,9 @@ struct RootView: View {
                 .tint(Theme.accent)
         }
         .overlay(alignment: .top) { ToastView() }
+        .sheet(isPresented: $showSignIn) { SignInView() }
         .task {
+            promptSignInOnce()
             model.applyDemoScreen()
             switch Demo.screen {
             case "focus": tab = .focus
@@ -59,11 +62,23 @@ struct RootView: View {
             case "deepsky": universePath = [.deepSky]
             case "event": universePath = [.event]
             case "journey": universePath = [.journey]
+            case "signin": showSignIn = true
             case "calendar": universePath = [.event, .skyCalendar]
             case let s? where s.hasPrefix("astro-"): universePath = [.skyCalendar, .astro(String(s.dropFirst(6)))]
             default: break
             }
         }
+    }
+}
+
+extension RootView {
+    /// Offers an account once, on first launch, so a new user's first stars are kept from the start.
+    private func promptSignInOnce() {
+        let key = "account.prompted"
+        guard !Demo.isOn, AccountService.isAvailable, model.account.account == nil,
+              !UserDefaults.standard.bool(forKey: key) else { return }
+        UserDefaults.standard.set(true, forKey: key)
+        showSignIn = true
     }
 }
 

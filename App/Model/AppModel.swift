@@ -7,7 +7,12 @@ import UIKit
 /// the services around it. Saved to Application Support as JSON after every change.
 @MainActor @Observable
 final class AppModel {
-    var progress: SkyProgress { didSet { persist(progress, to: "progress.json") } }
+    var progress: SkyProgress {
+        didSet {
+            persist(progress, to: "progress.json")
+            if !applyingCloud { scheduleSync() }
+        }
+    }
     var settings: FocusSettings { didSet { scheduleSettingsSave() } }
     private(set) var session: FocusSession? { didSet { persist(session, to: "session.json") } }
     /// Set when a session completes; drives the reward screens.
@@ -20,12 +25,16 @@ final class AppModel {
     let sounds = SoundEngine()
     let spotify = SpotifyService()
     let store = SubscriptionStore()
+    let account = AccountService()
+    let cloud = CloudSync(folder: AppModel.folder)
 
     @ObservationIgnored private var awaySince: Date?
     @ObservationIgnored private var lockedWhileAway = false
     @ObservationIgnored private var expectingHandOff = false
     @ObservationIgnored private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
+    @ObservationIgnored private var applyingCloud = false
+    @ObservationIgnored private var syncTask: Task<Void, Never>?
 
     init() {
         if Demo.isOn {
@@ -45,6 +54,8 @@ final class AppModel {
             LiveActivityController.sync(session)
             SkyCalendarUpdater.loadCached()
             Task { await SkyCalendarUpdater.refresh() }
+            account.onSignIn = { [weak self] in self?.scheduleSync(after: .zero) }
+            scheduleSync(after: .zero)
         }
         NotificationCenter.default.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification,
                                                object: nil, queue: .main) { [weak self] _ in
@@ -173,6 +184,7 @@ final class AppModel {
         didUnlock(at: .now)
         screenTime.clearIfExpired()
         tick()
+        scheduleSync(after: .zero)
         guard var s = session, let away = awaySince else { return }
         // Locking the phone is fine; switching to another app is "looking at the phone".
         if !lockedWhileAway, !expectingHandOff, !s.isOnBreak, Date.now.timeIntervalSince(away) > 3 {
@@ -263,6 +275,69 @@ final class AppModel {
         LiveActivityController.end()
     }
 
+    // MARK: - Account
+
+    /// Reconciles the sky with the signed-in account, a moment after the last change so a finished
+    /// session and the purchases right after it go up together.
+    func scheduleSync(after delay: Duration = .seconds(3)) {
+        guard !Demo.isOn, account.account != nil else { return }
+        syncTask?.cancel()
+        syncTask = Task { [weak self] in
+            if delay > .zero { try? await Task.sleep(for: delay) }
+            guard !Task.isCancelled else { return }
+            await self?.syncNow()
+        }
+    }
+
+    @discardableResult
+    func syncNow() async -> Bool {
+        guard !Demo.isOn, let uid = account.account?.uid else { return false }
+        let sent = progress
+        guard let agreed = try? await cloud.sync(uid: uid, local: sent), account.account?.uid == uid else { return false }
+        // Changes made while the request was out are kept on top of what came back.
+        let next = progress == sent ? agreed : SkyProgress.merge(base: sent, local: progress, remote: agreed)
+        if next != progress {
+            applyingCloud = true
+            progress = next
+            applyingCloud = false
+        }
+        if next != agreed { scheduleSync() }
+        return true
+    }
+
+    /// Whether signing out now would lose something: changes the account has not received yet.
+    var hasUnsyncedChanges: Bool {
+        guard let uid = account.account?.uid else { return false }
+        return cloud.hasUnsyncedChanges(progress, uid: uid)
+    }
+
+    /// Signs out after a last sync. The sky stays in the account and leaves this phone, so the next
+    /// person to sign in here starts from their own.
+    func signOut() async {
+        syncTask?.cancel()
+        await syncNow()
+        account.signOut()
+        cloud.forget()
+        clearProgress()
+        toast = "Çıkış yapıldı"
+    }
+
+    /// Deletes the account and everything saved in it, and the sky on this phone.
+    func deleteAccount() async {
+        syncTask?.cancel()
+        let cloud = cloud
+        guard await account.deleteAccount(beforeDelete: { uid in try await cloud.deleteRemote(uid: uid) }) else { return }
+        cloud.forget()
+        clearProgress()
+        toast = "Hesabın silindi"
+    }
+
+    private func clearProgress() {
+        applyingCloud = true
+        progress = SkyProgress()
+        applyingCloud = false
+    }
+
     // MARK: - Screenshot mode
 
     /// Puts the app on the screen named by `-screen` (see Demo).
@@ -313,7 +388,7 @@ final class AppModel {
 
     // MARK: - Storage
 
-    private static var folder: URL {
+    static var folder: URL {
         let url = URL.applicationSupportDirectory.appending(path: "Derin", directoryHint: .isDirectory)
         try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         return url
