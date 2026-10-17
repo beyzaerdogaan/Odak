@@ -110,7 +110,7 @@ struct RewardView: View {
             } else {
                 Text("Bu oturumda yıldız düşmedi").meta()
                 Text("\(summary.record.focusedMinutes) dk").font(.serif(64, italic: true)).foregroundStyle(Theme.paper)
-                Text("Kalan yıldızlar parlak: 60+ dk ya da katı mod oturumu gerekiyor. Üst üste 4 oturumda yıldız gelmezse sıradaki garanti.")
+                Text("Kalan yıldızların hepsi parlak, bu yüzden en az 60 dakikalık bir oturum ya da katı mod gerekiyor. Üst üste 4 oturumda yıldız düşmezse sıradaki oturumda yıldız garanti.")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper).multilineTextAlignment(.center)
             }
             if let off = model.lastScreenOffMinutes, off > 0 {
@@ -174,11 +174,11 @@ struct RewardView: View {
 
     private var extraItems: [(String, String, Color)] {
         var items: [(String, String, Color)] = []
-        for o in summary.newDeepSky { items.append(("sparkles", "\(o.name) keşfedildi, +\(o.light) Işık", Theme.nebula)) }
+        for o in summary.newDeepSky { items.append(("sparkles", "\(o.name) keşfedildi ve \(o.light) Işık kazandın", Theme.nebula)) }
         for p in summary.newPlanets { items.append(("circle.fill", "\(p.name) açıldı", Theme.ice)) }
-        for s in summary.reachedStops { items.append(("location.north.fill", "\(s.name) durağına vardın: \(s.rewardText)", Theme.accentInk)) }
+        for s in summary.reachedStops { items.append(("location.north.fill", "\(s.name) durağına vardın, ödülün: \(s.rewardText)", Theme.accentInk)) }
         if summary.journeyStarted { items.append(("airplane", "Işık yolculuğu başladı", Theme.accentInk)) }
-        if summary.caughtShootingStar { items.append(("sparkle", "Kayan yıldız yakaladın, Işık ×2", Theme.meteor)) }
+        if summary.caughtShootingStar { items.append(("sparkle", "Kayan yıldız yakaladın, bu oturumun Işığı iki katına çıktı", Theme.meteor)) }
         return items
     }
 
@@ -207,7 +207,7 @@ struct RewardView: View {
     private func brightNote(_ c: Constellation) -> String? {
         let left = c.stars.filter { !model.progress.isLit($0.id) }
         guard left.count == 1, let last = left.first, last.isBright else { return nil }
-        return "Son yıldız \(last.name) parlak bir yıldız: yalnızca 60+ dk ya da katı mod oturumunda düşer."
+        return "Son yıldız \(last.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer."
     }
 }
 
