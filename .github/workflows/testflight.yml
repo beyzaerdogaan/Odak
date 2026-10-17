@@ -102,7 +102,7 @@ jobs:
         run: |
           python3 -m venv "$RUNNER_TEMP/venv"
           "$RUNNER_TEMP/venv/bin/pip" install --quiet pyjwt cryptography
-          IDS="$BUNDLE_PREFIX.derin+APPLE_ID_AUTH $BUNDLE_PREFIX.derin.live-activity"
+          IDS="$BUNDLE_PREFIX.derin+APPLE_ID_AUTH $BUNDLE_PREFIX.derin.live-activity $BUNDLE_PREFIX.derin.share"
           if [ "$SCREEN_TIME" = "YES" ]; then
             for ext in activity-monitor shield-configuration shield-action; do IDS="$IDS $BUNDLE_PREFIX.derin.$ext"; done
           fi
