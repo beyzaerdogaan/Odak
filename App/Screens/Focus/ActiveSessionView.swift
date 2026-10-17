@@ -185,8 +185,9 @@ struct NowPlayingCard: View {
 
     var body: some View {
         let sounds = model.sounds
-        let playlist = model.settings.spotifyPlaylist.flatMap { id in
-            (SpotifyService.suggested + model.spotify.playlists).first { $0.id == id }
+        let playlist = model.settings.spotifyPlaylist.flatMap { id -> (name: String, service: String)? in
+            if let list = model.music.list(id: id) { return (list.name, list.service.title) }
+            return (SpotifyService.suggested + model.spotify.playlists).first { $0.id == id }.map { ($0.name, "Spotify") }
         }
         HStack(spacing: 12) {
             Image(systemName: "music.note")
@@ -217,9 +218,9 @@ struct NowPlayingCard: View {
         .background(Theme.plate, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 
-    private func subtitle(playlist: SpotifyPlaylist?) -> String {
+    private func subtitle(playlist: (name: String, service: String)?) -> String {
         let ambient = model.sounds.active.map { "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi" }
-        if playlist != nil { return (["Spotify"] + ambient).joined(separator: " ve ") }
-        return ambient.isEmpty ? "Ortam sesi ya da Spotify seç" : ambient.joined(separator: ", ")
+        if let playlist { return ([playlist.service] + ambient).joined(separator: " ve ") }
+        return ambient.isEmpty ? "Ortam sesi ya da müzik seç" : ambient.joined(separator: ", ")
     }
 }

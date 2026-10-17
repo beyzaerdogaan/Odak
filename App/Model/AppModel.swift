@@ -24,6 +24,7 @@ final class AppModel {
     let screenTime = ScreenTimeController()
     let sounds = SoundEngine()
     let spotify = SpotifyService()
+    let music = MusicLibrary(folder: Demo.isOn ? nil : AppModel.folder)
     let store = SubscriptionStore()
     let account = AccountService()
     let cloud = CloudSync(folder: AppModel.folder)
@@ -162,7 +163,7 @@ final class AppModel {
         }
     }
 
-    /// Opening Spotify or Shortcuts from the app does not count as looking at the phone.
+    /// Opening a music app or Shortcuts from the app does not count as looking at the phone.
     func handOff() { expectingHandOff = true }
 
     // MARK: - Leaving the app during a session
@@ -183,6 +184,7 @@ final class AppModel {
         endBackgroundTask()
         didUnlock(at: .now)
         screenTime.clearIfExpired()
+        if let shared = music.collectShared() { toast = "“\(shared.name)” müzik listelerine eklendi" }
         tick()
         scheduleSync(after: .zero)
         guard var s = session, let away = awaySince else { return }
