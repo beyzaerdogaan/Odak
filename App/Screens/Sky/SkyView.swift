@@ -351,6 +351,8 @@ struct StarStorySheet: View {
     let constellation: Constellation
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
+    /// Height of the content, so the sheet hugs it instead of leaving a half-empty screen.
+    @State private var contentHeight: CGFloat = 220
 
     var body: some View {
         NavigationStack {
@@ -374,14 +376,19 @@ struct StarStorySheet: View {
                         .font(.system(size: 14)).foregroundStyle(Theme.paperBody)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(22)
+            .padding(.horizontal, 22)
+            .padding(.top, 8)
+            .padding(.bottom, 22)
+            .fixedSize(horizontal: false, vertical: true)
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { contentHeight = $0 }
+            .frame(maxHeight: .infinity, alignment: .top)
             .navigationTitle(star.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Tamam", systemImage: "checkmark") { dismiss() } } }
         }
-        .presentationDetents([.medium])
+        // The navigation bar and the bottom safe area sit outside the measured content.
+        .presentationDetents([.height(contentHeight + 90)])
     }
 }
