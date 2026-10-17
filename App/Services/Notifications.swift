@@ -40,7 +40,7 @@ enum Notifications {
         await requestPermission()
         let content = UNMutableNotificationContent()
         content.title = "\(name) zirvede"
-        content.body = "Bu gece meteor yağmurunun zirvesi. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak."
+        content.body = "Bu gece meteor yağmurunun zirvesi var. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak."
         content.sound = .default
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)

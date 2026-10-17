@@ -41,7 +41,7 @@ jobs:
             -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
             -skipPackagePluginValidation -skipMacroValidation CODE_SIGNING_ALLOWED=NO -quiet
 
-      - name: Screenshots (light and dark)
+      - name: Screenshots
         if: github.event_name == 'push'
         run: ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
 

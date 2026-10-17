@@ -2,27 +2,22 @@ import SwiftUI
 import UIKit
 import WidgetKit
 
-/// The few design tokens the Live Activity needs (see App/Theme/Theme.swift): night sky in dark,
-/// dawn atlas in navy ink in light.
+/// The few design tokens the Live Activity needs (see App/Theme/Theme.swift). Always the night
+/// palette: the lock screen follows the system appearance, but Derin has no light look.
 enum ActivityInk {
     /// See-through, so the lock screen wallpaper shows behind the system's blur.
-    static let background = dynamic(light: 0xF6F7FB, lightAlpha: 0.55, dark: 0x090D22, darkAlpha: 0.45)
-    static let paper = dynamic(light: 0x1B2140, dark: 0xECE6D6)
-    static let paper2 = dynamic(light: 0x4F5779, dark: 0xA7ADC6)
-    static let track = dynamic(light: 0x1B2140, lightAlpha: 0.12, dark: 0xECE6D6, darkAlpha: 0.12)
-    static let accent = dynamic(light: 0xD3A24B, dark: 0xF2C46D)
-    static let accentInk = dynamic(light: 0x8A6312, dark: 0xF2C46D)
-    static let aurora = dynamic(light: 0x1C7D60, dark: 0x8FDCC0)
-    static let ice = dynamic(light: 0x3557B8, dark: 0xA8C4FF)
-    /// The Dynamic Island is always black, so it uses the night palette.
-    static let islandAccent = Color(uiColor: rgb(0xF2C46D))
-    static let islandIce = Color(uiColor: rgb(0xA8C4FF))
+    static let background = color(0x090D22, 0.45)
+    static let paper = color(0xECE6D6)
+    static let paper2 = color(0xA7ADC6)
+    static let track = color(0xECE6D6, 0.12)
+    static let accent = color(0xF2C46D)
+    static let accentInk = color(0xF2C46D)
+    static let aurora = color(0x8FDCC0)
+    static let ice = color(0xA8C4FF)
+    static let islandAccent = color(0xF2C46D)
+    static let islandIce = color(0xA8C4FF)
 
-    static func dynamic(light: UInt32, lightAlpha: Double = 1, dark: UInt32, darkAlpha: Double = 1) -> Color {
-        Color(uiColor: UIColor { traits in
-            traits.userInterfaceStyle == .light ? rgb(light, lightAlpha) : rgb(dark, darkAlpha)
-        })
-    }
+    static func color(_ hex: UInt32, _ alpha: Double = 1) -> Color { Color(uiColor: rgb(hex, alpha)) }
 }
 
 /// Same as UIColor(hex:) in the app's theme, which the extension does not compile.

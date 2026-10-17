@@ -23,8 +23,14 @@ sign_bundle() {
     plutil -insert com\\.apple\\.developer\\.applesignin -array "$ent"
     plutil -insert com\\.apple\\.developer\\.applesignin.0 -string Default "$ent"
   fi
-  # The Live Activity widget needs neither Family Controls nor the App Group.
-  if [ "$SCREEN_TIME" = "YES" ] && [ "$id" != "$BUNDLE_PREFIX.derin.live-activity" ]; then
+  # The app and the share extension hand over shared music lists through a Keychain group.
+  if [ "$id" = "$BUNDLE_PREFIX.derin" ] || [ "$id" = "$BUNDLE_PREFIX.derin.share" ]; then
+    plutil -insert keychain-access-groups -array "$ent"
+    plutil -insert keychain-access-groups.0 -string "$TEAM_ID.$id" "$ent"
+    plutil -insert keychain-access-groups.1 -string "$TEAM_ID.$BUNDLE_PREFIX.derin.shared" "$ent"
+  fi
+  # The Live Activity widget and the share extension need neither Family Controls nor the App Group.
+  if [ "$SCREEN_TIME" = "YES" ] && [ "$id" != "$BUNDLE_PREFIX.derin.live-activity" ] && [ "$id" != "$BUNDLE_PREFIX.derin.share" ]; then
     plutil -insert com\\.apple\\.developer\\.family-controls -bool YES "$ent"
     plutil -insert com\\.apple\\.security\\.application-groups -array "$ent"
     plutil -insert com\\.apple\\.security\\.application-groups.0 -string "group.$BUNDLE_PREFIX.derin" "$ent"

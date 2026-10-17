@@ -44,6 +44,7 @@ targets:
       - path: App
       - path: Shared
       - path: LiveActivity
+      - path: Music
     dependencies:
       - package: OdakCore
       - package: Firebase
@@ -52,6 +53,7 @@ targets:
         product: FirebaseFirestore
       - package: GoogleSignIn
       - target: DerinWidgets
+      - target: DerinShare
     settings:
       groups: [derin]
       base:
@@ -80,4 +82,18 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.live-activity
         INFOPLIST_FILE: Widgets/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+  # "Derin" in the share sheet of Spotify, Apple Music and YouTube Music: adds the shared list.
+  DerinShare:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ShareExtension
+      - path: Music
+    settings:
+      groups: [derin]
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(ODAK_BUNDLE_ID_PREFIX).derin.share
+        CODE_SIGN_ENTITLEMENTS: ShareExtension/Share.entitlements
+        INFOPLIST_FILE: ShareExtension/Info.plist
         GENERATE_INFOPLIST_FILE: NO

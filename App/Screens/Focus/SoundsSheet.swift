@@ -2,12 +2,13 @@ import AuthenticationServices
 import OdakCore
 import SwiftUI
 
-/// "Ses ve müzik": mix up to two ambient sounds and pick a Spotify playlist.
+/// "Ses ve müzik": mix up to two ambient sounds and pick a playlist from Spotify, Apple Music or YouTube Music.
 struct SoundsSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @Environment(\.webAuthenticationSession) private var webAuth
     @State private var showZenit = false
+    @State private var showAddMusic = false
 
     private let icons: [SoundID: String] = [
         .rain: "cloud.rain", .forest: "tree", .waves: "water.waves", .fire: "flame",
@@ -22,12 +23,9 @@ struct SoundsSheet: View {
                 VStack(alignment: .leading, spacing: 24) {
                     ambient
                     Divider().overlay(Theme.hair)
-                    spotify
+                    music
                     Toggle(isOn: $model.settings.stopMusicAtEnd) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Bitince müziği durdur").font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
-                            Text("Ses yumuşakça azalır").small()
-                        }
+                        Text("Bitince müziği durdur").font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
                     }
                     .tint(Theme.accent)
                     .plate(padding: 14)
@@ -44,6 +42,7 @@ struct SoundsSheet: View {
         }
         .presentationDetents([.large])
         .sheet(isPresented: $showZenit) { ZenitSheet() }
+        .sheet(isPresented: $showAddMusic) { AddMusicSheet() }
         .onDisappear { model.settings.ambient = model.sounds.saved }
     }
 
@@ -111,57 +110,86 @@ struct SoundsSheet: View {
         .accessibilityAddTraits(on ? .isSelected : [])
     }
 
-    private var spotify: some View {
+    private var music: some View {
         let service = model.spotify
-        let lists = SpotifyService.suggested + service.playlists
+        let suggested = SpotifyService.suggested + service.playlists
         return VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Spotify").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
+                    Text("Müzik").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                     HStack(spacing: 6) {
                         Circle().fill(service.isConnected ? Theme.aurora : Theme.paper3).frame(width: 6, height: 6)
-                        Text(service.isConnected ? "Hesabın bağlı, odak boyunca engellenmez"
-                             : "Listeler Spotify uygulamasında açılır, odak boyunca engellenmez")
+                        Text(service.isConnected ? "Spotify hesabın bağlı, odak boyunca engellenmez"
+                             : "Listeler kendi uygulamasında açılır, odak boyunca engellenmez")
                     }
                     .font(.system(size: 12)).foregroundStyle(service.isConnected ? Theme.aurora : Theme.paper2)
                 }
                 Spacer()
-                if service.isConnected {
-                    Button("Bağlantıyı kes") { service.disconnect() }.font(.system(size: 13)).foregroundStyle(Theme.paper2)
-                } else if service.isConfigured {
-                    Button("Bağlan") { Task { await connect() } }.buttonStyle(.glass).controlSize(.small)
-                }
+                Button("Liste ekle", systemImage: "plus") { showAddMusic = true }
+                    .buttonStyle(.glass).controlSize(.small)
             }
             if let err = service.lastError { Text(err).font(.system(size: 12)).foregroundStyle(Theme.alarm) }
             VStack(spacing: 0) {
-                ForEach(lists) { list in
-                    let selected = model.settings.spotifyPlaylist == list.id
-                    Button {
-                        model.settings.spotifyPlaylist = selected ? nil : list.id
-                        if !selected {
-                            model.handOff()
-                            Task { await service.play(list) }
+                ForEach(model.music.lists) { list in
+                    row(id: list.id, name: list.name, subtitle: "\(list.service.title) · \(list.kindTitle)", artwork: list.artwork) {
+                        if list.service == .spotify, !list.isAlbum, let id = list.spotifyURI?.absoluteString.split(separator: ":").last {
+                            await service.play(SpotifyPlaylist(id: String(id), name: list.name, subtitle: ""))
+                        } else {
+                            await model.music.open(list)
                         }
-                    } label: {
-                        HStack(spacing: 12) {
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(LinearGradient(colors: gradient(for: list.id), startPoint: .topLeading, endPoint: .bottomTrailing))
-                                .frame(width: 44, height: 44)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(list.name).font(.system(size: 15, weight: .semibold))
-                                    .foregroundStyle(selected ? Theme.aurora : Theme.paper)
-                                Text(list.subtitle).small()
-                            }
-                            Spacer()
-                            if selected { Image(systemName: "play.fill").foregroundStyle(Theme.aurora) }
-                        }
-                        .frame(minHeight: 62)
-                        .contentShape(.rect)
                     }
-                    .buttonStyle(.plain)
-                    Divider().overlay(Theme.hair)
+                    .contextMenu {
+                        Button("Listeden kaldır", systemImage: "trash", role: .destructive) {
+                            if model.settings.spotifyPlaylist == list.id { model.settings.spotifyPlaylist = nil }
+                            model.music.remove(list)
+                        }
+                    }
+                }
+                ForEach(suggested) { list in
+                    row(id: list.id, name: list.name, subtitle: "Spotify · \(list.subtitle)", artwork: nil) {
+                        await service.play(list)
+                    }
                 }
             }
+            if service.isConnected {
+                Button("Spotify bağlantısını kes") { service.disconnect() }.font(.system(size: 13)).foregroundStyle(Theme.paper2)
+            } else if service.isConfigured {
+                Button("Spotify hesabını bağla") { Task { await connect() } }.font(.system(size: 13)).foregroundStyle(Theme.paper2)
+            }
+        }
+    }
+
+    private func row(id: String, name: String, subtitle: String, artwork: URL?, play: @escaping () async -> Void) -> some View {
+        let selected = model.settings.spotifyPlaylist == id
+        return VStack(spacing: 0) {
+            Button {
+                model.settings.spotifyPlaylist = selected ? nil : id
+                if !selected {
+                    model.handOff()
+                    Task { await play() }
+                }
+            } label: {
+                HStack(spacing: 12) {
+                    AsyncImage(url: artwork) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: {
+                        LinearGradient(colors: gradient(for: id), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    }
+                    .frame(width: 44, height: 44)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(name).font(.system(size: 15, weight: .semibold)).lineLimit(1)
+                            .foregroundStyle(selected ? Theme.aurora : Theme.paper)
+                        Text(subtitle).small().lineLimit(1)
+                    }
+                    Spacer()
+                    if selected { Image(systemName: "play.fill").foregroundStyle(Theme.aurora) }
+                }
+                .frame(minHeight: 62)
+                .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            Divider().overlay(Theme.hair)
         }
     }
 

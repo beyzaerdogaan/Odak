@@ -40,7 +40,7 @@ struct ActiveSessionView: View {
                     Text(clock(s.isOnBreak ? s.breakRemaining(at: now) : s.remaining(at: now)))
                         .font(.serif(68)).monospacedDigit().foregroundStyle(Theme.paper)
                         .contentTransition(.numericText(countsDown: true))
-                    Text(s.isOnBreak ? "Mola bitince sayaç kaldığı yerden devam eder" : "Hangi yıldız?\nBitince göreceksin")
+                    Text(s.isOnBreak ? "Mola bitince sayaç kaldığı yerden devam eder" : "Hangi yıldızı yaktığını\noturum bitince göreceksin")
                         .font(.serif(15, italic: true)).foregroundStyle(Theme.paper2).multilineTextAlignment(.center)
                         .frame(maxWidth: 190)
                 }
@@ -77,13 +77,13 @@ struct ActiveSessionView: View {
                         .disabled(s.breakUsed)
                 }
                 if s.strict {
-                    Text("Katı mod: süre bitene kadar kilit açılmaz.")
+                    Text("Katı moddasın, süre bitene kadar kilit açılmaz.")
                         .font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
                         .frame(maxWidth: .infinity, minHeight: 50)
                 } else {
                     holdToGiveUp
                 }
-                Text("Vazgeçersen yıldız söner, ama odakladığın dakikalar sayılır.").small()
+                Text("Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır.").small()
                     .multilineTextAlignment(.center)
             }
         }
@@ -113,7 +113,7 @@ struct ActiveSessionView: View {
         .sensoryFeedback(.warning, trigger: giveUpProgress == 1)
         .accessibilityElement()
         .accessibilityLabel("Vazgeç")
-        .accessibilityHint("Oturumu bitirir, yıldız söner")
+        .accessibilityHint("Oturumu bitirir ve yıldız söner")
         .accessibilityAction { model.abandon() }
     }
 
@@ -121,7 +121,7 @@ struct ActiveSessionView: View {
         guard s.blockMode != .none, model.screenTime.isAuthorized else { return "Uygulama engeli kapalı" }
         if s.blockMode == .all { return "Uygulamalar kilitli" }
         let n = model.screenTime.blockedCount
-        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitli uygulama seçilmedi"
+        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitlenecek uygulama seçilmedi"
     }
 
     private func clock(_ t: TimeInterval) -> String {
@@ -185,8 +185,9 @@ struct NowPlayingCard: View {
 
     var body: some View {
         let sounds = model.sounds
-        let playlist = model.settings.spotifyPlaylist.flatMap { id in
-            (SpotifyService.suggested + model.spotify.playlists).first { $0.id == id }
+        let playlist = model.settings.spotifyPlaylist.flatMap { id -> (name: String, service: String)? in
+            if let list = model.music.list(id: id) { return (list.name, list.service.title) }
+            return (SpotifyService.suggested + model.spotify.playlists).first { $0.id == id }.map { ($0.name, "Spotify") }
         }
         HStack(spacing: 12) {
             Image(systemName: "music.note")
@@ -217,9 +218,9 @@ struct NowPlayingCard: View {
         .background(Theme.plate, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 
-    private func subtitle(playlist: SpotifyPlaylist?) -> String {
+    private func subtitle(playlist: (name: String, service: String)?) -> String {
         let ambient = model.sounds.active.map { "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi" }
-        if playlist != nil { return (["Spotify"] + ambient).joined(separator: " ve ") }
-        return ambient.isEmpty ? "Ortam sesi ya da Spotify seç" : ambient.joined(separator: ", ")
+        if let playlist { return ([playlist.service] + ambient).joined(separator: " ve ") }
+        return ambient.isEmpty ? "Ortam sesi ya da müzik seç" : ambient.joined(separator: ", ")
     }
 }

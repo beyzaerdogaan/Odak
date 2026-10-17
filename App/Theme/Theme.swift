@@ -2,8 +2,8 @@ import OdakCore
 import SwiftUI
 import UIKit
 
-/// Design tokens from design/tools/derin_build.py. Dark is the night sky; light is a dawn star atlas
-/// printed in navy ink. Every colour resolves per trait, so the app follows the system appearance.
+/// Design tokens from design/tools/derin_build.py. The app is always the night sky: Info.plist pins
+/// UIUserInterfaceStyle to Dark, so only the dark values are ever shown.
 enum Theme {
     static let night = dynamic(light: 0xE8EBF4, dark: 0x090D22)
     static let night2 = dynamic(light: 0xF6F7FB, dark: 0x0E1430)

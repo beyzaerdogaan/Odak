@@ -54,6 +54,8 @@
 	<false/>
 	<key>DerinAppGroup</key>
 	<string>$(ODAK_APP_GROUP)</string>
+	<key>DerinSharedKeychainGroup</key>
+	<string>$(ODAK_BUNDLE_ID_PREFIX).derin.shared</string>
 	<key>DerinSpotifyClientID</key>
 	<string>$(ODAK_SPOTIFY_CLIENT_ID)</string>
 	<key>NSSupportsLiveActivities</key>
@@ -78,5 +80,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 </dict>
 </plist>

@@ -54,7 +54,7 @@ struct HomeView: View {
 
                 StatStrip(items: [
                     ("\(p.starCount)", "yıldız yaktın"),
-                    ("\(p.completedConstellations.count)", "takımyıldız bitti"),
+                    ("\(p.completedConstellations.count)", "takımyıldız tamamlandı"),
                     ("\(p.unlockedPlanets.count + p.deepSky.count)", "gök cismi açıldı"),
                 ])
                 .padding(.horizontal, 22)
@@ -114,11 +114,11 @@ private struct NextStepCard: View {
     }
 
     private func detail(_ p: SkyProgress) -> String {
-        if p.records.isEmpty { return "Her tamamlanan oturum gökyüzüne bir yıldız ekler. Vazgeçersen yıldız söner ama dakikaların sayılır." }
+        if p.records.isEmpty { return "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır." }
         guard let c = p.nearestConstellation else { return "Her odak saati seni bir ışık yılı ileri taşır." }
         let remaining = c.stars.filter { !p.isLit($0.id) }
         if let bright = remaining.first(where: \.isBright), remaining.allSatisfy(\.isBright) {
-            return "\(bright.name) parlak bir yıldız: yalnızca 60+ dk ya da katı mod oturumunda düşer."
+            return "\(bright.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer."
         }
         return "Hangi yıldızın düşeceği oturum bitince belli olur."
     }
@@ -133,7 +133,7 @@ struct EventBanner: View {
             Image(systemName: "sparkles").font(.system(size: 22)).foregroundStyle(Theme.meteor)
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(shower.name) meteor yağmuru").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                Text(active ? "Etkinlik sürüyor, zirve \(shower.peakText())" : "Sıradaki etkinlik, zirve \(shower.peakText())")
+                Text(active ? "Şu an sürüyor, zirvesi \(shower.peakText())." : "Yaklaşıyor, zirvesi \(shower.peakText()).")
                     .font(.system(size: 12)).foregroundStyle(Theme.meteor2)
             }
             Spacer()
