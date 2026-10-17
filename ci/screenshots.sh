@@ -1,5 +1,5 @@
 #!/bin/bash
-# Photographs every screen in light and dark mode on the iOS simulator, using the app's
+# Photographs every screen in dark mode (the app has no light look) on the iOS simulator, using the app's
 # screenshot mode (-demo -screen <name>). Output: screenshots/<mode>-<screen>.png
 set -euo pipefail
 
@@ -26,7 +26,7 @@ BID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Info.plist")
 xcrun simctl status_bar "$UDID" override --time "21:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3 || true
 
 mkdir -p "$OUT"
-for mode in dark light; do
+for mode in dark; do
   xcrun simctl ui "$UDID" appearance "$mode"
   for s in $SCREENS; do
     xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
