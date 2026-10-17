@@ -11,6 +11,7 @@ struct DerinApp: App {
             RootView()
                 .environment(model)
                 .tint(Theme.accent)
+                .preferredColorScheme(.dark)
                 .onOpenURL { _ = GIDSignIn.sharedInstance.handle($0) }
         }
         .onChange(of: phase) { _, new in
