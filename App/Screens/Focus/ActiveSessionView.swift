@@ -40,7 +40,7 @@ struct ActiveSessionView: View {
                     Text(clock(s.isOnBreak ? s.breakRemaining(at: now) : s.remaining(at: now)))
                         .font(.serif(68)).monospacedDigit().foregroundStyle(Theme.paper)
                         .contentTransition(.numericText(countsDown: true))
-                    Text(s.isOnBreak ? "Mola bitince sayaç kaldığı yerden devam eder" : "Hangi yıldız?\nBitince göreceksin")
+                    Text(s.isOnBreak ? "Mola bitince sayaç kaldığı yerden devam eder" : "Hangi yıldızı yaktığını\noturum bitince göreceksin")
                         .font(.serif(15, italic: true)).foregroundStyle(Theme.paper2).multilineTextAlignment(.center)
                         .frame(maxWidth: 190)
                 }
@@ -77,13 +77,13 @@ struct ActiveSessionView: View {
                         .disabled(s.breakUsed)
                 }
                 if s.strict {
-                    Text("Katı mod: süre bitene kadar kilit açılmaz.")
+                    Text("Katı moddasın, süre bitene kadar kilit açılmaz.")
                         .font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
                         .frame(maxWidth: .infinity, minHeight: 50)
                 } else {
                     holdToGiveUp
                 }
-                Text("Vazgeçersen yıldız söner, ama odakladığın dakikalar sayılır.").small()
+                Text("Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır.").small()
                     .multilineTextAlignment(.center)
             }
         }
@@ -113,7 +113,7 @@ struct ActiveSessionView: View {
         .sensoryFeedback(.warning, trigger: giveUpProgress == 1)
         .accessibilityElement()
         .accessibilityLabel("Vazgeç")
-        .accessibilityHint("Oturumu bitirir, yıldız söner")
+        .accessibilityHint("Oturumu bitirir ve yıldız söner")
         .accessibilityAction { model.abandon() }
     }
 
@@ -121,7 +121,7 @@ struct ActiveSessionView: View {
         guard s.blockMode != .none, model.screenTime.isAuthorized else { return "Uygulama engeli kapalı" }
         if s.blockMode == .all { return "Uygulamalar kilitli" }
         let n = model.screenTime.blockedCount
-        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitli uygulama seçilmedi"
+        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitlenecek uygulama seçilmedi"
     }
 
     private func clock(_ t: TimeInterval) -> String {

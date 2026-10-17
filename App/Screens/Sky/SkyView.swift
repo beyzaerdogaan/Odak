@@ -79,7 +79,7 @@ struct SkyView: View {
                         Image(systemName: "cloud").font(.system(size: 22)).foregroundStyle(Theme.ice)
                         VStack(alignment: .leading, spacing: 2) {
                             Text("\(p.count(.cloud)) seri koruyucu bulut").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                            Text("Odaklanamadığın bir günü otomatik kapatır").small()
+                            Text("Odaklanamadığın bir günde serini otomatik olarak korur").small()
                         }
                     }
                     .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
@@ -127,7 +127,7 @@ struct SkyView: View {
                 .chartXAxis { AxisMarks(values: .stride(by: .day)) { _ in AxisValueLabel(format: .dateTime.weekday(.narrow)) } }
                 .frame(height: 140)
                 let total = p.stats(.all, now: .now)
-                Text("Toplam \(total.sessions) oturum, ortalama \(total.sessions == 0 ? 0 : total.minutes / max(1, total.sessions)) dk. Telefona hiç bakmadan biten: %\(noLookShare(p))")
+                Text("Toplam \(total.sessions) oturum yaptın ve bir oturum ortalama \(total.sessions == 0 ? 0 : total.minutes / max(1, total.sessions)) dakika sürdü. Telefona hiç bakmadan bitirdiğin oturumların oranı %\(noLookShare(p)).")
                     .small()
             }
             .plate()
@@ -137,7 +137,7 @@ struct SkyView: View {
                     Image(systemName: "chart.bar.xaxis").foregroundStyle(Theme.accentInk)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Ayrıntılı istatistikler").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                        Text("Günlük grafikler ve odak alışkanlıkların, Zenit ile").small()
+                        Text("Günlük grafikleri ve odak alışkanlıklarını Zenit ile görebilirsin").small()
                     }
                     Spacer()
                     Image(systemName: "chevron.right").foregroundStyle(Theme.paper3)

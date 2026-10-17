@@ -242,9 +242,9 @@ final class AppModel {
             try progress.buy(item)
             toast = "Satın alındı"
         } catch ShopError.notEnoughLight {
-            toast = "Yeterli Işığın yok"
+            toast = "Bunun için yeterli Işığın yok"
         } catch ShopError.limitReached {
-            toast = "Bundan en fazla bu kadar taşıyabilirsin"
+            toast = "Bundan daha fazlasını taşıyamazsın"
         } catch {
             toast = nil
         }

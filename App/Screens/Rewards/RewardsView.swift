@@ -54,7 +54,7 @@ struct RewardsView: View {
                     .font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.accentInk).frame(minHeight: 44)
             }
             if p.promises.isEmpty {
-                Text("Kendi ödülünü koy: “10 saat odak → yeni bir kitap” ya da “7 gün seri → kahvaltıya çık”. Derin ilerlemeni takip eder, hedefe ulaşınca kutlar.")
+                Text("Kendine bir ödül belirle, örneğin “10 saat odaklanınca yeni bir kitap alacağım” ya da “7 gün üst üste odaklanınca kahvaltıya çıkacağım”. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar.")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper2).padding(.vertical, 8)
             }
             ForEach(p.promises.sorted { ($0.celebratedAt == nil ? 0 : 1) < ($1.celebratedAt == nil ? 0 : 1) }) { promise in
@@ -113,7 +113,7 @@ struct RewardsView: View {
                     IconDisc(systemImage: icon(b), color: color(b), fill: color(b).opacity(0.12), size: 46)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(b.title).font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                        Text(p.count(b) > 0 ? "\(b.detail) · \(p.count(b)) tane var" : b.detail).small()
+                        Text(p.count(b) > 0 ? "\(b.detail) · Elinde \(p.count(b)) tane var" : b.detail).small()
                     }
                     Spacer(minLength: 4)
                     if p.count(b) > 0 && b != .cloud {
@@ -132,7 +132,7 @@ struct RewardsView: View {
 
     private func use(_ b: Booster) {
         if b == .telescope { showTelescope = true; return }
-        model.toast = model.progress.use(b) ? "\(b.title) sonraki oturuma hazır" : "Zaten hazır"
+        model.toast = model.progress.use(b) ? "\(b.title) sonraki oturum için hazır" : "Bu zaten hazır"
     }
 
     private func icon(_ b: Booster) -> String {
@@ -165,7 +165,7 @@ struct RewardsView: View {
                         } else if let price = ShopItem.sound(s).price {
                             PriceButton(price: price, compact: true) { model.buy(.sound(s)) }
                         } else {
-                            Text("Avcı ile açılır").font(.system(size: 12)).foregroundStyle(Theme.paper3).frame(minHeight: 32)
+                            Text("Avcı'yı tamamlayınca açılır").font(.system(size: 12)).foregroundStyle(Theme.paper3).frame(minHeight: 32)
                         }
                     }
                     .padding(12)
@@ -226,7 +226,7 @@ struct RewardsView: View {
             } else if let price {
                 PriceButton(price: price, compact: true, action: onBuy)
             } else {
-                Text("Keşifle açılır").font(.system(size: 12)).foregroundStyle(Theme.paper3).frame(minHeight: 32)
+                Text("Keşfedince açılır").font(.system(size: 12)).foregroundStyle(Theme.paper3).frame(minHeight: 32)
             }
         }
     }
@@ -238,7 +238,7 @@ struct RewardsView: View {
                     .frame(width: 46, height: 46).background(Theme.accent.opacity(0.14), in: Circle())
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Zenit").font(.serif(28)).foregroundStyle(Theme.paper)
-                    Text("Gökyüzünün en tepesi. Odak, yıldızlar ve Işık her zaman ücretsiz.").font(.system(size: 12)).foregroundStyle(Theme.paper2)
+                    Text("Zenit, gökyüzünün en tepesi demek. Odaklanmak, yıldızlar ve Işık her zaman ücretsiz kalır.").font(.system(size: 12)).foregroundStyle(Theme.paper2)
                 }
             }
             VStack(alignment: .leading, spacing: 8) {
@@ -338,7 +338,7 @@ struct NewPromiseSheet: View {
                 }
                 if !model.isZenit {
                     Section {
-                        Text("Ücretsiz sürümde aynı anda \(SkyProgress.freePromiseLimit) söz tutabilirsin. Zenit ile sınırsız.").small()
+                        Text("Ücretsiz sürümde aynı anda \(SkyProgress.freePromiseLimit) söz tutabilirsin. Zenit ile istediğin kadar söz verebilirsin.").small()
                     }
                 }
             }
@@ -384,7 +384,7 @@ struct TelescopeSheet: View {
                         ForEach(c.stars.filter { !model.progress.isLit($0.id) }) { s in
                             Button {
                                 if model.progress.use(.telescope, target: s.id) {
-                                    model.toast = "Sonraki yıldız: \(s.name)"
+                                    model.toast = "Sonraki yıldızın \(s.name) olacak"
                                 }
                                 dismiss()
                             } label: {
@@ -416,7 +416,7 @@ struct ZenitSheet: View {
             VStack(spacing: 12) {
                 Image(systemName: "sun.horizon").font(.system(size: 36)).foregroundStyle(Theme.accentInk)
                 Text("Zenit").font(.serif(40)).foregroundStyle(Theme.paper)
-                Text("Gökyüzünün en tepesi. Odak, yıldızlar ve Işık her zaman ücretsiz; Zenit ise tüm sesleri ve gök temalarını, ayrıntılı istatistikleri ve sınırsız kendine sözü açar.")
+                Text("Zenit, gökyüzünün en tepesi demek. Odaklanmak, yıldızlar ve Işık her zaman ücretsiz kalır. Zenit ise bütün sesleri ve gök temalarını, ayrıntılı istatistikleri ve sınırsız kendine sözü açar.")
                     .font(.system(size: 14)).foregroundStyle(Theme.paper2).multilineTextAlignment(.center)
             }
             .padding()
