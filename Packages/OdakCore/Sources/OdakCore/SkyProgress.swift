@@ -93,6 +93,8 @@ public struct SkyProgress: Codable, Hashable, Sendable {
 
     public func hasBadge(_ b: Badge) -> Bool { badges[b.rawValue] != nil }
     public func isLit(_ starID: String) -> Bool { litStars[starID] != nil }
+    /// The focus session that lit this star, if it was earned in one.
+    public func record(forStar starID: String) -> FocusRecord? { records.last { $0.starID == starID } }
     public func isComplete(_ constellationID: String) -> Bool { completedConstellations.contains(constellationID) }
 
     public func litCount(in c: Constellation) -> Int { c.stars.filter { isLit($0.id) }.count }
