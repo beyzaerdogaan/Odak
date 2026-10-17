@@ -24,6 +24,7 @@ struct FocusSettings: Codable, Equatable {
     /// The user confirmed they created the "Derin" Focus and its two shortcuts.
     var focusShortcutsReady = false
     var ambient: [String: Double] = ["rain": 0.3]
+    /// The chosen music: a Spotify playlist ID (suggested or from the account) or an added list's link.
     var spotifyPlaylist: String?
 
     static let presets = [25, 45, 60, 90]
