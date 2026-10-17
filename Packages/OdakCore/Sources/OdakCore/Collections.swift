@@ -47,10 +47,10 @@ public struct DeepSkyObject: Hashable, Identifiable, Sendable {
     public var requirementText: String {
         switch requirement {
         case let .sessionAfter(cid, minutes):
-            "Açılma koşulu: \(Catalog.constellation(cid)?.name ?? cid) tamamlandıktan sonra \(minutes) dk'lık oturum"
-        case let .totalHours(h): "Açılma koşulu: toplam \(h) saat odak"
-        case let .completedSessions(n): "Açılma koşulu: \(n) tamamlanmış oturum"
-        case let .constellation(cid): "Açılma koşulu: \(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamla"
+            "\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamladıktan sonra \(minutes) dakikalık bir oturumla açılır."
+        case let .totalHours(h): "Toplam \(h) saat odaklanınca açılır."
+        case let .completedSessions(n): "\(n) oturum tamamlayınca açılır."
+        case let .constellation(cid): "\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamlayınca açılır."
         }
     }
 }
@@ -61,20 +61,20 @@ public enum DeepSky {
 
     public static let objects: [DeepSkyObject] = [
         DeepSkyObject(id: "m42", name: "Avcı Bulutsusu", designation: "M42",
-                      about: ["Yeni yıldızların doğduğu dev bir gaz ve toz bulutu. Avcı'nın Kemeri'nin hemen altında, “kılıç” bölgesinde.",
-                              "Karanlık bir gecede çıplak gözle bulanık bir leke gibi görünür. Dürbünle çok daha belirgindir."],
+                      about: ["Yeni yıldızların doğduğu dev bir gaz ve toz bulutudur. Avcı'nın Kemeri'nin hemen altında, “kılıç” denen bölgede yer alır.",
+                              "Karanlık bir gecede çıplak gözle bulanık bir leke gibi görünür, dürbünle bakınca çok daha belirginleşir."],
                       requirement: .sessionAfter(constellation: "orion", minutes: 90), light: 300, theme: .nebula),
         DeepSkyObject(id: "m45", name: "Ülker", designation: "M45",
-                      about: ["Yedi Kız Kardeş olarak da bilinen genç ve sıcak yıldızlardan oluşan bir küme.",
-                              "Çıplak gözle altı ya da yedi yıldızı seçilir, dürbünle onlarcası."],
+                      about: ["Yedi Kız Kardeş olarak da bilinen, genç ve sıcak yıldızlardan oluşan bir kümedir.",
+                              "Çıplak gözle altı ya da yedi yıldızı seçilebilir, dürbünle bakınca onlarcası görünür."],
                       requirement: .constellation("taurus"), light: 250, theme: nil),
         DeepSkyObject(id: "m13", name: "Herkül Kümesi", designation: "M13",
-                      about: ["Yüz binlerce yıldızın top gibi toplandığı bir küresel küme.",
+                      about: ["Yüz binlerce yıldızın top gibi bir araya toplandığı küresel bir kümedir.",
                               "Karanlık bir gökyüzünde dürbünle bulanık bir yıldız gibi görünür."],
                       requirement: .completedSessions(50), light: 250, theme: nil),
         DeepSkyObject(id: "m31", name: "Andromeda Galaksisi", designation: "M31",
-                      about: ["Samanyolu'na en yakın büyük sarmal galaksi.",
-                              "Işığının yola çıkması yaklaşık 2,5 milyon yıl önceydi."],
+                      about: ["Samanyolu'na en yakın büyük sarmal galaksidir.",
+                              "Bugün gördüğümüz ışığı yaklaşık 2,5 milyon yıl önce yola çıktı."],
                       requirement: .totalHours(100), light: 500, theme: nil),
     ]
 }
@@ -116,16 +116,16 @@ public enum Journey {
     public static let lightYearsPerHour = 1.0
 
     public static let stops: [JourneyStop] = [
-        JourneyStop(name: "Alfa Centauri", lightYears: 4.4, story: "Güneş'e en yakın yıldız sistemi. Üç yıldızdan biri, Proxima, en yakın komşumuz.",
-                    rewardText: "Üçlü yıldız sisteminin hikâyesi, Proxima rozeti", reward: .badge(.proxima)),
-        JourneyStop(name: "Sirius", lightYears: 8.6, story: "Gece gökyüzünün en parlak yıldızı, yanında sönük bir beyaz cüce eşi var.",
-                    rewardText: "Gecenin en parlak yıldızı, +300 Işık", reward: .light(300)),
-        JourneyStop(name: "Vega", lightYears: 25, story: "Lir'in kalbi. Binlerce yıl sonra kutup yıldızı olacak.",
-                    rewardText: "Lir'in kalbi, yeni bir ses paketi", reward: .sound(.library)),
-        JourneyStop(name: "TRAPPIST-1", lightYears: 41, story: "Yedi gezegenli küçük bir kırmızı cüce sistemi.",
-                    rewardText: "Yedi gezegenli sistem, “Kırmızı cüce” gök teması", reward: .theme(.redDwarf)),
-        JourneyStop(name: "Ülker", lightYears: 444, story: "Yedi Kız Kardeş kümesi. Buradan Güneş artık sönük bir nokta.",
-                    rewardText: "Yedi Kız Kardeş kümesi, özel rozet", reward: .badge(.pleiades)),
+        JourneyStop(name: "Alfa Centauri", lightYears: 4.4, story: "Güneş'e en yakın yıldız sistemidir. Üç yıldızından biri olan Proxima, bize en yakın yıldızdır.",
+                    rewardText: "Proxima rozeti ve üçlü yıldız sisteminin hikâyesi", reward: .badge(.proxima)),
+        JourneyStop(name: "Sirius", lightYears: 8.6, story: "Gece gökyüzünün en parlak yıldızıdır ve yanında sönük bir beyaz cüce eşi vardır.",
+                    rewardText: "300 Işık", reward: .light(300)),
+        JourneyStop(name: "Vega", lightYears: 25, story: "Lir takımyıldızının kalbidir ve binlerce yıl sonra kutup yıldızı olacak.",
+                    rewardText: "Yeni bir ses paketi", reward: .sound(.library)),
+        JourneyStop(name: "TRAPPIST-1", lightYears: 41, story: "Yedi gezegeni olan küçük bir kırmızı cüce sistemidir.",
+                    rewardText: "“Kırmızı cüce” gök teması", reward: .theme(.redDwarf)),
+        JourneyStop(name: "Ülker", lightYears: 444, story: "Yedi Kız Kardeş olarak bilinen bir yıldız kümesidir. Buradan bakınca Güneş artık sönük bir nokta gibi görünür.",
+                    rewardText: "Yedi Kız Kardeş rozeti", reward: .badge(.pleiades)),
     ]
 }
 
@@ -277,17 +277,17 @@ public enum MeteorShowers {
 
     public static let all: [MeteorShower] = [
         MeteorShower(id: "quadrantids", name: "Kuadrantidler", start: (12, 28), end: (1, 12), peak: (1, 3), peakText: "Ocak başı",
-                     radiant: "Çoban'ın kuzeyi", watchTip: "Zirve kısa sürer; gece yarısından sonra kuzeydoğuya bak."),
+                     radiant: "Çoban'ın kuzeyi", watchTip: "Zirvesi kısa sürer, bu yüzden gece yarısından sonra kuzeydoğuya bak."),
         MeteorShower(id: "lyrids", name: "Liridler", start: (4, 14), end: (4, 30), peak: (4, 22), peakText: "Nisan sonu",
-                     radiant: "Lir", watchTip: "Vega'nın yakınından geliyor gibi görünürler. En iyi saat şafaktan önce."),
+                     radiant: "Lir", watchTip: "Meteorlar Vega'nın yakınından geliyor gibi görünür. En iyi izleme zamanı şafaktan hemen öncesidir."),
         MeteorShower(id: "perseids", name: "Perseidler", start: (7, 17), end: (8, 24), peak: (8, 12), peakText: "Ağustos ortası",
-                     radiant: "Perseus", watchTip: "Yazın en bereketli yağmuru. Gece yarısından sonra kuzeydoğuya bak."),
+                     radiant: "Perseus", watchTip: "Yazın en bereketli meteor yağmurudur. Gece yarısından sonra kuzeydoğuya bak."),
         MeteorShower(id: "orionids", name: "Orionidler", start: (10, 2), end: (11, 7), peak: (10, 21), peakText: "21–22 Ekim civarı",
-                     radiant: "Avcı", watchTip: "Meteorlar Avcı yönünden geliyor gibi görünür. En iyi zaman gece yarısından sonra, şehir ışıklarından uzakta."),
+                     radiant: "Avcı", watchTip: "Meteorlar Avcı yönünden geliyor gibi görünür. En iyisi gece yarısından sonra, şehir ışıklarından uzak bir yerden izlemektir."),
         MeteorShower(id: "leonids", name: "Leonidler", start: (11, 6), end: (11, 30), peak: (11, 17), peakText: "Kasım ortası",
-                     radiant: "Aslan", watchTip: "Aslan yükseldikten sonra, gece yarısından şafağa kadar."),
+                     radiant: "Aslan", watchTip: "Aslan takımyıldızı yükseldikten sonra, gece yarısından şafağa kadar izleyebilirsin."),
         MeteorShower(id: "geminids", name: "Geminidler (İkizler)", start: (12, 4), end: (12, 20), peak: (12, 13), peakText: "Aralık ortası",
-                     radiant: "İkizler", watchTip: "Akşamdan itibaren izlenebilir, en iyisi gece yarısı civarı."),
+                     radiant: "İkizler", watchTip: "Akşamdan itibaren izlenebilir ama en iyi zaman gece yarısı civarıdır."),
     ]
 
     /// The sky calendar: every shower window and astronomical event overlapping `from..<to`, in date order.
@@ -469,9 +469,9 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
     public var detail: String {
         switch self {
         case .telescope: "Sonraki yıldızı sen seç"
-        case .shootingStar: "Sonraki oturumda Işık ×2"
+        case .shootingStar: "Sonraki oturumda Işığın iki katına çıkar"
         case .cloud: "En fazla 3 tane taşıyabilirsin"
-        case .brightTicket: "Bir parlak yıldızı 45 dk'da düşür"
+        case .brightTicket: "Bir parlak yıldızı 45 dakikalık bir oturumda düşürür"
         }
     }
     public var price: Int {

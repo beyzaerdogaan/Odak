@@ -81,7 +81,7 @@ struct SkyCalendarView: View {
                     ForEach(shown) { e in row(e) }
                 }
 
-                Text("Meteor yağmurları Uluslararası Meteor Örgütü'nün (IMO) yıllık takviminden, tutulmalar NASA'nın tutulma tablolarından; gezegen olayları ve saatler Türkiye'den görüldüğü gibi hesaplandı. Saatte görülen meteor sayısı karanlık bir gökyüzü için.")
+                Text("Meteor yağmurları Uluslararası Meteor Örgütü'nün (IMO) yıllık takviminden, tutulmalar ise NASA'nın tutulma tablolarından alındı. Gezegen olayları ve saatler Türkiye'den görüldüğü gibi hesaplandı. Saatte görülen meteor sayısı karanlık bir gökyüzü için geçerlidir.")
                     .font(.system(size: 12)).foregroundStyle(Theme.paper3)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -278,7 +278,7 @@ struct SkyCalendarView: View {
 
     private func footnote(_ e: SkyEvent) -> String {
         if e.shower != nil { return moonText(e.moon) + (e.zhr.map { " · saatte ~\($0) meteor" } ?? "") }
-        if e.astro?.kind == .solarEclipse { return "Ay yeni ay, Güneş'in önünde" }
+        if e.astro?.kind == .solarEclipse { return "Ay, Güneş'in önünden geçiyor" }
         return moonText(e.moon)
     }
 

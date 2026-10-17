@@ -148,14 +148,14 @@ struct FocusSetupView: View {
             HStack(spacing: 6) {
                 switch blockMode {
                 case .selected: Chip(text: model.screenTime.selectionSummary, systemImage: "lock")
-                case .all: Chip(text: "Telefon ve izin verdiklerin dışında her şey", systemImage: "lock")
+                case .all: Chip(text: "Telefon ve izin verdiklerin dışında her şey kilitlenir", systemImage: "lock")
                 case .none: Chip(text: "Hiçbir uygulama kilitlenmez", systemImage: "lock.open")
                 }
             }
             .background(Theme.plate, in: .capsule)
             if !ScreenTimeController.isAvailable {
                 Button { showBlockingInfo = true } label: {
-                    Label("Uygulama engelleme Apple onayından sonra açılacak", systemImage: "info.circle")
+                    Label("Uygulama engelleme, Apple onay verdikten sonra açılacak", systemImage: "info.circle")
                         .font(.system(size: 12)).foregroundStyle(Theme.paper2)
                 }
                 .buttonStyle(.plain)
@@ -174,7 +174,7 @@ struct FocusSetupView: View {
             Divider().overlay(Theme.hair)
             toggleRow("Favoriler arayabilsin", isOn: $model.settings.allowFavorites)
             Divider().overlay(Theme.hair)
-            toggleRow("Katı mod", info: "Süre bitmeden kilit açılmaz, Işık ×1,5", isOn: $model.settings.strict)
+            toggleRow("Katı mod", info: "Süre bitmeden kilit açılmaz ve Işık 1,5 katına çıkar", isOn: $model.settings.strict)
         }
     }
 
@@ -188,9 +188,9 @@ struct FocusSetupView: View {
 
     @ViewBuilder private var armedBoosters: some View {
         let p = model.progress
-        let armed = [p.armedShootingStar ? "Kayan yıldız hazır: Işık ×2" : nil,
+        let armed = [p.armedShootingStar ? "Kayan yıldız hazır, bu oturumda Işık iki katına çıkacak" : nil,
                      p.armedBrightTicket ? "Parlak yıldız bileti hazır" : nil,
-                     p.telescopeTarget.flatMap { id in Catalog.constellation(containing: id)?.star(id).map { "Teleskop: \($0.name)" } }]
+                     p.telescopeTarget.flatMap { id in Catalog.constellation(containing: id)?.star(id).map { "Teleskop \($0.name) yıldızına çevrildi" } }]
             .compactMap { $0 }
         if !armed.isEmpty {
             VStack(alignment: .leading, spacing: 6) {
@@ -276,7 +276,7 @@ struct AppPickerSheet: View {
                 if picking == 0 {
                     FamilyActivityPicker(selection: $screenTime.selection)
                 } else {
-                    FamilyActivityPicker(headerText: "“Tümü” modunda bile açık kalacak uygulamalar, örneğin Spotify.",
+                    FamilyActivityPicker(headerText: "“Tümü” modunda bile açık kalmasını istediğin uygulamaları seç, örneğin Spotify'ı.",
                                          selection: $screenTime.exemptions)
                 }
             }
@@ -300,8 +300,8 @@ struct BlockingInfoSheet: View {
                 VStack(alignment: .leading, spacing: 14) {
                     Text(ScreenTimeController.isAvailable
                          ? "Uygulamaları kilitlemek için Ekran Süresi izni gerekiyor. Ayarlar > Ekran Süresi'nden Derin'e izin verebilirsin."
-                         : "Diğer uygulamaları kilitlemek Apple'ın Ekran Süresi (Family Controls) iznini gerektiriyor. Apple bu izni onayladığında bu sürümde açılacak.")
-                    Text("O zamana kadar Derin oturumu yine yönetir: odak sırasında başka bir uygulamaya geçersen “hiç telefona bakmadın” bonusu düşer. Telefonu kilitlemek sayılmaz.")
+                         : "Diğer uygulamaları kilitlemek Apple'ın Ekran Süresi (Family Controls) iznini gerektiriyor. Apple bu izni onayladığında bu özellik açılacak.")
+                    Text("O zamana kadar da Derin oturumu takip eder. Odak sırasında başka bir uygulamaya geçersen “hiç telefona bakmadın” bonusunu kaybedersin, ama telefonu kilitlemek bunu bozmaz.")
                 }
                 .font(.system(size: 15))
                 .foregroundStyle(Theme.paperBody)
@@ -321,11 +321,11 @@ struct FocusShortcutsGuide: View {
     @Environment(\.dismiss) private var dismiss
 
     private let steps = [
-        ("moon", "Ayarlar > Odak'ta “+” ile yeni bir Odak oluştur ve adını “Derin” koy."),
+        ("moon", "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy."),
         ("person.2", "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler."),
-        ("square.stack.3d.up", "Kestirmeler'de “Derin Başlat” adında bir kestirme oluştur: “Odağı Ayarla” eylemi, Derin, Açık."),
-        ("square.stack.3d.down.right", "Bir tane daha: “Derin Bitir”, aynı eylem, Kapalı."),
-        ("checkmark.circle", "Hepsi bu. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler seni hemen geri getirir."),
+        ("square.stack.3d.up", "Kestirmeler uygulamasında “Derin Başlat” adında bir kestirme oluştur. İçine “Odağı Ayarla” eylemini ekle, Odak olarak Derin'i seç ve Açık konumuna getir."),
+        ("square.stack.3d.down.right", "Aynı şekilde “Derin Bitir” adında ikinci bir kestirme oluştur. Bu kez eylemi Kapalı konumuna getir."),
+        ("checkmark.circle", "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir."),
     ]
 
     var body: some View {
@@ -333,7 +333,7 @@ struct FocusShortcutsGuide: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    Text("iOS, uygulamaların aramaları ve mesajları kendi başına susturmasına izin vermiyor. Bunun yerine bir kez bir Odak modu ve iki kestirme kuruyoruz.")
+                    Text("iOS, uygulamaların aramaları ve mesajları kendi başına susturmasına izin vermiyor. Bu yüzden bir kereliğine bir Odak modu ve iki kestirme kurmamız gerekiyor.")
                         .font(.system(size: 15)).foregroundStyle(Theme.paperBody)
                     ForEach(Array(steps.enumerated()), id: \.offset) { i, step in
                         HStack(alignment: .top, spacing: 12) {

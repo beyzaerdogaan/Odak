@@ -28,20 +28,20 @@ struct CollectionMapView: View {
         return [
             Layer(n: 1, title: "Başlangıç göğü", right: "\(p.completedConstellations.count) / \(total)",
                   bar: Double(p.completedConstellations.count) / Double(total),
-                  text: starterDone ? "16 tanınmış takımyıldızın hepsini yaktın." : "16 tanınmış takımyıldız. Şu an buradasın.",
+                  text: starterDone ? "16 tanınmış takımyıldızın hepsini yaktın." : "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın.",
                   color: Theme.accent, state: starterDone ? .done : .here, route: nil),
             Layer(n: 2, title: "Tüm gökyüzü", right: "Yakında",
-                  bar: nil, text: "Kalan 72 takımyıldız: Kuzey göğü, sonra Güney seferi. Bir sonraki sürümle gelecek.",
+                  bar: nil, text: "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek.",
                   color: Theme.paper3, state: .locked, route: nil),
             Layer(n: 3, title: "Derin gök nesneleri", right: "\(p.deepSky.count) / \(DeepSky.catalogueSize)",
-                  bar: nil, text: "Paralel ilerler. Nebulalar, galaksiler, kümeler. İlk nesne: Avcı Bulutsusu, Avcı tamamlandıktan sonra 90 dk'lık bir oturumla.",
+                  bar: nil, text: "Başlangıç göğüyle paralel ilerler ve bulutsuları, galaksileri, yıldız kümelerini kapsar. İlk nesne Avcı Bulutsusu'dur ve Avcı takımyıldızı tamamlandıktan sonra 90 dakikalık bir oturumla birlikte açılır.",
                   color: Theme.nebula, state: .parallel, route: .deepSky),
             Layer(n: 4, title: "Gezegenler ve Ay", right: "\(planets) / \(Planets.all.count)",
                   bar: nextPlanet.map { Double(p.totalFocusedMinutes) / Double($0.hours * 60) },
-                  text: nextPlanet.map { "Paralel ilerler. Sıradaki: \($0.name), \($0.hours) saat (sen \(hours) saattesin)." } ?? "Bütün gezegenler açıldı.",
+                  text: nextPlanet.map { "Toplam odak sürene göre paralel ilerler. Sıradaki gök cismi \($0.name) ve \($0.hours) saatte açılır, sen şu an \(hours) saattesin." } ?? "Bütün gezegenler ve Ay açıldı.",
                   color: Theme.ice, state: .parallel, route: .deepSky),
             Layer(n: 5, title: "Işık yolculuğu", right: p.journeyUnlocked ? "\(p.reachedStops.count) durak" : "Kilitli",
-                  bar: nil, text: "Başlangıç göğü bitince gerçek yıldız sistemlerine yolculuk başlar. Her odak saati 1 ışık yılı, rota hiç bitmez.",
+                  bar: nil, text: "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez.",
                   color: p.journeyUnlocked ? Theme.accent : Theme.paper3, state: p.journeyUnlocked ? .parallel : .locked, route: .journey),
         ]
     }
@@ -185,7 +185,7 @@ struct DeepSkyView: View {
                             HStack {
                                 Text(o.name).font(.serif(17, italic: true)).foregroundStyle(Theme.paper)
                                 Spacer()
-                                Text(o.requirementText.replacingOccurrences(of: "Açılma koşulu: ", with: "")).small().multilineTextAlignment(.trailing)
+                                Text(o.requirementText).small().multilineTextAlignment(.trailing)
                             }
                             .frame(minHeight: 40)
                         }
@@ -204,7 +204,7 @@ struct DeepSkyView: View {
             HStack {
                 Text("Gezegenler ve Ay").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                 Spacer()
-                Text("toplam odak saatiyle").small()
+                Text("Toplam odak saatinle açılır").small()
             }
             HStack(alignment: .top, spacing: 2) {
                 ForEach(Planets.all) { planet in
@@ -278,14 +278,14 @@ struct MeteorEventView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
-                    Text(active != nil ? "Etkinlik sürüyor, zirve \(shower.peakText())" : "Başlangıç: \(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR"))))")
+                    Text(active != nil ? "Şu an sürüyor, zirvesi \(shower.peakText())." : "\(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR")))) tarihinde başlıyor.")
                         .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                 }
                 .padding(.top, 24)
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Etkinlik boyunca").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                    Text("Her oturumda %25 şansla kayan yıldız düşer: o oturumun Işığı ×2.")
-                    Text("\(MeteorShower.sessionGoal) oturum tamamla, \(shower.name) rozetini ve “Meteor izi” sayaç stilini kazan.")
+                    Text("Her oturumda %25 ihtimalle bir kayan yıldız düşer ve o oturumda kazandığın Işık iki katına çıkar.")
+                    Text("\(MeteorShower.sessionGoal) oturum tamamlarsan \(shower.name) rozetini ve “Meteor izi” sayaç stilini kazanırsın.")
                     HStack {
                         Text("İlerleme").foregroundStyle(Theme.meteor2)
                         Spacer()
@@ -306,7 +306,7 @@ struct MeteorEventView: View {
                     Text(shower.watchTip).font(.system(size: 14)).foregroundStyle(Theme.paperBody)
                     if let moon = shower.moonAtPeak() {
                         Text(moon >= 50 ? "Zirve gecesi Ay %\(moon) dolu olacak; sönük meteorlar ay ışığında kaybolabilir."
-                                        : "Zirve gecesi Ay yalnızca %\(moon) dolu, gökyüzü karanlık olacak.")
+                                        : "Zirve gecesi Ay yalnızca %\(moon) dolu olacak, bu yüzden gökyüzü karanlık olur.")
                             .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                     }
                     Button {
@@ -387,7 +387,7 @@ struct JourneyView: View {
                                 .font(.system(size: 13, weight: .semibold)).monospacedDigit().foregroundStyle(Theme.accentInk)
                         }
                         ProgressBar(value: (p.lightYearsTravelled - prev) / max(0.1, next.lightYears - prev))
-                        Text("\(next.story) \(Int((next.lightYears - p.lightYearsTravelled).rounded(.up))) saatlik odak kaldı.").small()
+                        Text("\(next.story) Oraya varmana \(Int((next.lightYears - p.lightYearsTravelled).rounded(.up))) saatlik odak kaldı.").small()
                     }
                     .plate(fill: Theme.accent.opacity(0.07))
                 }
@@ -409,7 +409,7 @@ struct JourneyView: View {
                         Divider().overlay(Theme.hair)
                     }
                 }
-                Text("Mesafeler gerçek, rota hiç bitmez. Koleksiyonun ve Işık bakiyen olduğu gibi kalır.")
+                Text("Mesafeler gerçek ve rota hiç bitmez. Koleksiyonun ve Işık bakiyen de olduğu gibi kalır.")
                     .small().multilineTextAlignment(.center).frame(maxWidth: .infinity)
             }
             .padding(22)

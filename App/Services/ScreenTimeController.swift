@@ -36,7 +36,7 @@ final class ScreenTimeController {
         if !selection.webDomainTokens.isEmpty { parts.append("\(selection.webDomainTokens.count) site") }
         return parts.isEmpty ? "Henüz seçilmedi" : parts.joined(separator: ", ")
         #else
-        return "Screen Time izni gerekiyor"
+        return "Ekran Süresi izni gerekiyor"
         #endif
     }
 

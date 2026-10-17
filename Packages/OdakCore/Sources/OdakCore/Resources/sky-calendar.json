@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-13",
+  "updated": "2026-10-17",
   "source": "Meteor yağmurları: IMO Meteor Shower Calendar 2026 ve 2027 (sterngucker.de üzerinden); Orionidler, Leonidler, Geminidler 2027 ve Kuadrantidler 2028 zirveleri güneş boylamından hesaplandı, IMO 2028 takvimi çıkınca güncellenmeli. Tutulmalar: NASA GSFC tutulma tabloları (Espenak), Türkiye'den görünürlük ve kapanma oranı PyEphem ile hesaplandı. Gezegen olayları ve süper Aylar: PyEphem (VSOP87) ile hesaplandı.",
   "occurrences": [
     {
@@ -85,8 +85,8 @@
         "mars",
         "jupiter"
       ],
-      "detail": "İki gezegen arasında yalnızca 1,2° kalıyor, aşağı yukarı iki dolunay genişliği.",
-      "tip": "Gece yarısından sonra doğuya bak: göz alıcı olan Jüpiter, hemen yanındaki kızıl nokta Mars."
+      "detail": "İki gezegen arasında yalnızca 1,2° kalıyor, bu da aşağı yukarı iki dolunay genişliği kadar.",
+      "tip": "Gece yarısından sonra doğuya bak. Göz alıcı parlaklıktaki nokta Jüpiter, hemen yanındaki kızıl nokta ise Mars."
     },
     {
       "id": "supermoon-2026-12",
@@ -97,8 +97,8 @@
       "bodies": [
         "moon"
       ],
-      "detail": "Yılın en yakın dolunayı: Ay 356.738 km uzakta, sıradan bir dolunaydan belirgin biçimde büyük ve parlak.",
-      "tip": "Ay doğarken ufka yakınken izle; ağaçların, binaların yanında en büyük görünür."
+      "detail": "Yılın en yakın dolunayı. Ay 356.738 km uzakta olacak ve sıradan bir dolunaydan belirgin biçimde büyük ve parlak görünecek.",
+      "tip": "Ay'ı doğarken, ufka yakınken izle. Ağaçların ve binaların yanında en büyük hâliyle görünür."
     },
     {
       "id": "elongation-venus-2027-01",
@@ -109,8 +109,8 @@
       "bodies": [
         "venus"
       ],
-      "detail": "Venüs Güneş'ten 47° uzakta: şafaktan önce yılın en uzun süre görünür.",
-      "tip": "Gün ağarmadan önce güneydoğuya bak; gökyüzündeki en parlak nokta Venüs."
+      "detail": "Venüs Güneş'ten 47° uzakta olduğu için şafaktan önce yılın en uzun süresince görünür.",
+      "tip": "Gün ağarmadan önce güneydoğuya bak, gökyüzündeki en parlak nokta Venüs'tür."
     },
     {
       "id": "supermoon-2027-01",
@@ -121,8 +121,8 @@
       "bodies": [
         "moon"
       ],
-      "detail": "Art arda ikinci süper Ay: 357.644 km.",
-      "tip": "Akşam doğuda doğarken izle; kış göğünde yüksekten geçer."
+      "detail": "Bu, art arda gelen ikinci süper Ay. Ay 357.644 km uzakta olacak.",
+      "tip": "Akşam doğudan doğarken izle. Gece boyunca kış göğünde yüksekten geçer."
     },
     {
       "id": "opposition-jupiter-2027",
@@ -133,7 +133,7 @@
       "bodies": [
         "jupiter"
       ],
-      "detail": "Jüpiter Güneş'in tam karşısında: bütün gece görünür ve yılın en parlak hâlinde.",
+      "detail": "Jüpiter Güneş'in tam karşısında olduğu için bütün gece görünür ve yılın en parlak hâlindedir.",
       "tip": "Akşam doğuda doğar, gece yarısı en yüksekte olur. Dürbünle dört büyük uydusu seçilir."
     },
     {
@@ -145,7 +145,7 @@
       "bodies": [
         "mars"
       ],
-      "detail": "Mars bütün gece gökte, iki yılda bir yakaladığı en parlak hâline yakın.",
+      "detail": "Mars bütün gece gökte kalır ve iki yılda bir ulaştığı en parlak hâline yakındır.",
       "tip": "Kızıl, titreşmeyen bir nokta ara. Akşam doğudan yükselir."
     },
     {
@@ -158,7 +158,7 @@
         "moon"
       ],
       "detail": "Ay Dünya'nın yarı gölgesinin kıyısından geçer; kuzey kenarı çok hafifçe kararır.",
-      "tip": "Ay gece yarısından sonra yüksekte. Kararma ince, dikkatle bak; fotoğrafta daha kolay seçilir.",
+      "tip": "Ay gece yarısından sonra yüksekte olur. Kararma çok hafif olduğu için dikkatle bak, fotoğrafta daha kolay seçilir.",
       "magnitude": -0.057
     },
     {
@@ -170,7 +170,7 @@
       "bodies": [
         "mercury"
       ],
-      "detail": "Merkür Güneş'ten 27,6° uzakta; bu küçük gezegeni görmek için yılın iyi fırsatlarından.",
+      "detail": "Merkür Güneş'ten 27,6° uzakta. Bu, küçük gezegeni görmek için yılın iyi fırsatlarından biri.",
       "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak."
     },
     {
@@ -183,8 +183,8 @@
         "venus",
         "saturn"
       ],
-      "detail": "İki gezegen 0,6° yakında, bir dolunaydan biraz fazla.",
-      "tip": "Şafaktan önce doğu ufkunun üstünde. Venüs göz kamaştırır, Satürn yanında sönük ve sarımsı."
+      "detail": "İki gezegen arasında yalnızca 0,6° kalıyor, bu da bir dolunay genişliğinden biraz fazla.",
+      "tip": "Şafaktan önce doğu ufkunun üstüne bak. Venüs göz kamaştırır, yanındaki Satürn ise sönük ve sarımsı görünür."
     },
     {
       "id": "eclipse-solar-2027-08",
@@ -196,7 +196,7 @@
         "sun",
         "moon"
       ],
-      "detail": "Türkiye'den parçalı: Ay Güneş çapının üçte ikisini örter (İstanbul %67, Antalya %76). Tam tutulma Mısır ve Libya'dan görülür.",
+      "detail": "Türkiye'den parçalı olarak görülür ve Ay, Güneş çapının yaklaşık üçte ikisini örter (İstanbul %67, Antalya %76). Tam tutulma Mısır ve Libya'dan görülür.",
       "tip": "Güneş'e asla çıplak gözle, güneş gözlüğüyle ya da filtresiz dürbünle bakma; ISO 12312-2 belgeli tutulma gözlüğü kullan.",
       "magnitude": 0.67
     },
@@ -221,8 +221,8 @@
       "bodies": [
         "saturn"
       ],
-      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlinde.",
-      "tip": "Küçük bir teleskopla halkaları seçilir. Gece yarısı güneyde."
+      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlindedir.",
+      "tip": "Küçük bir teleskopla halkaları seçilir. Gece yarısı güneyde görünür."
     },
     {
       "id": "conjunction-venus-mars-2027",
@@ -234,8 +234,8 @@
         "venus",
         "mars"
       ],
-      "detail": "Venüs ile Mars yalnızca 0,3° yakında; dürbünün aynı karesine sığarlar.",
-      "tip": "Gün batımından sonra güneybatıda, alçakta."
+      "detail": "Venüs ile Mars arasında yalnızca 0,3° kalıyor, ikisi dürbünün aynı karesine sığar.",
+      "tip": "Gün batımından sonra güneybatıya, ufka yakın bir yere bak."
     },
     {
       "id": "eclipse-lunar-2028-01",
@@ -247,7 +247,7 @@
         "moon"
       ],
       "detail": "Ay'ın küçük bir kenarı Dünya'nın tam gölgesine girer.",
-      "tip": "Şafağa doğru batıda, alçakta. Ufku açık bir yer seç.",
+      "tip": "Şafağa doğru batıda, alçakta görünür. Ufku açık bir yer seç.",
       "magnitude": 0.066
     },
     {
@@ -259,7 +259,7 @@
       "bodies": [
         "moon"
       ],
-      "detail": "Yılın en yakın dolunayı: 356.721 km.",
+      "detail": "Yılın en yakın dolunayı. Ay 356.721 km uzakta olacak.",
       "tip": "Akşam doğuda doğarken izle."
     },
     {
@@ -283,7 +283,7 @@
       "bodies": [
         "jupiter"
       ],
-      "detail": "Jüpiter bütün gece görünür ve yılın en parlak hâlinde.",
+      "detail": "Jüpiter bütün gece görünür ve yılın en parlak hâlindedir.",
       "tip": "Dürbünle dört büyük uydusu seçilir."
     },
     {
@@ -295,8 +295,8 @@
       "bodies": [
         "venus"
       ],
-      "detail": "Venüs Güneş'ten 46° uzakta: gün batımından sonra saatlerce görünür.",
-      "tip": "Akşam batıya bak; gökyüzündeki en parlak nokta Venüs."
+      "detail": "Venüs Güneş'ten 46° uzakta olduğu için gün batımından sonra saatlerce görünür.",
+      "tip": "Akşam batıya bak, gökyüzündeki en parlak nokta Venüs'tür."
     },
     {
       "id": "eclipse-lunar-2028-07",
@@ -308,7 +308,7 @@
         "moon"
       ],
       "detail": "Ay'ın üçte birinden fazlası Dünya'nın tam gölgesine girer.",
-      "tip": "Ay tutulmuş hâlde doğar; güneydoğuda, ufkun hemen üstünde.",
+      "tip": "Ay tutulmuş hâlde, güneydoğuda ufkun hemen üstünden doğar.",
       "magnitude": 0.389
     },
     {
@@ -344,7 +344,7 @@
       "bodies": [
         "saturn"
       ],
-      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlinde.",
+      "detail": "Satürn bütün gece görünür ve yılın en parlak hâlindedir.",
       "tip": "Küçük bir teleskopla halkaları seçilir."
     },
     {
@@ -357,7 +357,7 @@
         "venus",
         "jupiter"
       ],
-      "detail": "Gökyüzünün en parlak iki gezegeni 0,6° yakında.",
+      "detail": "Gökyüzünün en parlak iki gezegeni arasında yalnızca 0,6° kalıyor.",
       "tip": "Şafaktan önce doğuya bak."
     },
     {
@@ -370,7 +370,7 @@
         "moon"
       ],
       "detail": "Ay bütünüyle Dünya'nın gölgesine girip bakır kızılına döner.",
-      "tip": "Yılbaşı akşamı, Ay doğuda yükselirken. Çıplak gözle güvenle izlenir.",
+      "tip": "Yılbaşı akşamı Ay doğuda yükselirken izleyebilirsin. Ay tutulması çıplak gözle güvenle izlenir.",
       "magnitude": 1.246
     }
   ]
