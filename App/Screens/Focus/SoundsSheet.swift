@@ -25,10 +25,7 @@ struct SoundsSheet: View {
                     Divider().overlay(Theme.hair)
                     music
                     Toggle(isOn: $model.settings.stopMusicAtEnd) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Bitince müziği durdur").font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
-                            Text("Ses yumuşakça azalır").small()
-                        }
+                        Text("Bitince müziği durdur").font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper)
                     }
                     .tint(Theme.accent)
                     .plate(padding: 14)
