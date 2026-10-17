@@ -260,16 +260,24 @@ private struct SkyChartPage: View {
                     }
                 }
                 ForEach(Array(constellations.enumerated()), id: \.offset) { i, c in
+                    // The figure itself opens the constellation too, not only its label.
+                    NavigationLink(value: Route.constellation(c.id)) {
+                        Color.clear.contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .frame(width: slots[i].width * w, height: slots[i].height * h)
+                    .position(x: slots[i].midX * w, y: slots[i].midY * h)
+                    .accessibilityHidden(true)
                     NavigationLink(value: Route.constellation(c.id)) {
                         HStack(spacing: 6) {
-                            Text(c.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
+                            Text(c.name).font(.serif(16, italic: true)).foregroundStyle(Theme.paper)
                             Text(progress.isComplete(c.id) ? "tamam" : "\(progress.litCount(in: c))/\(c.stars.count)")
-                                .font(.system(size: 11)).foregroundStyle(Theme.paper2)
+                                .font(.system(size: 13)).foregroundStyle(Theme.paper2)
                         }
                         .padding(.vertical, 6)
                     }
                     .buttonStyle(.plain)
-                    .position(x: slots[i].midX * w, y: slots[i].maxY * h + 14)
+                    .position(x: slots[i].midX * w, y: slots[i].maxY * h + 16)
                 }
             }
         }
