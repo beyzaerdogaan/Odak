@@ -340,6 +340,7 @@ struct ConstellationDetailView: View {
             .background(StarField(seed: 9, count: 80, grid: false, theme: model.progress.selectedTheme))
             .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $shownStar) { s in StarStorySheet(star: s, constellation: c) }
+            .onAppear { if Demo.screen == "star" { shownStar = c.stars.first { $0.name == "Rigel" } } }
         }
     }
 }
