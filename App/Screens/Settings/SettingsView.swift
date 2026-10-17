@@ -62,7 +62,7 @@ struct SettingsView: View {
                 Section {
                     Button("Bütün ilerlemeyi sıfırla", role: .destructive) { confirmReset = true }
                 } footer: {
-                    Text("Derin \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "") (\(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")). Takımyıldız bilgileri ve mesafeler yayından önce bir astronomi kaynağıyla doğrulanacak.")
+                    Text("Derin \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "") (\(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")). Takımyıldız bilgileri ve mesafeler yayından önce bir astronomi kaynağıyla doğrulanacak.\n\nOrtam sesi kayıtları Freesound'dan: yağmur jmbphilmes, orman kvgarlic, şömine 16FThumaF (CC0), dalga Luftrum (CC BY).")
                 }
             }
             .navigationTitle("Ayarlar")
