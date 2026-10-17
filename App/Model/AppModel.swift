@@ -367,6 +367,17 @@ final class AppModel {
             summary = p.complete(FocusInput(task: settings.task, start: now.addingTimeInterval(-60 * 60), end: now, plannedMinutes: 60,
                                             focusedMinutes: 60, strict: false, lookedAway: false), rng: &rng)
             progress = p
+        case "stars", "star":
+            // Tie Orion's lit stars to the sessions that dropped them, so the star list and sheet have a story.
+            var p = Demo.progress(now: now)
+            let tasks = ["Tez · Bölüm 3 literatür", "İstatistik ödevi", "Okuma", "Tez · Bölüm 2", "İngilizce kelime", "Sunum hazırlığı"]
+            let lit = Catalog.constellation("orion")?.stars.filter { p.isLit($0.id) } ?? []
+            for (i, s) in lit.enumerated() where i < p.records.count {
+                let r = p.records.count - 1 - i
+                p.records[r].starID = s.id
+                p.records[r].task = tasks[i % tasks.count]
+            }
+            progress = p
         case "badges":
             for b in Badge.allCases where b != .nightOwl && b != .pleiades { progress.badges[b.rawValue] = now }
         case "deepsky":

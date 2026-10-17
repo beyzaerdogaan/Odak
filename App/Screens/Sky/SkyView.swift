@@ -295,23 +295,38 @@ struct BadgeView: View {
 struct ConstellationDetailView: View {
     let id: String
     @Environment(AppModel.self) private var model
+    @State private var shownStar: CatalogStar?
 
     var body: some View {
         if let c = Catalog.constellation(id) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     Text(c.latin).font(.serif(16, italic: true)).foregroundStyle(Theme.paper2)
-                    ConstellationFigure(constellation: c, progress: model.progress)
+                    ConstellationFigure(constellation: c, progress: model.progress, onTapStar: { shownStar = $0 })
                         .frame(height: 220)
                     VStack(alignment: .leading, spacing: 6) {
                         ForEach(c.stars) { s in
-                            HStack {
-                                Image(systemName: model.progress.isLit(s.id) ? "sparkle" : "circle.dashed")
-                                    .foregroundStyle(model.progress.isLit(s.id) ? Theme.accentInk : Theme.paper3)
-                                Text(s.name).foregroundStyle(Theme.paper)
-                                if s.isBright { Text("parlak").small() }
-                                Spacer()
+                            let lit = model.progress.isLit(s.id)
+                            Button { shownStar = s } label: {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Image(systemName: lit ? "sparkle" : "circle.dashed")
+                                        .foregroundStyle(lit ? Theme.accentInk : Theme.paper3)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        HStack {
+                                            Text(s.name).foregroundStyle(Theme.paper)
+                                            if s.isBright { Text("parlak").small() }
+                                        }
+                                        if let r = model.progress.record(forStar: s.id) {
+                                            Text(r.task).font(.system(size: 12)).foregroundStyle(Theme.paper2).lineLimit(1)
+                                        }
+                                    }
+                                    Spacer()
+                                    if lit { Image(systemName: "chevron.right").font(.system(size: 11)).foregroundStyle(Theme.paper3) }
+                                }
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
+                            .disabled(!lit)
                             .font(.system(size: 14))
                         }
                     }
@@ -324,6 +339,49 @@ struct ConstellationDetailView: View {
             .pinnedHeader { BackHeader(title: c.name, subtitle: "\(model.progress.litCount(in: c)) / \(c.stars.count) yıldız") }
             .background(StarField(seed: 9, count: 80, grid: false, theme: model.progress.selectedTheme))
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(item: $shownStar) { s in StarStorySheet(star: s, constellation: c) }
+            .onAppear { if Demo.screen == "star" { shownStar = c.stars.first { $0.name == "Rigel" } } }
         }
+    }
+}
+
+/// A lit star's story: what the user was focusing on when it dropped, and when.
+struct StarStorySheet: View {
+    let star: CatalogStar
+    let constellation: Constellation
+    @Environment(AppModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 16) {
+                if let r = model.progress.record(forStar: star.id) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Odaklandığın konu").small()
+                        Text(r.task).font(.serif(22)).foregroundStyle(Theme.paper)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label(r.end.formatted(.dateTime.day().month(.wide).year().hour().minute().locale(Locale(identifier: "tr_TR"))),
+                              systemImage: "calendar")
+                        Label("\(r.focusedMinutes) dakika odak", systemImage: "hourglass")
+                        if r.strict { Label("Katı mod", systemImage: "lock") }
+                        if r.light > 0 { Label("+\(r.light) Işık", systemImage: "sparkles") }
+                    }
+                    .font(.system(size: 14)).foregroundStyle(Theme.paperBody)
+                } else if let lit = model.progress.litStars[star.id] {
+                    Text("Bu yıldız \(lit.formatted(.dateTime.day().month(.wide).year().locale(Locale(identifier: "tr_TR")))) tarihinde yandı, ama hangi odakla kazanıldığı kayıtlı değil.")
+                        .font(.system(size: 14)).foregroundStyle(Theme.paperBody)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(22)
+            .navigationTitle(star.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Tamam", systemImage: "checkmark") { dismiss() } } }
+        }
+        .presentationDetents([.medium])
     }
 }

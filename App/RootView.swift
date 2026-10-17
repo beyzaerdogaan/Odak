@@ -62,6 +62,7 @@ struct RootView: View {
             case "deepsky": universePath = [.deepSky]
             case "event": universePath = [.event]
             case "journey": universePath = [.journey]
+            case "stars", "star": universePath = [.constellation("orion")]
             case "signin": showSignIn = true
             case "calendar": universePath = [.event, .skyCalendar]
             case let s? where s.hasPrefix("astro-"): universePath = [.skyCalendar, .astro(String(s.dropFirst(6)))]

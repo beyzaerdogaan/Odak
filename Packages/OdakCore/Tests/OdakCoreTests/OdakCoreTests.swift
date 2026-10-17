@@ -76,6 +76,19 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(p.openConstellations.count, 3)
     }
 
+    func testStarRemembersTheSessionThatLitIt() throws {
+        var p = SkyProgress()
+        var rng = SeededGenerator(seed: 7)
+        let end = date(2026, 10, 2)
+        let s = p.complete(input(50, at: end), calendar: cal, rng: &rng)
+        let star = try XCTUnwrap(s.star)
+        let r = try XCTUnwrap(p.record(forStar: star.id))
+        XCTAssertEqual(r.task, "Tez")
+        XCTAssertEqual(r.focusedMinutes, 50)
+        XCTAssertEqual(r.end, end)
+        XCTAssertNil(p.record(forStar: "no-such-star"))
+    }
+
     func testCompletingConstellationPaysRewardAndOpensNext() {
         var p = SkyProgress()
         let orion = Catalog.constellation("orion")!

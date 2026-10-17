@@ -50,6 +50,8 @@ struct ConstellationFigure: View {
     var progress: SkyProgress
     var highlight: String?
     var showLabels = true
+    /// When set, lit stars can be tapped (e.g. to see the session that earned them).
+    var onTapStar: ((CatalogStar) -> Void)?
     @State private var ignited = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -74,6 +76,16 @@ struct ConstellationFigure: View {
                         }
                     }
                 }
+                if let onTapStar {
+                    ForEach(constellation.stars.filter { progress.isLit($0.id) }) { s in
+                        if let p = pts[s.id] {
+                            Button { onTapStar(s) } label: { Color.clear.frame(width: 44, height: 44).contentShape(Circle()) }
+                                .buttonStyle(.plain)
+                                .position(p)
+                                .accessibilityLabel(Text(s.name))
+                        }
+                    }
+                }
                 if let h = highlight, let p = pts[h] {
                     Flare(radius: 4)
                         .scaleEffect(ignited || reduceMotion ? 1 : 0.2)
@@ -84,7 +96,7 @@ struct ConstellationFigure: View {
             }
         }
         .onAppear { withAnimation(.spring(response: 1, dampingFraction: 0.6).delay(0.3)) { ignited = true } }
-        .accessibilityElement()
+        .accessibilityElement(children: onTapStar == nil ? .ignore : .contain)
         .accessibilityLabel(Text("\(constellation.name) takımyıldızı, \(constellation.stars.count) yıldızdan \(progress.litCount(in: constellation)) tanesi yanık"))
     }
 }
