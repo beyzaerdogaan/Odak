@@ -270,14 +270,14 @@ private struct SkyChartPage: View {
                     .accessibilityHidden(true)
                     NavigationLink(value: Route.constellation(c.id)) {
                         HStack(spacing: 6) {
-                            Text(c.name).font(.serif(16, italic: true)).foregroundStyle(Theme.paper)
+                            Text(c.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
                             Text(progress.isComplete(c.id) ? "tamam" : "\(progress.litCount(in: c))/\(c.stars.count)")
-                                .font(.system(size: 13)).foregroundStyle(Theme.paper2)
+                                .font(.system(size: 11)).foregroundStyle(Theme.paper2)
                         }
                         .padding(.vertical, 6)
                     }
                     .buttonStyle(.plain)
-                    .position(x: slots[i].midX * w, y: slots[i].maxY * h + 16)
+                    .position(x: slots[i].midX * w, y: slots[i].maxY * h + 14)
                 }
             }
         }
