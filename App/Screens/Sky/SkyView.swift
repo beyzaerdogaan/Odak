@@ -15,7 +15,7 @@ struct SkyView: View {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Text("Gökyüzüm").font(.serif(34)).foregroundStyle(Theme.paper)
-                        .lineLimit(1).minimumScaleFactor(0.7)
+                        .lineLimit(1).minimumScaleFactor(0.5)
                     Spacer(minLength: 12)
                     Picker("Dönem", selection: $period) {
                         Text("Gün").tag(SkyProgress.Period.day)
@@ -100,8 +100,12 @@ struct SkyView: View {
             }
             .padding(.top, 8)
             .padding(.bottom, 24)
+            // Never wider than the screen: content that overflows sideways (the header row on narrow
+            // phones) would otherwise let the whole page be dragged left and right.
+            .containerRelativeFrame(.horizontal)
         }
         .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
         .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
         .collapsingTitle("Gökyüzüm")
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
