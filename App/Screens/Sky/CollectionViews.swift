@@ -284,7 +284,7 @@ struct MeteorEventView: View {
                 .padding(.top, 24)
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Etkinlik boyunca").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                    Text("Her oturumda %25 ihtimalle bir kayan yıldız düşer ve o oturumda kazandığın Işık iki katına çıkar.")
+                    Text("Zirve gecesinde (\(shower.peakText())) her oturumda %25 ihtimalle bir kayan yıldız düşer ve o oturumda kazandığın Işık iki katına çıkar.")
                     Text("\(MeteorShower.sessionGoal) oturum tamamlarsan \(shower.name) rozetini ve “Meteor izi” sayaç stilini kazanırsın.")
                     HStack {
                         Text("İlerleme").foregroundStyle(Theme.meteor2)
