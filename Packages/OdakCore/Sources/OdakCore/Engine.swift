@@ -225,7 +225,8 @@ extension SkyProgress {
         var caught = false
         if let shower {
             meteorProgress[shower.seasonKey(for: now, calendar: cal), default: 0] += 1
-            caught = !armedShootingStar && Double.random(in: 0..<1, using: &rng) < MeteorShower.shootingStarChance
+            caught = !armedShootingStar && shower.isPeak(on: now, calendar: cal)
+                && Double.random(in: 0..<1, using: &rng) < MeteorShower.shootingStarChance
         }
         let doubled = armedShootingStar || caught
         let ledger = LightRules.ledger(minutes: input.focusedMinutes, noLook: !input.lookedAway, streakDays: streakDays,
