@@ -155,7 +155,7 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
 
     /// Sessions needed during the shower for its badge.
     public static let sessionGoal = 10
-    /// Chance a completed session during the shower catches a shooting star (×2 Işık).
+    /// Chance a completed session on the shower's peak days catches a shooting star (×2 Işık).
     public static let shootingStarChance = 0.25
 
     /// The calendar's window under way at `date`, or else its next one. Nil when the calendar does
@@ -173,6 +173,15 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
         let today = (c.month ?? 1) * 100 + (c.day ?? 1)
         let s = start.0 * 100 + start.1, e = end.0 * 100 + end.1
         return s <= e ? (today >= s && today <= e) : (today >= s || today <= e)
+    }
+
+    /// Whether `date` falls on the peak night's two days: the evening it starts and the morning after.
+    /// Only then can a session catch a shooting star.
+    public func isPeak(on date: Date, calendar: Calendar = .current) -> Bool {
+        guard isActive(on: date, calendar: calendar), let peak = peakDate(around: date, calendar: calendar) else { return false }
+        let night = calendar.startOfDay(for: peak)
+        let days = calendar.dateComponents([.day], from: night, to: calendar.startOfDay(for: date)).day ?? -1
+        return days == 0 || days == 1
     }
 
     /// Key for per-year progress, using the year the shower started in.

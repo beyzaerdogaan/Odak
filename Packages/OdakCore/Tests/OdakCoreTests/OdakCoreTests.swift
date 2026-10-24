@@ -157,6 +157,30 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertTrue(p.ownedDials.contains(.meteor))
     }
 
+    func testShootingStarsFallOnlyOnPeakDays() {
+        // Orionids 2026 peak on the night of 21–22 October.
+        let o = shower("orionids")
+        XCTAssertFalse(o.isPeak(on: date(2026, 10, 20, 23), calendar: cal))
+        XCTAssertTrue(o.isPeak(on: date(2026, 10, 21), calendar: cal))
+        XCTAssertTrue(o.isPeak(on: date(2026, 10, 22, 3), calendar: cal))
+        XCTAssertFalse(o.isPeak(on: date(2026, 10, 23, 1), calendar: cal))
+        // A morning peak (4 Jan 2027, 06:25) makes 3 and 4 January the peak days.
+        let q = shower("quadrantids")
+        XCTAssertTrue(q.isPeak(on: date(2027, 1, 3), calendar: cal))
+        XCTAssertTrue(q.isPeak(on: date(2027, 1, 4, 5), calendar: cal))
+        XCTAssertFalse(q.isPeak(on: date(2027, 1, 5), calendar: cal))
+
+        var p = SkyProgress()
+        var rng = SeededGenerator(seed: 3)
+        var caught = 0
+        for _ in 0..<30 where p.complete(input(25, at: date(2026, 10, 15)), calendar: cal, rng: &rng).caughtShootingStar { caught += 1 }
+        XCTAssertEqual(caught, 0)
+        // Sessions outside the peak still count toward the shower badge.
+        XCTAssertEqual(p.meteorProgress["orionids-2026"], 30)
+        for _ in 0..<30 where p.complete(input(25, at: date(2026, 10, 21, 22)), calendar: cal, rng: &rng).caughtShootingStar { caught += 1 }
+        XCTAssertGreaterThan(caught, 0)
+    }
+
     func testQuadrantidsSeasonKeySpansNewYear() {
         let q = MeteorShowers.all.first { $0.id == "quadrantids" }!
         XCTAssertTrue(q.isActive(on: date(2027, 1, 2), calendar: cal))
