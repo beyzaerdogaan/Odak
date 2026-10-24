@@ -120,7 +120,7 @@ struct SoundsSheet: View {
                     HStack(spacing: 6) {
                         Circle().fill(service.isConnected ? Theme.aurora : Theme.paper3).frame(width: 6, height: 6)
                         Text(service.isConnected ? "Spotify hesabın bağlı, odak boyunca engellenmez"
-                             : "Listeler kendi uygulamasında açılır, odak boyunca engellenmez")
+                             : "Apple Music Derin'de çalar, diğerleri kendi uygulamasında açılır")
                     }
                     .font(.system(size: 12)).foregroundStyle(service.isConnected ? Theme.aurora : Theme.paper2)
                 }
@@ -128,10 +128,14 @@ struct SoundsSheet: View {
                 Button("Liste ekle", systemImage: "plus") { showAddMusic = true }
                     .buttonStyle(.glass).controlSize(.small)
             }
-            if let err = service.lastError { Text(err).font(.system(size: 12)).foregroundStyle(Theme.alarm) }
+            if let err = service.lastError ?? model.appleMusic.lastError {
+                Text(err).font(.system(size: 12)).foregroundStyle(Theme.alarm)
+            }
             VStack(spacing: 0) {
                 ForEach(model.music.lists) { list in
-                    row(id: list.id, name: list.name, subtitle: "\(list.service.title) · \(list.kindTitle)", artwork: list.artwork) {
+                    row(id: list.id, name: list.name, subtitle: subtitle(for: list), artwork: list.artwork) {
+                        if list.service == .appleMusic, await model.appleMusic.play(list) { return }
+                        model.handOff()
                         if list.service == .spotify, !list.isAlbum, let id = list.spotifyURI?.absoluteString.split(separator: ":").last {
                             await service.play(SpotifyPlaylist(id: String(id), name: list.name, subtitle: ""))
                         } else {
@@ -147,6 +151,7 @@ struct SoundsSheet: View {
                 }
                 ForEach(suggested) { list in
                     row(id: list.id, name: list.name, subtitle: "Spotify · \(list.subtitle)", artwork: nil) {
+                        model.handOff()
                         await service.play(list)
                     }
                 }
@@ -164,10 +169,9 @@ struct SoundsSheet: View {
         return VStack(spacing: 0) {
             Button {
                 model.settings.spotifyPlaylist = selected ? nil : id
-                if !selected {
-                    model.handOff()
-                    Task { await play() }
-                }
+                // Only one list plays at a time; an Apple Music list stops when another is picked.
+                model.appleMusic.pause()
+                if !selected { Task { await play() } }
             } label: {
                 HStack(spacing: 12) {
                     AsyncImage(url: artwork) { image in
@@ -191,6 +195,10 @@ struct SoundsSheet: View {
             .buttonStyle(.plain)
             Divider().overlay(Theme.hair)
         }
+    }
+
+    private func subtitle(for list: MusicList) -> String {
+        list.service == .appleMusic ? "Apple Music · Derin'de çalar" : "\(list.service.title) · \(list.kindTitle)"
     }
 
     private func gradient(for id: String) -> [Color] {

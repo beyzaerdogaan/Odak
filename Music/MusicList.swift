@@ -1,7 +1,7 @@
 import Foundation
 
-/// Music apps whose shared links Derin can keep. Their lists always play in the music app itself:
-/// Spotify and YouTube Music don't let other apps stream, and Apple Music needs MusicKit for that.
+/// Music apps whose shared links Derin can keep. Spotify and YouTube Music lists play in their own app,
+/// since neither lets other apps stream; Apple Music lists play inside Derin through MusicKit.
 enum MusicService: String, Codable, CaseIterable, Identifiable {
     case spotify, appleMusic, youtubeMusic
     var id: String { rawValue }
@@ -40,6 +40,8 @@ struct MusicList: Codable, Hashable, Identifiable {
     var name: String
     var isAlbum = false
     var artwork: URL?
+    /// Set for playlists picked from the user's Apple Music library, which have no public link.
+    var appleMusicID: String?
     var id: String { link.absoluteString }
 
     var kindTitle: String { isAlbum ? "Albüm" : "Çalma listesi" }

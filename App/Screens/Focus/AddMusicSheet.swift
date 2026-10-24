@@ -8,11 +8,17 @@ struct AddMusicSheet: View {
     @State private var link = ""
     @State private var working = false
     @State private var failed = false
+    @State private var loadingLibrary = false
+    @State private var libraryShown = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
+                    appleMusicLibrary
+
+                    Divider().overlay(Theme.hair)
+
                     VStack(alignment: .leading, spacing: 12) {
                         step(1, "Aşağıdan müzik uygulamanı aç ve bir çalma listesi ya da albüm seç.")
                         step(2, "Paylaş'a dokun, uygulamalar arasından Derin'i seç. Derin görünmüyorsa Diğer'e dokun.")
@@ -79,6 +85,64 @@ struct AddMusicSheet: View {
         // A list shared from the music app arrives when Derin becomes active again.
         .onChange(of: model.music.lists.first?.id) { _, id in
             if let id { choose(id) }
+        }
+    }
+
+    /// The user's own Apple Music playlists, which then play inside Derin.
+    private var appleMusicLibrary: some View {
+        let player = model.appleMusic
+        return VStack(alignment: .leading, spacing: 10) {
+            Text("Apple Music kitaplığından seç").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
+            Text("Seçtiğin liste uygulamadan çıkmadan Derin'in içinde çalar.").small()
+            if !libraryShown {
+                Button {
+                    loadingLibrary = true
+                    Task {
+                        await player.loadLibrary()
+                        loadingLibrary = false
+                        libraryShown = player.lastError == nil
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        if loadingLibrary { ProgressView() } else { Image(systemName: "music.note.list") }
+                        Text("Listelerimi göster")
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 30)
+                }
+                .buttonStyle(.glass)
+                .disabled(loadingLibrary)
+            } else if player.library.isEmpty {
+                Text("Apple Music kitaplığında çalma listesi yok.").small()
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(player.library) { list in
+                        Button {
+                            model.music.add(list)
+                            choose(list.id)
+                            Task { _ = await player.play(list) }
+                        } label: {
+                            HStack(spacing: 12) {
+                                AsyncImage(url: list.artwork) { image in
+                                    image.resizable().scaledToFill()
+                                } placeholder: {
+                                    Image(systemName: "music.note").foregroundStyle(Theme.paper2)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity).background(Theme.plate)
+                                }
+                                .frame(width: 40, height: 40)
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                Text(list.name).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.paper).lineLimit(1)
+                                Spacer()
+                                Image(systemName: "plus.circle").foregroundStyle(Theme.aurora)
+                            }
+                            .frame(minHeight: 54)
+                            .contentShape(.rect)
+                        }
+                        .buttonStyle(.plain)
+                        Divider().overlay(Theme.hair)
+                    }
+                }
+            }
+            if let err = player.lastError { Text(err).font(.system(size: 12)).foregroundStyle(Theme.alarm) }
         }
     }
 

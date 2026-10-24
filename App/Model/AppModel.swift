@@ -25,6 +25,7 @@ final class AppModel {
     let sounds = SoundEngine()
     let spotify = SpotifyService()
     let music = MusicLibrary(folder: Demo.isOn ? nil : AppModel.folder)
+    let appleMusic = AppleMusicPlayer()
     let store = SubscriptionStore()
     let account = AccountService()
     let cloud = CloudSync(folder: AppModel.folder)
@@ -155,6 +156,7 @@ final class AppModel {
         LiveActivityController.end()
         if settings.stopMusicAtEnd {
             sounds.stop()
+            appleMusic.pause()
             Task { await spotify.pause() }
         }
         if s?.silenceCalls == true, settings.focusShortcutsReady {
@@ -184,6 +186,7 @@ final class AppModel {
         endBackgroundTask()
         didUnlock(at: .now)
         screenTime.clearIfExpired()
+        appleMusic.refresh()
         if let shared = music.collectShared() { toast = "“\(shared.name)” müzik listelerine eklendi" }
         tick()
         scheduleSync(after: .zero)
