@@ -58,6 +58,8 @@
 	<string>$(ODAK_BUNDLE_ID_PREFIX).derin.shared</string>
 	<key>DerinSpotifyClientID</key>
 	<string>$(ODAK_SPOTIFY_CLIENT_ID)</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Apple Music listelerini odaklanırken Derin'in içinde çalmak için.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

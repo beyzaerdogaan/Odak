@@ -204,15 +204,24 @@ struct NowPlayingCard: View {
                 .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
             }
             .buttonStyle(.plain)
+            // Ambient sounds and an Apple Music list playing inside Derin pause and resume together.
+            let appleMusic = model.appleMusic
+            let playing = sounds.isPlaying || appleMusic.isPlaying
             Button {
-                if sounds.isPlaying { sounds.stop() } else { sounds.play() }
+                if playing {
+                    sounds.stop()
+                    appleMusic.pause()
+                } else {
+                    sounds.play()
+                    Task { await appleMusic.resume() }
+                }
             } label: {
-                Image(systemName: sounds.isPlaying ? "pause.fill" : "play.fill").font(.system(size: 16)).frame(width: 44, height: 44)
+                Image(systemName: playing ? "pause.fill" : "play.fill").font(.system(size: 16)).frame(width: 44, height: 44)
             }
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
-            .disabled(sounds.active.isEmpty)
-            .accessibilityLabel(sounds.isPlaying ? "Duraklat" : "Çal")
+            .disabled(sounds.active.isEmpty && appleMusic.current == nil)
+            .accessibilityLabel(playing ? "Duraklat" : "Çal")
         }
         .padding(8)
         .background(Theme.plate, in: RoundedRectangle(cornerRadius: 20, style: .continuous))

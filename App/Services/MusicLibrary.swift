@@ -33,6 +33,9 @@ final class MusicLibrary {
         return list
     }
 
+    /// Adds a list picked in the app, such as a playlist from the Apple Music library.
+    func add(_ list: MusicList) { insert(list) }
+
     func remove(_ list: MusicList) {
         lists.removeAll { $0.id == list.id }
     }
