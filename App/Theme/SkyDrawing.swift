@@ -170,13 +170,14 @@ struct Planisphere: View {
                         inner.fill(Path(ellipseIn: CGRect(x: c.x + rr * cos(aa) - s, y: c.y + rr * sin(aa) - s, width: s * 2, height: s * 2)),
                                    with: .color(ink.opacity(Double(CGFloat.random(in: 0.18...0.5, using: &rng)))))
                     }
-                    // Sessions given up on stay as small grey stars with no glow.
+                    // Sessions given up on stay as grey stars with no glow: an ashen core in a faint haze and a
+                    // broken ring, as big as a lit star so they read at a glance.
                     for b in burnt {
                         let p = b.point
-                        inner.fill(Path(ellipseIn: CGRect(x: p.x - 2.5, y: p.y - 2.5, width: 5, height: 5)),
-                                   with: .color(Theme.paper3.opacity(0.55)))
-                        inner.stroke(Path(ellipseIn: CGRect(x: p.x - 5, y: p.y - 5, width: 10, height: 10)),
-                                     with: .color(Theme.paper3.opacity(0.35)), style: StrokeStyle(lineWidth: 0.75, dash: [1.5, 2]))
+                        func circle(_ r: CGFloat) -> Path { Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)) }
+                        inner.fill(circle(10), with: .color(Theme.paper2.opacity(0.12)))
+                        inner.stroke(circle(7), with: .color(Theme.paper2.opacity(0.7)), style: StrokeStyle(lineWidth: 1, dash: [2, 2.5]))
+                        inner.fill(circle(3.2), with: .color(Theme.paper2.opacity(0.9)))
                     }
                     // ecliptic
                     var ecl = inner
@@ -225,22 +226,38 @@ struct Planisphere: View {
                     Color.clear
                         .frame(width: target, height: target)
                         .contentShape(Circle())
-                        .onTapGesture { shownBurntOut = b.record.id }
-                        .popover(isPresented: Binding(get: { shownBurntOut == b.record.id },
-                                                      set: { if !$0, shownBurntOut == b.record.id { shownBurntOut = nil } })) {
-                            Text(b.record.task)
-                                .font(.serif(15)).foregroundStyle(Theme.paper)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 16).padding(.vertical, 12)
-                                .frame(maxWidth: 260)
-                                .presentationCompactAdaptation(.popover)
+                        .onTapGesture {
+                            withAnimation(.easeOut(duration: 0.15)) { shownBurntOut = shownBurntOut == b.record.id ? nil : b.record.id }
                         }
                         .position(b.point)
+                        .accessibilityHidden(true)
+                }
+                // The same slim bubble as the Odak screen's info, just above the star and kept inside the view.
+                if let b = burnt.first(where: { $0.record.id == shownBurntOut }) {
+                    Text(b.record.task)
+                        .font(.system(size: 12)).foregroundStyle(Theme.paper)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 200)
+                        .padding(.horizontal, 9).padding(.vertical, 4)
+                        .background(Theme.night2, in: .rect(cornerRadius: 8))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.hair))
+                        .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
+                        .fixedSize()
+                        .position(x: min(max(b.point.x, 110), geo.size.width - 110), y: b.point.y - 24)
+                        .onTapGesture { withAnimation(.easeOut(duration: 0.15)) { shownBurntOut = nil } }
+                        .transition(.opacity)
                         .accessibilityHidden(true)
                 }
             }
         }
         .aspectRatio(1.05, contentMode: .fit)
+        .onAppear { if Demo.info { shownBurntOut = progress.burntOutStars.first?.id } }
+        .task(id: shownBurntOut) {
+            guard shownBurntOut != nil, !Demo.info else { return }
+            try? await Task.sleep(for: .seconds(4))
+            withAnimation(.easeOut(duration: 0.15)) { shownBurntOut = nil }
+        }
         .accessibilityElement()
         .accessibilityLabel(Text(accessibilitySummary))
     }
