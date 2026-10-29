@@ -49,4 +49,10 @@ for mode in dark; do
   sleep 6
   xcrun simctl io "$UDID" screenshot "$OUT/$mode-focus-info.png" >/dev/null
   echo "shot $mode-focus-info"
+  # Home with a burnt-out star's bubble open.
+  xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+  xcrun simctl launch "$UDID" "$BID" -demo -screen home -info >/dev/null
+  sleep 6
+  xcrun simctl io "$UDID" screenshot "$OUT/$mode-home-info.png" >/dev/null
+  echo "shot $mode-home-info"
 done
