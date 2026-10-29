@@ -37,8 +37,28 @@ SERIF = [
 def font(size):
     for path in SERIF:
         if os.path.exists(path):
-            return ImageFont.truetype(path, size)
+            f = ImageFont.truetype(path, size)
+            text_cut(f)
+            return f
     return ImageFont.load_default(size)
+
+
+def text_cut(f):
+    """New York is a variable font whose default is its hairline display cut, which loses the H's crossbar
+    at this size. Pick the sturdier text optical size and a medium weight instead."""
+    try:
+        axes = f.get_variation_axes()
+    except OSError:
+        return
+    want = {"opsz": 20, "optical": 20, "wght": 500, "weight": 500}
+    values = []
+    for axis in axes:
+        name = axis.get("name", b"")
+        name = (name.decode(errors="ignore") if isinstance(name, bytes) else str(name)).lower()
+        target = next((v for k, v in want.items() if k in name), axis["default"])
+        values.append(min(max(target, axis["minimum"]), axis["maximum"]))
+    print(f"font axes {axes} -> {values}")
+    f.set_variation_by_axes(values)
 
 
 def sky():
