@@ -24,7 +24,7 @@ Kullanıcı bir odak oturumunu yarıda bıraktığında gökyüzünde küçük v
 - `SkyProgress.abandonGrace: TimeInterval = 10` sabiti eklenir.
 - `abandon(_:)` artık `@discardableResult` ile `Bool` döner. `input.end - input.start < abandonGrace` ise hiçbir şey kaydetmez ve `false` döner. Aksi halde bugünkü gibi kaydeder ve `true` döner.
 - `burntOutStars: [FocusRecord]` hesaplanmış özelliği, `completed == false` olan kayıtları döner. Yeni bir alan saklanmaz. Bu yüzden veri biçimi değişmez ve Firestore eşitlemesi (`Merge`, kayıtları `id` ile birleştirir) ek iş istemez. Bu özellikten önce vazgeçilmiş oturumlar da sönmüş yıldız olarak görünür, bu bilinçli bir tercihtir.
-- `BurntOutStarLayout.point(for: UUID, avoiding: [UnitRect]) -> UnitPoint` sönmüş yıldızın diskteki yerini kaydın `id`'sinden türetir. Sonuç her açılışta ve her cihazda aynıdır. Nokta birim diskin içinde kalır, merkezdeki Kutup Yıldızı'nın çevresine ve verilen takımyıldız alanlarına düşmez. Uygun yer bulunamazsa (çok sayıda denemeden sonra) son aday kullanılır. `UnitRect` ve `UnitPoint` OdakCore içinde `Double` alanlı küçük yapılardır, böylece kural uygulama olmadan test edilir.
+- `BurntOutStarLayout.point(for: UUID, avoiding: [DiscRect]) -> DiscPoint` sönmüş yıldızın diskteki yerini kaydın `id`'sinden türetir. Sonuç her açılışta ve her cihazda aynıdır. Nokta birim diskin içinde kalır, merkezdeki Kutup Yıldızı'nın çevresine ve verilen takımyıldız alanlarına düşmez. Uygun yer bulunamazsa (çok sayıda denemeden sonra) son aday kullanılır. `DiscRect` ve `DiscPoint` OdakCore içinde `Double` alanlı küçük yapılardır, böylece kural uygulama olmadan test edilir.
 
 ### 2. Gökyüzü (uygulama)
 
