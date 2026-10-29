@@ -59,6 +59,11 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("Hakkında") {
+                    Link("Gizlilik politikası", destination: URL(string: "https://beyzaerdogaan.github.io/Odak/gizlilik/")!)
+                    Link("Destek ve iletişim", destination: URL(string: "https://beyzaerdogaan.github.io/Odak/destek/")!)
+                }
+
                 Section {
                     Button("Bütün ilerlemeyi sıfırla", role: .destructive) { confirmReset = true }
                 } footer: {
