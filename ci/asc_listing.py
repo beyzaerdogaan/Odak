@@ -73,16 +73,17 @@ def main():
     print(f"version {version['attributes']['versionString']} ({version['attributes']['appStoreState']})")
 
     info_locs = call("GET", f"/appInfos/{info['id']}/appInfoLocalizations")["data"]
-    version_locs = call("GET", f"/appStoreVersions/{version['id']}/appStoreVersionLocalizations")["data"]
     for locale, text in listing.items():
         upsert("appInfoLocalizations", info_locs, locale,
                {k: text[k] for k in ("name", "subtitle", "privacyPolicyUrl")}, "appInfo", info["id"])
+    # Adding a locale to the app info also adds it to the version, so read the version's list afterwards.
+    version_locs = call("GET", f"/appStoreVersions/{version['id']}/appStoreVersionLocalizations")["data"]
+    for locale, text in listing.items():
         loc_id = upsert("appStoreVersionLocalizations", version_locs, locale,
                         {k: text[k] for k in ("description", "keywords", "promotionalText", "supportUrl", "marketingUrl")},
                         "appStoreVersion", version["id"])
         if shots and os.path.isdir(os.path.join(shots, locale)):
             upload_screenshots(loc_id, os.path.join(shots, locale))
-
 
 if __name__ == "__main__":
     main()
