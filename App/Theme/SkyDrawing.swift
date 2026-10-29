@@ -105,6 +105,7 @@ struct ConstellationFigure: View {
 /// constellations they are working on placed around it and the Moon and planets on the ecliptic.
 struct Planisphere: View {
     var progress: SkyProgress
+    @State private var shownBurntOut: FocusRecord.ID?
 
     private var shown: [Constellation] {
         let done = progress.completedConstellations.suffix(2).compactMap(Catalog.constellation(_:))
@@ -118,12 +119,27 @@ struct Planisphere: View {
         CGRect(x: 0.50, y: 0.58, width: 0.30, height: 0.28), CGRect(x: 0.18, y: 0.56, width: 0.28, height: 0.22),
     ]
 
+    /// Constellation slots plus room for their labels, which burnt-out stars stay out of.
+    private var occupied: [DiscRect] {
+        slots.map { DiscRect(x: $0.minX, y: $0.minY, width: $0.width, height: $0.height + 0.06) }
+    }
+
+    /// Burnt-out stars with their place in the disc.
+    private func burntOut(in disc: CGRect) -> [(record: FocusRecord, point: CGPoint)] {
+        let occupied = occupied
+        return progress.burntOutStars.map { r in
+            let u = BurntOutStarLayout.point(for: r.id, avoiding: occupied)
+            return (r, CGPoint(x: disc.minX + u.x * disc.width, y: disc.minY + u.y * disc.height))
+        }
+    }
+
     var body: some View {
         GeometryReader { geo in
             let side = min(geo.size.width, geo.size.height)
             let R = side / 2 - 22
             let c = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
             let disc = CGRect(x: c.x - R, y: c.y - R, width: R * 2, height: R * 2)
+            let burnt = burntOut(in: disc)
             ZStack {
                 Canvas { ctx, _ in
                     let ink = Theme.star
@@ -153,6 +169,14 @@ struct Planisphere: View {
                         let s: CGFloat = [0.6, 0.8, 1, 1.2].randomElement(using: &rng)!
                         inner.fill(Path(ellipseIn: CGRect(x: c.x + rr * cos(aa) - s, y: c.y + rr * sin(aa) - s, width: s * 2, height: s * 2)),
                                    with: .color(ink.opacity(Double(CGFloat.random(in: 0.18...0.5, using: &rng)))))
+                    }
+                    // Sessions given up on stay as small grey stars with no glow.
+                    for b in burnt {
+                        let p = b.point
+                        inner.fill(Path(ellipseIn: CGRect(x: p.x - 2.5, y: p.y - 2.5, width: 5, height: 5)),
+                                   with: .color(Theme.paper3.opacity(0.55)))
+                        inner.stroke(Path(ellipseIn: CGRect(x: p.x - 5, y: p.y - 5, width: 10, height: 10)),
+                                     with: .color(Theme.paper3.opacity(0.35)), style: StrokeStyle(lineWidth: 0.75, dash: [1.5, 2]))
                     }
                     // ecliptic
                     var ecl = inner
@@ -193,6 +217,27 @@ struct Planisphere: View {
                     .fixedSize()
                     .position(x: disc.minX + slot.midX * disc.width, y: disc.minY + slot.maxY * disc.height + 10)
                 }
+                // Tapping a burnt-out star shows the sentence written for that session. Anywhere else the
+                // disc keeps opening the collection.
+                // Smaller targets once there are many, so they don't cover the whole disc and its link.
+                let target: CGFloat = burnt.count > 15 ? 24 : 44
+                ForEach(burnt, id: \.record.id) { b in
+                    Color.clear
+                        .frame(width: target, height: target)
+                        .contentShape(Circle())
+                        .onTapGesture { shownBurntOut = b.record.id }
+                        .popover(isPresented: Binding(get: { shownBurntOut == b.record.id },
+                                                      set: { if !$0, shownBurntOut == b.record.id { shownBurntOut = nil } })) {
+                            Text(b.record.task)
+                                .font(.serif(15)).foregroundStyle(Theme.paper)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 16).padding(.vertical, 12)
+                                .frame(maxWidth: 260)
+                                .presentationCompactAdaptation(.popover)
+                        }
+                        .position(b.point)
+                        .accessibilityHidden(true)
+                }
             }
         }
         .aspectRatio(1.05, contentMode: .fit)
@@ -204,6 +249,7 @@ struct Planisphere: View {
         let parts = shown.map { c in
             progress.isComplete(c.id) ? "\(c.name) tamam" : "\(c.name) \(c.stars.count) yıldızdan \(progress.litCount(in: c))"
         }
-        return "Senin gökyüzün: " + parts.joined(separator: ", ")
+        let burnt = progress.burntOutStars.count
+        return "Senin gökyüzün: " + parts.joined(separator: ", ") + (burnt > 0 ? " ve \(burnt) sönmüş yıldız" : "")
     }
 }

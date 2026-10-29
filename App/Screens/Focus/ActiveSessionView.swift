@@ -83,7 +83,11 @@ struct ActiveSessionView: View {
                 } else {
                     holdToGiveUp
                 }
-                Text("Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır.").small()
+                // The hold takes 1.5 s and this clock ticks once a second, so stop promising "no trace" early
+                // enough that a hold started under this text still ends inside the grace period.
+                Text(now.timeIntervalSince(s.start) + 3 < SkyProgress.abandonGrace
+                     ? "Şimdi vazgeçersen gökyüzünde iz kalmaz."
+                     : "Vazgeçersen gökyüzüne sönmüş bir yıldız düşer, ama odaklandığın dakikalar yine de sayılır.").small()
                     .multilineTextAlignment(.center)
             }
         }
@@ -113,7 +117,7 @@ struct ActiveSessionView: View {
         .sensoryFeedback(.warning, trigger: giveUpProgress == 1)
         .accessibilityElement()
         .accessibilityLabel("Vazgeç")
-        .accessibilityHint("Oturumu bitirir ve yıldız söner")
+        .accessibilityHint("Oturumu bitirir ve gökyüzüne sönmüş bir yıldız düşer")
         .accessibilityAction { model.abandon() }
     }
 

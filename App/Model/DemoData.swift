@@ -43,6 +43,12 @@ enum Demo {
         let today = cal.date(bySettingHour: 9, minute: 30, second: 0, of: now)!
         records.append(FocusRecord(task: "Okuma", start: today.addingTimeInterval(-70 * 60), end: today, plannedMinutes: 70,
                                    focusedMinutes: 70, completed: true, strict: false, lookedAway: false, light: 84))
+        // Two sessions given up on, shown as burnt-out stars.
+        for (task, minutes, day) in [("Makale okuma", 12, 3), ("İngilizce kelime", 7, 9)] {
+            let end = cal.date(byAdding: .day, value: -day, to: cal.date(bySettingHour: 15, minute: 0, second: 0, of: now)!)!
+            records.append(FocusRecord(task: task, start: end.addingTimeInterval(TimeInterval(-minutes * 60)), end: end,
+                                       plannedMinutes: 25, focusedMinutes: minutes, completed: false, strict: false, lookedAway: false))
+        }
         p.records = records.sorted { $0.end < $1.end }
         let target = 23 * 60
         let extra = target - p.totalFocusedMinutes

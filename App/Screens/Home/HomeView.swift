@@ -114,7 +114,7 @@ private struct NextStepCard: View {
     }
 
     private func detail(_ p: SkyProgress) -> String {
-        if p.records.isEmpty { return "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır." }
+        if p.records.isEmpty { return "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen gökyüzüne sönmüş bir yıldız düşer ama odaklandığın dakikalar yine de sayılır." }
         guard let c = p.nearestConstellation else { return "Her odak saati seni bir ışık yılı ileri taşır." }
         let remaining = c.stars.filter { !p.isLit($0.id) }
         if let bright = remaining.first(where: \.isBright), remaining.allSatisfy(\.isBright) {
