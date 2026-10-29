@@ -267,7 +267,10 @@ struct SkyCalendarView: View {
                 .frame(width: 32, height: 32)
         }
         .buttonStyle(.plain)
-        .disabled(done || (at ?? .distantPast) < now)
+        .disabled(done)
+        .opacity((at ?? .distantPast) > now ? 1 : 0)
+        .allowsHitTesting((at ?? .distantPast) > now)
+        .accessibilityHidden((at ?? .distantPast) <= now)
         .accessibilityLabel(done ? "Hatırlatma kuruldu" : "Hatırlat")
     }
 

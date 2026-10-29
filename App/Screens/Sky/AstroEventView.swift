@@ -37,16 +37,17 @@ struct AstroEventView: View {
                                                   : "O gece Ay yalnızca %\(event.moon) dolu.")
                                 .font(.system(size: 13)).foregroundStyle(Theme.paper2)
                         }
-                        Button {
-                            guard let at = event.reminderDate(calendar: cal) else { return }
-                            Task { await Notifications.remind(event, at: at); reminded = true }
-                        } label: {
-                            Label(reminded ? "Hatırlatma kuruldu" : "Hatırlat", systemImage: reminded ? "checkmark" : "bell")
-                                .font(.system(size: 14, weight: .semibold))
+                        if let at = event.reminderDate(calendar: cal), at > .now {
+                            Button {
+                                Task { await Notifications.remind(event, at: at); reminded = true }
+                            } label: {
+                                Label(reminded ? "Hatırlatma kuruldu" : "Hatırlat", systemImage: reminded ? "checkmark" : "bell")
+                                    .font(.system(size: 14, weight: .semibold))
+                            }
+                            .buttonStyle(.glass)
+                            .tint(tint)
+                            .disabled(reminded)
                         }
-                        .buttonStyle(.glass)
-                        .tint(tint)
-                        .disabled(reminded || (event.reminderDate(calendar: cal) ?? .distantPast) < .now)
                     }
                 }
                 .padding(22)
