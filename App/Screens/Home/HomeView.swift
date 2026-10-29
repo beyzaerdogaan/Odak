@@ -15,32 +15,48 @@ struct HomeView: View {
         }
     }
 
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(greeting).meta()
+            Text("Evrenin").font(.serif(38)).lineLimit(1).fixedSize().foregroundStyle(Theme.paper)
+        }
+    }
+
+    private var pills: some View {
+        GlassEffectContainer(spacing: 8) {
+            HStack(spacing: 6) {
+                Text("\(model.progress.totalFocusedMinutes / 60) sa odak")
+                    .font(.system(size: 13)).monospacedDigit().foregroundStyle(Theme.paper)
+                    .lineLimit(1).fixedSize()
+                    .padding(.horizontal, 12).frame(height: 32)
+                    .glassEffect(.regular, in: .capsule)
+                LightPill(amount: model.progress.light)
+                Button { showSettings = true } label: {
+                    Image(systemName: "gearshape").font(.system(size: 15, weight: .medium)).frame(width: 32, height: 32)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(Theme.paper2)
+                .glassEffect(.regular.interactive(), in: .circle)
+                .accessibilityLabel("Ayarlar")
+            }
+        }
+    }
+
     var body: some View {
         let p = model.progress
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(greeting).meta()
-                        Text("Evrenin").font(.serif(38)).lineLimit(1).minimumScaleFactor(0.6).foregroundStyle(Theme.paper)
+                // When the title and the pills don't fit side by side (English "Your Universe"),
+                // the pills move above the title instead of squeezing it.
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .bottom) {
+                        header
+                        Spacer()
+                        pills
                     }
-                    Spacer()
-                    GlassEffectContainer(spacing: 8) {
-                        HStack(spacing: 6) {
-                            Text("\(p.totalFocusedMinutes / 60) sa odak")
-                                .font(.system(size: 13)).monospacedDigit().foregroundStyle(Theme.paper)
-                                .lineLimit(1).fixedSize()
-                                .padding(.horizontal, 12).frame(height: 32)
-                                .glassEffect(.regular, in: .capsule)
-                            LightPill(amount: p.light)
-                            Button { showSettings = true } label: {
-                                Image(systemName: "gearshape").font(.system(size: 15, weight: .medium)).frame(width: 32, height: 32)
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundStyle(Theme.paper2)
-                            .glassEffect(.regular.interactive(), in: .circle)
-                            .accessibilityLabel("Ayarlar")
-                        }
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack { Spacer(); pills }
+                        header
                     }
                 }
                 .padding(.horizontal, 22)
