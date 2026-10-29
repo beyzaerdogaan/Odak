@@ -1,8 +1,11 @@
 # Writes the App Store listing (appstore/listing.json) and, if asked, the store images from the
-# appstore-screenshots branch to App Store Connect. Run by hand only.
+# appstore-screenshots branch to App Store Connect. Runs when the listing changes (texts only)
+# or by hand.
 name: App Store listing
 
 on:
+  push:
+    paths: [appstore/listing.json, .github/workflows/asc-listing.yml]
   workflow_dispatch:
     inputs:
       screenshots:
