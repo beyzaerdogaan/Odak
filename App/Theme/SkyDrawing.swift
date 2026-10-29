@@ -213,7 +213,7 @@ struct Planisphere: View {
                     let done = progress.isComplete(con.id)
                     HStack(spacing: 6) {
                         Text(con.name).font(.serif(12.5, italic: true)).foregroundStyle(Theme.paper)
-                        Text(done ? "tamam" : "\(progress.litCount(in: con))/\(con.stars.count)").font(.system(size: 10)).foregroundStyle(Theme.paper2)
+                        Text(done ? String(localized: "tamam") : "\(progress.litCount(in: con))/\(con.stars.count)").font(.system(size: 10)).foregroundStyle(Theme.paper2)
                     }
                     .fixedSize()
                     .position(x: disc.minX + slot.midX * disc.width, y: disc.minY + slot.maxY * disc.height + 10)

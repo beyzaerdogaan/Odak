@@ -275,7 +275,7 @@ private struct SkyChartPage: View {
                     NavigationLink(value: Route.constellation(c.id)) {
                         HStack(spacing: 6) {
                             Text(c.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
-                            Text(progress.isComplete(c.id) ? "tamam" : "\(progress.litCount(in: c))/\(c.stars.count)")
+                            Text(progress.isComplete(c.id) ? String(localized: "tamam") : "\(progress.litCount(in: c))/\(c.stars.count)")
                                 .font(.system(size: 11)).foregroundStyle(Theme.paper2)
                         }
                         .padding(.vertical, 6)

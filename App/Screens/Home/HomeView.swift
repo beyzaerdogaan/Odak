@@ -22,7 +22,7 @@ struct HomeView: View {
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(greeting).meta()
-                        Text("Evrenin").font(.serif(38)).foregroundStyle(Theme.paper)
+                        Text("Evrenin").font(.serif(38)).lineLimit(1).minimumScaleFactor(0.6).foregroundStyle(Theme.paper)
                     }
                     Spacer()
                     GlassEffectContainer(spacing: 8) {

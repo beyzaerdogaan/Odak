@@ -74,7 +74,7 @@ struct FocusSetupView: View {
                     HStack(spacing: 5) { Spark(size: 12); Text("\(model.streak) günlük seri") }
                         .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
                 }
-                Text(model.todayMinutes > 0 ? "Bugün \(model.todayMinutes.minutesText) odaklandın" : "Bugün henüz odaklanmadın").meta()
+                Text(model.todayMinutes > 0 ? String(localized: "Bugün \(model.todayMinutes.minutesText) odaklandın") : String(localized: "Bugün henüz odaklanmadın")).meta()
             }
             Text("Ne üzerinde\nodaklanıyorsun?").font(.serif(36)).foregroundStyle(Theme.paper)
                 .fixedSize(horizontal: false, vertical: true)

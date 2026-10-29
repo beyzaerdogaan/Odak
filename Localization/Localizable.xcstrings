@@ -4077,6 +4077,16 @@
         }
       }
     },
+    "dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        }
+      }
+    },
     "gök cismi açıldı" : {
       "localizations" : {
         "en" : {
@@ -4127,12 +4137,52 @@
         }
       }
     },
+    "parlak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bright"
+          }
+        }
+      }
+    },
+    "seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "streak"
+          }
+        }
+      }
+    },
     "takımyıldız tamamlandı" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "constellations complete"
+          }
+        }
+      }
+    },
+    "tamam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "complete"
+          }
+        }
+      }
+    },
+    "toplam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "total"
           }
         }
       }

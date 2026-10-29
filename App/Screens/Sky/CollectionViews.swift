@@ -278,7 +278,7 @@ struct MeteorEventView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
-                    Text(active != nil ? "Şu an sürüyor, zirvesi \(shower.peakText())." : "\(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(AppLanguage.locale))) tarihinde başlıyor.")
+                    Text(active != nil ? String(localized: "Şu an sürüyor, zirvesi \(shower.peakText()).") : String(localized: "\(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(AppLanguage.locale))) tarihinde başlıyor."))
                         .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                 }
                 .padding(.top, 24)
