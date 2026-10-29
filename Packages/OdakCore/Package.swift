@@ -9,7 +9,7 @@ let package = Package(
     platforms: [.iOS("26.0"), .macOS(.v14)],
     products: [.library(name: "OdakCore", targets: ["OdakCore"])],
     targets: [
-        .target(name: "OdakCore", resources: [.copy("Resources/sky-calendar.json"), .process("Resources/Localizable.xcstrings")]),
+        .target(name: "OdakCore", resources: [.copy("Resources/sky-calendar.json"), .process("Resources/en.lproj")]),
         .testTarget(name: "OdakCoreTests", dependencies: ["OdakCore"]),
     ],
     swiftLanguageModes: [.v5]

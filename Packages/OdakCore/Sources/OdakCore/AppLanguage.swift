@@ -1,7 +1,8 @@
 import Foundation
 
-/// The app's language. Texts are written in Turkish, the base language, and translated in the
-/// string catalogs (`Resources/Localizable.xcstrings` here, `Localization/` in the app). OdakCore
+/// The app's language. Texts are written in Turkish, the base language, and translated in
+/// `Resources/en.lproj` here (plain strings files, so `swift test` can check them too) and in the
+/// string catalog in `Localization/` for the app. OdakCore
 /// follows the app's own choice rather than its package bundle's, so the rules and the screens
 /// always speak the same language.
 public enum AppLanguage {
