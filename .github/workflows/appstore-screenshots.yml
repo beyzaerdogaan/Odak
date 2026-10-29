@@ -1,10 +1,11 @@
-# App Store screenshots on a 6.9" simulator, published to the appstore-screenshots branch.
+# App Store screenshots on a 6.9" simulator, published to the appstore-screenshots branch:
+# raw shots at the root, the store images with headlines (ci/appstore_frames.py) under magaza/.
 name: App Store screenshots
 
 on:
   workflow_dispatch:
   push:
-    paths: [.github/workflows/appstore-screenshots.yml]
+    paths: [.github/workflows/appstore-screenshots.yml, ci/appstore_frames.py]
 
 permissions:
   contents: write
@@ -35,6 +36,11 @@ jobs:
       - name: Screenshots
         run: SIM_MAX=1 ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
 
+      - name: Store images with headlines
+        run: |
+          python3 -m venv /tmp/frames && /tmp/frames/bin/pip install -q pillow
+          /tmp/frames/bin/python ci/appstore_frames.py screenshots magaza
+
       - name: Publish to the appstore-screenshots branch
         run: |
           SRC="$PWD/screenshots"
@@ -42,6 +48,7 @@ jobs:
           cd "$DEST"
           git init -q -b appstore-screenshots
           cp "$SRC"/*.png .
+          cp -R "$SRC/../magaza" magaza
           git add -A
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
             commit -q -m "App Store screenshots at ${GITHUB_SHA::7}"
