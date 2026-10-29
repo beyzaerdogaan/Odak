@@ -83,7 +83,9 @@ struct ActiveSessionView: View {
                 } else {
                     holdToGiveUp
                 }
-                Text(now.timeIntervalSince(s.start) < SkyProgress.abandonGrace
+                // The hold takes 1.5 s and this clock ticks once a second, so stop promising "no trace" early
+                // enough that a hold started under this text still ends inside the grace period.
+                Text(now.timeIntervalSince(s.start) + 3 < SkyProgress.abandonGrace
                      ? "Şimdi vazgeçersen gökyüzünde iz kalmaz."
                      : "Vazgeçersen gökyüzüne sönmüş bir yıldız düşer, ama odaklandığın dakikalar yine de sayılır.").small()
                     .multilineTextAlignment(.center)

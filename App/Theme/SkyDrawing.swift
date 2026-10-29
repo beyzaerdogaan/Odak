@@ -219,9 +219,11 @@ struct Planisphere: View {
                 }
                 // Tapping a burnt-out star shows the sentence written for that session. Anywhere else the
                 // disc keeps opening the collection.
+                // Smaller targets once there are many, so they don't cover the whole disc and its link.
+                let target: CGFloat = burnt.count > 15 ? 24 : 44
                 ForEach(burnt, id: \.record.id) { b in
                     Color.clear
-                        .frame(width: 44, height: 44)
+                        .frame(width: target, height: target)
                         .contentShape(Circle())
                         .onTapGesture { shownBurntOut = b.record.id }
                         .popover(isPresented: Binding(get: { shownBurntOut == b.record.id },
