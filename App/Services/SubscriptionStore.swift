@@ -8,12 +8,15 @@ import StoreKit
 @MainActor @Observable
 final class SubscriptionStore {
     static let productIDs = ["derin.zenit.monthly", "derin.zenit.yearly"]
+    /// Off until the subscription is set up in App Store Connect: every Zenit entry point is hidden
+    /// and detailed statistics are open to everyone. Flip to true to bring Zenit back.
+    static let isOffered = false
 
     private(set) var isSubscribed = false
     @ObservationIgnored private var updates: Task<Void, Never>?
 
     func start() {
-        guard updates == nil else { return }
+        guard Self.isOffered, updates == nil else { return }
         updates = Task { [weak self] in
             await self?.refresh()
             for await result in Transaction.updates {

@@ -45,16 +45,18 @@ struct SettingsView: View {
                     }
                 }
 
-                Section("Zenit") {
-                    if model.isZenit {
-                        LabeledContent("Durum", value: "Aktif")
-                    } else {
-                        Button("Zenit'e geç") { showZenit = true }
-                    }
-                    Button("Satın alımları geri yükle") {
-                        Task {
-                            try? await AppStore.sync()
-                            await model.store.refresh()
+                if SubscriptionStore.isOffered {
+                    Section("Zenit") {
+                        if model.isZenit {
+                            LabeledContent("Durum", value: "Aktif")
+                        } else {
+                            Button("Zenit'e geç") { showZenit = true }
+                        }
+                        Button("Satın alımları geri yükle") {
+                            Task {
+                                try? await AppStore.sync()
+                                await model.store.refresh()
+                            }
                         }
                     }
                 }

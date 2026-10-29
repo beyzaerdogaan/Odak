@@ -119,7 +119,7 @@ struct SkyView: View {
     }
 
     @ViewBuilder private func detailedStats(_ p: SkyProgress) -> some View {
-        if model.isZenit {
+        if model.isZenit || !SubscriptionStore.isOffered {
             let days = last7Days(p)
             VStack(alignment: .leading, spacing: 10) {
                 Text("Son 7 gün").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
