@@ -18,6 +18,8 @@ jobs:
     name: Archive and upload
     runs-on: macos-26
     timeout-minutes: 60
+    outputs:
+      signing_state: ${{ steps.upload.outputs.signing_state }}
     env:
       TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -126,16 +128,24 @@ jobs:
         run: ci/sign_app.sh "$RUNNER_TEMP/Derin.xcarchive/Products/Applications/Derin.app" "$RUNNER_TEMP/signing" "$RUNNER_TEMP/Derin.ipa"
 
       - name: Upload to TestFlight
+        id: upload
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
           cp "$ASC_KEY_PATH" ~/.appstoreconnect/private_keys/
           xcrun altool --upload-app -f "$RUNNER_TEMP/Derin.ipa" -t ios \
             --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+          # Only certificate and profile IDs; the release-certificate job revokes them after processing.
+          echo "signing_state=$(cat "$RUNNER_TEMP/signing/state.json")" >> "$GITHUB_OUTPUT"
 
-      - name: Revoke CI certificate
+      - name: Delete CI keychain
         if: always()
+        run: if [ -n "${SIGN_KEYCHAIN:-}" ]; then security delete-keychain "$SIGN_KEYCHAIN" || true; fi
+
+      # After a successful upload the certificate must outlive Apple's processing (else ITMS-90034),
+      # so that job revokes it; here it's only revoked when nothing was uploaded.
+      - name: Revoke CI certificate
+        if: failure() || cancelled()
         run: |
-          if [ -n "${SIGN_KEYCHAIN:-}" ]; then security delete-keychain "$SIGN_KEYCHAIN" || true; fi
           if [ -x "$RUNNER_TEMP/venv/bin/python" ]; then
             "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py cleanup "$RUNNER_TEMP/signing"
           fi
@@ -143,3 +153,33 @@ jobs:
       - name: Clean up key
         if: always()
         run: rm -rf "$RUNNER_TEMP/keys" "$RUNNER_TEMP/signing" ~/.appstoreconnect/private_keys
+
+  release-certificate:
+    name: Revoke CI certificate after processing
+    needs: upload
+    if: needs.upload.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      BUNDLE_PREFIX: ${{ vars.BUNDLE_ID_PREFIX || 'com.beyzaerdogan' }}
+      SIGNING_STATE: ${{ needs.upload.outputs.signing_state }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for processing, then revoke
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys" "$RUNNER_TEMP/signing"
+          export ASC_KEY_PATH="$RUNNER_TEMP/keys/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$ASC_KEY_PATH"
+          printf '%s' "$SIGNING_STATE" > "$RUNNER_TEMP/signing/state.json"
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --quiet pyjwt cryptography
+          "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py wait "$BUNDLE_PREFIX.derin" "${{ github.run_number }}"
+          "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py cleanup "$RUNNER_TEMP/signing"
+
+      - name: Clean up key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys"

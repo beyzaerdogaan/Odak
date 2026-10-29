@@ -6,13 +6,15 @@
                                    key.pem, cert.cer, <bundle_id>.mobileprovision and state.json to out_dir.
                                    <bundle_id>+CAPABILITY (e.g. +APPLE_ID_AUTH) also turns that
                                    capability on for the ID first, so the profile carries it
+  wait <bundle_id> <build>         waits until App Store Connect has finished processing that build
   cleanup <out_dir>                revokes the certificate and deletes the profiles from state.json
 
 Why not Xcode's cloud-managed signing: when the account holder's name has non-ASCII letters
 (“ERDOĞAN”), Xcode writes the certificate name into the designated requirement in decomposed
 Unicode, the signature no longer satisfies its own requirement, and App Store Connect rejects
 the upload with error 90035. Signing locally with codesign avoids that. Revoking the certificate
-afterwards keeps the team under Apple's certificate limit and does not affect uploaded builds.
+afterwards keeps the team under Apple's certificate limit, but only once Apple has processed the
+build: a build still processing when its certificate is revoked is rejected with ITMS-90034.
 
 Needs ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_PATH, plus `pip install pyjwt cryptography`.
 """
@@ -132,6 +134,21 @@ def setup(out_dir, identifiers):
         print(f"Profile “{name}” ready")
 
 
+def wait(identifier, build, timeout=75 * 60):
+    apps = call("GET", "/apps", query={"filter[bundleId]": identifier})["data"]
+    if not apps:
+        sys.exit(f"No App Store Connect app for {identifier}")
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        builds = call("GET", "/builds", query={"filter[app]": apps[0]["id"], "filter[version]": build})["data"]
+        state = builds[0]["attributes"]["processingState"] if builds else "NOT_FOUND"
+        print(f"Build {build}: {state}", flush=True)
+        if state in ("VALID", "INVALID", "FAILED"):
+            return
+        time.sleep(60)
+    sys.exit(f"Build {build} was still processing after {timeout // 60} minutes; leaving the certificate")
+
+
 def cleanup(out_dir):
     path = os.path.join(out_dir, "state.json")
     if not os.path.exists(path):
@@ -146,6 +163,8 @@ def cleanup(out_dir):
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup(sys.argv[2], sys.argv[3:])
+    elif sys.argv[1] == "wait":
+        wait(sys.argv[2], sys.argv[3])
     elif sys.argv[1] == "cleanup":
         cleanup(sys.argv[2])
     else:
