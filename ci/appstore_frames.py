@@ -2,7 +2,8 @@
 """App Store images: each chosen screenshot under a short headline, on the app's night sky.
 
 Usage: appstore_frames.py <screenshots dir> <out dir>
-Reads <mode>-<screen>.png from screenshots.sh (6.9", 1320x2868) and writes NN-<screen>.png at the same size.
+Reads <mode>-<screen>.png from screenshots.sh (6.9", 1320x2868) and writes <out>/<locale>/NN-<screen>.png at the
+same size, one folder per App Store locale (asc_listing.py uploads them from there).
 """
 import os
 import random
@@ -10,16 +11,17 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-# Order on the store page, the screen it shows and its headline.
+# Order on the store page: the screen it shows and its Turkish and English headline.
 FRAMES = [
-    ("home", "Kendi gökyüzünü odaklanarak kur"),
-    ("active", "Odaklanırken dikkatin dağılmasın"),
-    ("reward", "Her odak gökyüzüne yeni bir yıldız ekler"),
-    ("constellation", "Yıldızların takımyıldız olur"),
-    ("calendar", "Gerçek gökyüzü olaylarını kaçırma"),
-    ("lockscreen", "Kalan süreyi kilit ekranında gör"),
-    ("journey", "Gökyüzü bitince Işık yolculuğu başlar"),
+    ("home", "Kendi gökyüzünü odaklanarak kur", "Build your own sky by focusing"),
+    ("active", "Odaklanırken dikkatin dağılmasın", "Focus without distractions"),
+    ("reward", "Her odak gökyüzüne yeni bir yıldız ekler", "Every focus adds a new star"),
+    ("constellation", "Yıldızların takımyıldız olur", "Your stars become constellations"),
+    ("calendar", "Gerçek gökyüzü olaylarını kaçırma", "Never miss a night in the real sky"),
+    ("lockscreen", "Kalan süreyi kilit ekranında gör", "See the time left on your Lock Screen"),
+    ("journey", "Gökyüzü bitince Işık yolculuğu başlar", "When the sky is full, the journey begins"),
 ]
+LOCALES = {"tr": 1, "en-US": 2}
 
 W, H = 1320, 2868
 TOP, BOTTOM = (11, 13, 22), (24, 29, 56)
@@ -101,14 +103,16 @@ def frame(shot, headline):
 
 def main():
     src, out = sys.argv[1], sys.argv[2]
-    os.makedirs(out, exist_ok=True)
-    for n, (screen, headline) in enumerate(FRAMES, 1):
-        path = os.path.join(src, f"dark-{screen}.png")
-        if not os.path.exists(path):
-            print(f"missing {path}")
-            continue
-        frame(Image.open(path).convert("RGB"), headline).save(os.path.join(out, f"{n:02d}-{screen}.png"))
-        print(f"framed {n:02d}-{screen}")
+    for locale, column in LOCALES.items():
+        os.makedirs(os.path.join(out, locale), exist_ok=True)
+        for n, row in enumerate(FRAMES, 1):
+            screen = row[0]
+            path = os.path.join(src, f"dark-{screen}.png")
+            if not os.path.exists(path):
+                print(f"missing {path}")
+                continue
+            frame(Image.open(path).convert("RGB"), row[column]).save(os.path.join(out, locale, f"{n:02d}-{screen}.png"))
+            print(f"framed {locale}/{n:02d}-{screen}")
 
 
 if __name__ == "__main__":

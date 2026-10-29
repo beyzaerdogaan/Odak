@@ -1,5 +1,5 @@
 # App Store screenshots on a 6.9" simulator, published to the appstore-screenshots branch:
-# raw shots at the root, the store images with headlines (ci/appstore_frames.py) under magaza/.
+# raw shots at the root, the store images with headlines (ci/appstore_frames.py) under magaza/<locale>/.
 name: App Store screenshots
 
 on:
@@ -9,6 +9,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: appstore-screenshots
+  cancel-in-progress: true
 
 jobs:
   shots:

@@ -1,0 +1,38 @@
+# Writes the App Store listing (appstore/listing.json) and, if asked, the store images from the
+# appstore-screenshots branch to App Store Connect. Run by hand only.
+name: App Store listing
+
+on:
+  workflow_dispatch:
+    inputs:
+      screenshots:
+        description: Also replace the 6.9" screenshots with magaza/ from the appstore-screenshots branch
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Store images
+        if: inputs.screenshots
+        run: |
+          git fetch --depth 1 origin appstore-screenshots
+          mkdir shots && git archive FETCH_HEAD magaza | tar -x -C shots
+
+      - name: Write the listing
+        run: |
+          pip install -q pyjwt cryptography
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$ASC_KEY_PATH"
+          cd ci
+          python3 asc_listing.py ../appstore/listing.json ${{ inputs.screenshots && '../shots/magaza' || '' }}
