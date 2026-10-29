@@ -309,16 +309,18 @@ struct MeteorEventView: View {
                                         : "Zirve gecesi Ay yalnızca %\(moon) dolu olacak, bu yüzden gökyüzü karanlık olur.")
                             .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                     }
-                    Button {
-                        guard let peak = shower.peakDate(around: .now) else { return }
-                        Task { await Notifications.remindPeak(name: shower.name, at: peak); reminded = true }
-                    } label: {
-                        Label(reminded ? "Hatırlatma kuruldu" : "Zirve gecesi için hatırlat", systemImage: reminded ? "checkmark" : "bell")
-                            .font(.system(size: 14, weight: .semibold))
+                    // A peak that has already passed gets no reminder button.
+                    if let peak = shower.peakDate(around: .now), peak > .now {
+                        Button {
+                            Task { await Notifications.remindPeak(name: shower.name, at: peak); reminded = true }
+                        } label: {
+                            Label(reminded ? "Hatırlatma kuruldu" : "Zirve gecesi için hatırlat", systemImage: reminded ? "checkmark" : "bell")
+                                .font(.system(size: 14, weight: .semibold))
+                        }
+                        .buttonStyle(.glass)
+                        .tint(Theme.meteor)
+                        .disabled(reminded)
                     }
-                    .buttonStyle(.glass)
-                    .tint(Theme.meteor)
-                    .disabled(reminded)
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {

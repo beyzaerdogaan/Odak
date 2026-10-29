@@ -37,6 +37,7 @@ enum Notifications {
     }
 
     static func remindPeak(name: String, at date: Date) async {
+        guard date > .now else { return }
         await requestPermission()
         let content = UNMutableNotificationContent()
         content.title = "\(name) zirvede"
