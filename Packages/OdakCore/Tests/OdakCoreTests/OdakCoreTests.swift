@@ -61,6 +61,26 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertNotNil(StarDraw.pick(progress: p, minutes: 25, strict: false, rng: &rng))
     }
 
+    func testTelescopeOnBrightStarFollowsBrightRule() {
+        var p = SkyProgress()
+        let orion = Catalog.constellation("orion")!
+        let rigel = orion.stars.first { $0.name == "Rigel" }!
+        p.openConstellations = ["orion"]
+        p.telescopeTarget = rigel.id
+        var rng = SeededGenerator(seed: 3)
+        XCTAssertNotEqual(StarDraw.pick(progress: p, minutes: 25, strict: false, rng: &rng), rigel.id)
+        XCTAssertEqual(StarDraw.pick(progress: p, minutes: 60, strict: false, rng: &rng), rigel.id)
+        XCTAssertEqual(StarDraw.pick(progress: p, minutes: 25, strict: true, rng: &rng), rigel.id)
+        p.armedBrightTicket = true
+        XCTAssertEqual(StarDraw.pick(progress: p, minutes: 45, strict: false, rng: &rng), rigel.id)
+
+        // A short session lights another star and keeps the telescope aimed at Rigel.
+        p.armedBrightTicket = false
+        _ = p.complete(input(25, at: date(2026, 10, 3)), calendar: cal, rng: &rng)
+        XCTAssertFalse(p.isLit(rigel.id))
+        XCTAssertEqual(p.telescopeTarget, rigel.id)
+    }
+
     func testEverySessionLightsANewStarUntilConstellationsComplete() {
         var p = SkyProgress()
         var rng = SeededGenerator(seed: 42)

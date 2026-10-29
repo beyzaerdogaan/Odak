@@ -384,7 +384,9 @@ struct TelescopeSheet: View {
                         ForEach(c.stars.filter { !model.progress.isLit($0.id) }) { s in
                             Button {
                                 if model.progress.use(.telescope, target: s.id) {
-                                    model.toast = "Sonraki yıldızın \(s.name) olacak"
+                                    model.toast = s.isBright
+                                        ? "\(s.name) parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek"
+                                        : "Sonraki yıldızın \(s.name) olacak"
                                 }
                                 dismiss()
                             } label: {
@@ -397,6 +399,9 @@ struct TelescopeSheet: View {
                             }
                         }
                     }
+                }
+                Section {} footer: {
+                    Text("Parlak yıldızlar teleskopla da yalnızca en az 60 dakikalık bir oturumda, katı modda ya da parlak yıldız biletiyle 45 dakikada düşer. Daha kısa bir oturumda başka bir yıldız düşer, teleskop seçtiğin yıldızda kalır.")
                 }
             }
             .navigationTitle("Teleskop")
