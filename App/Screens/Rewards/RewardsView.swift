@@ -30,7 +30,7 @@ struct RewardsView: View {
                 if category == .all || category == .boosters { boosters(p) }
                 if category == .all || category == .sounds { soundPacks(p) }
                 if category == .all || category == .looks { looks(p) }
-                if category == .all || category == .zenit { zenitCard }
+                if SubscriptionStore.isOffered && (category == .all || category == .zenit) { zenitCard }
             }
             .padding(.horizontal, 22)
             .padding(.top, 8)
@@ -84,7 +84,7 @@ struct RewardsView: View {
         ScrollView(.horizontal) {
             GlassEffectContainer(spacing: 6) {
                 HStack(spacing: 6) {
-                    ForEach(Category.allCases) { c in
+                    ForEach(Category.allCases.filter { SubscriptionStore.isOffered || $0 != .zenit }) { c in
                         Button {
                             withAnimation(.snappy) { category = c }
                         } label: {
@@ -338,7 +338,9 @@ struct NewPromiseSheet: View {
                 }
                 if !model.isZenit {
                     Section {
-                        Text("Ücretsiz sürümde aynı anda \(SkyProgress.freePromiseLimit) söz tutabilirsin. Zenit ile istediğin kadar söz verebilirsin.").small()
+                        Text(SubscriptionStore.isOffered
+                             ? "Ücretsiz sürümde aynı anda \(SkyProgress.freePromiseLimit) söz tutabilirsin. Zenit ile istediğin kadar söz verebilirsin."
+                             : "Aynı anda \(SkyProgress.freePromiseLimit) söz tutabilirsin.").small()
                     }
                 }
             }
@@ -364,9 +366,12 @@ struct NewPromiseSheet: View {
         }
         if model.addPromise(title: title.trimmingCharacters(in: .whitespaces), goal: goal) {
             dismiss()
-        } else {
+        } else if SubscriptionStore.isOffered {
             dismiss()
             onNeedZenit()
+        } else {
+            dismiss()
+            model.toast = "Aynı anda en fazla \(SkyProgress.freePromiseLimit) söz tutabilirsin"
         }
     }
 }

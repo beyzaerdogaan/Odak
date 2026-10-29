@@ -84,7 +84,7 @@ struct SoundsSheet: View {
             if usable {
                 model.sounds.toggle(sound)
                 if model.session != nil || model.sounds.isPlaying { model.sounds.play() }
-            } else {
+            } else if SubscriptionStore.isOffered {
                 showZenit = sound != .winterNight
             }
         } label: {
