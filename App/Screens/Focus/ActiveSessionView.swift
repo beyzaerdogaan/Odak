@@ -83,7 +83,9 @@ struct ActiveSessionView: View {
                 } else {
                     holdToGiveUp
                 }
-                Text("Vazgeçersen yıldız söner ama odaklandığın dakikalar yine de sayılır.").small()
+                Text(now.timeIntervalSince(s.start) < SkyProgress.abandonGrace
+                     ? "Şimdi vazgeçersen gökyüzünde iz kalmaz."
+                     : "Vazgeçersen gökyüzüne sönmüş bir yıldız düşer, ama odaklandığın dakikalar yine de sayılır.").small()
                     .multilineTextAlignment(.center)
             }
         }
@@ -113,7 +115,7 @@ struct ActiveSessionView: View {
         .sensoryFeedback(.warning, trigger: giveUpProgress == 1)
         .accessibilityElement()
         .accessibilityLabel("Vazgeç")
-        .accessibilityHint("Oturumu bitirir ve yıldız söner")
+        .accessibilityHint("Oturumu bitirir ve gökyüzüne sönmüş bir yıldız düşer")
         .accessibilityAction { model.abandon() }
     }
 
