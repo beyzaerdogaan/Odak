@@ -26,11 +26,11 @@ final class AppleMusicPlayer {
             _ = await MusicAuthorization.request()
         }
         guard isAuthorized else {
-            lastError = "Apple Music'e erişim izni verilmedi. Ayarlar'dan açabilirsin."
+            lastError = String(localized: "Apple Music'e erişim izni verilmedi. Ayarlar'dan açabilirsin.")
             return false
         }
         guard let subscription = try? await MusicSubscription.current, subscription.canPlayCatalogContent else {
-            lastError = "Derin'in içinde çalmak için Apple Music aboneliği gerekiyor."
+            lastError = String(localized: "Derin'in içinde çalmak için Apple Music aboneliği gerekiyor.")
             return false
         }
         lastError = nil
@@ -47,7 +47,7 @@ final class AppleMusicPlayer {
                 } else if let playlist = try await playlist(for: list) {
                     player.queue = [playlist]
                 } else {
-                    lastError = "Liste Apple Music'te bulunamadı."
+                    lastError = String(localized: "Liste Apple Music'te bulunamadı.")
                     return false
                 }
                 current = list.id
@@ -56,7 +56,7 @@ final class AppleMusicPlayer {
             isPlaying = true
             return true
         } catch {
-            lastError = "Apple Music listeyi çalamadı."
+            lastError = String(localized: "Apple Music listeyi çalamadı.")
             current = nil
             return false
         }
@@ -83,7 +83,7 @@ final class AppleMusicPlayer {
     func loadLibrary() async {
         guard await prepare() else { return }
         guard let response = try? await MusicLibraryRequest<Playlist>().response() else {
-            lastError = "Apple Music kitaplığın okunamadı."
+            lastError = String(localized: "Apple Music kitaplığın okunamadı.")
             return
         }
         let playlists = response.items.sorted { ($0.lastPlayedDate ?? .distantPast) > ($1.lastPlayedDate ?? .distantPast) }

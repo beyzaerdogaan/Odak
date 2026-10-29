@@ -48,10 +48,10 @@ struct SignInView: View {
 
             VStack(spacing: 12) {
                 Group {
-                    ProviderButton(title: "Apple ile devam et", busy: account.busy == .apple, style: .apple(dark: scheme == .dark)) {
+                    ProviderButton(title: String(localized: "Apple ile devam et"), busy: account.busy == .apple, style: .apple(dark: scheme == .dark)) {
                         Task { await signIn { await account.signInWithApple() } }
                     }
-                    ProviderButton(title: "Google ile devam et", busy: account.busy == .google, style: .google) {
+                    ProviderButton(title: String(localized: "Google ile devam et"), busy: account.busy == .google, style: .google) {
                         Task { await signIn { await account.signInWithGoogle() } }
                     }
                 }

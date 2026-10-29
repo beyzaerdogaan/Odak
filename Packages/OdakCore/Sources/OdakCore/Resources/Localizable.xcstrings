@@ -1,0 +1,2108 @@
+{
+  "sourceLanguage" : "tr",
+  "strings" : {
+    "%@ gecesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "on the night of %@"
+          }
+        }
+      }
+    },
+    "%@ meteor yağmuru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ meteor shower"
+          }
+        }
+      }
+    },
+    "%@ takımyıldızını tamamladıktan sonra %lld dakikalık bir oturumla açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens with a %2$lld-minute session once you have completed %1$@."
+          }
+        }
+      }
+    },
+    "%@ takımyıldızını tamamlayınca açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens once you complete %@."
+          }
+        }
+      }
+    },
+    "%@, gece" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, at night"
+          }
+        }
+      }
+    },
+    "%@, gün batımından sonra" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, after sunset"
+          }
+        }
+      }
+    },
+    "%@, şafaktan önce" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, before dawn"
+          }
+        }
+      }
+    },
+    "%lld / %lld gün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld days"
+          }
+        }
+      }
+    },
+    "%lld / %lld sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld h"
+          }
+        }
+      }
+    },
+    "%lld oturum tamamlayınca açılır." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Opens once you complete %lld session."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Opens once you complete %lld sessions."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "21–22 Ekim civarı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "around October 21–22"
+          }
+        }
+      }
+    },
+    "22.00 ile 04.00 arasında bir oturum bitir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish a session between 10 PM and 4 AM"
+          }
+        }
+      }
+    },
+    "300 Işık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "300 Light"
+          }
+        }
+      }
+    },
+    "7 gün seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7-day streak"
+          }
+        }
+      }
+    },
+    "7 gün üst üste odaklan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus 7 days in a row"
+          }
+        }
+      }
+    },
+    "90 dakikalık bir oturumu bitir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish a 90-minute session"
+          }
+        }
+      }
+    },
+    "90 dk maraton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "90-min marathon"
+          }
+        }
+      }
+    },
+    "Adını mitolojideki güzelliğiyle övünen kraliçeden alır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It is named after the queen of myth who boasted of her beauty."
+          }
+        }
+      }
+    },
+    "Akrep" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scorpius"
+          }
+        }
+      }
+    },
+    "Akşamdan itibaren izlenebilir ama en iyi zaman gece yarısı civarıdır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can watch from the evening on, but the best time is around midnight."
+          }
+        }
+      }
+    },
+    "Alacakaranlık göğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twilight sky"
+          }
+        }
+      }
+    },
+    "Albireo küçük bir teleskopla altın ve mavi iki yıldıza ayrılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A small telescope splits Albireo into two stars, one gold and one blue."
+          }
+        }
+      }
+    },
+    "Aldebaran'ın çevresindeki V şekli Hyadlar kümesidir. Aldebaran ise bu kümenin önünde durur ve bize daha yakındır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The V around Aldebaran is the Hyades cluster. Aldebaran itself sits in front of it, much closer to us."
+          }
+        }
+      }
+    },
+    "Aldebaran, Boğa'nın kırmızımsı gözünü oluşturur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aldebaran is the Bull's reddish eye."
+          }
+        }
+      }
+    },
+    "Alfa Centauri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alpha Centauri"
+          }
+        }
+      }
+    },
+    "Algol'ün parlaklığı yaklaşık üç günde bir belirgin şekilde düşer, çünkü yörüngedeki eşi önünden geçer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algol dims noticeably about every three days, as its orbiting companion passes in front of it."
+          }
+        }
+      }
+    },
+    "Almach küçük bir teleskopla turuncu ve mavi iki yıldıza ayrılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A small telescope splits Almach into two stars, one orange and one blue."
+          }
+        }
+      }
+    },
+    "Alpheratz, Pegasus'un Büyük Karesi'nin bir köşesini de oluşturur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alpheratz also forms one corner of the Great Square of Pegasus."
+          }
+        }
+      }
+    },
+    "Altair çok hızlı döndüğü için ekvatoru belirgin şekilde şişkindir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altair spins so fast that its equator bulges noticeably."
+          }
+        }
+      }
+    },
+    "Altair, Yaz Üçgeni'nin üç yıldızından biridir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altair is one of the three stars of the Summer Triangle."
+          }
+        }
+      }
+    },
+    "Ana yıldızları bir çaydanlığa benzer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its main stars look like a teapot."
+          }
+        }
+      }
+    },
+    "Andromeda" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andromeda"
+          }
+        }
+      }
+    },
+    "Andromeda Galaksisi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andromeda Galaxy"
+          }
+        }
+      }
+    },
+    "Antares'in adı “Mars'ın rakibi” anlamına gelir; kırmızı rengi Mars'a benzer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antares means “rival of Mars”; its red glow resembles the planet."
+          }
+        }
+      }
+    },
+    "Antares, Güneş'ten yüzlerce kat büyük bir kırmızı süperdevdir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antares is a red supergiant hundreds of times larger than the Sun."
+          }
+        }
+      }
+    },
+    "Aralık ortası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in mid-December"
+          }
+        }
+      }
+    },
+    "Aralıktaki Geminid meteor yağmuru bu yönden geliyor gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "December's Geminid meteor shower seems to come from this direction."
+          }
+        }
+      }
+    },
+    "Arcturus turuncu renkli bir dev yıldızdır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arcturus is an orange giant star."
+          }
+        }
+      }
+    },
+    "Arcturus, kuzey gökyüzünün en parlak yıldızıdır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arcturus is the brightest star in the northern sky."
+          }
+        }
+      }
+    },
+    "Aslan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leo"
+          }
+        }
+      }
+    },
+    "Aslan takımyıldızı yükseldikten sonra, gece yarısından şafağa kadar izleyebilirsin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once Leo has risen, you can watch from midnight until dawn."
+          }
+        }
+      }
+    },
+    "Aslan'ın başı ters bir soru işaretine benzer, buna “Orak” denir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Lion's head looks like a backward question mark, known as the “Sickle”."
+          }
+        }
+      }
+    },
+    "Avcı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orion"
+          }
+        }
+      }
+    },
+    "Avcı Bulutsusu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orion Nebula"
+          }
+        }
+      }
+    },
+    "Ay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moon"
+          }
+        }
+      }
+    },
+    "Ağustos ortası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in mid-August"
+          }
+        }
+      }
+    },
+    "Ağustostaki Perseid meteor yağmuru bu yönden geliyor gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "August's Perseid meteor shower seems to come from this direction."
+          }
+        }
+      }
+    },
+    "Bahar akşamları güney gökyüzünde, yüksekte görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On spring evenings it rides high in the southern sky."
+          }
+        }
+      }
+    },
+    "Bahar ve yaz akşamları Büyük Ayı'nın kuyruğunun ucundan aşağı doğru bak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On spring and summer evenings, look down from the tip of Ursa Major's tail."
+          }
+        }
+      }
+    },
+    "Betelgeuse turuncu-kırmızı bir süperdevdir. Rigel ise mavi-beyaz renktedir ve takımyıldızın en parlak yıldızıdır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betelgeuse is an orange-red supergiant. Rigel is blue-white and the brightest star in the constellation."
+          }
+        }
+      }
+    },
+    "Bir meteor yağmuru boyunca 10 oturum tamamla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete 10 sessions during a meteor shower"
+          }
+        }
+      }
+    },
+    "Bir parlak yıldızı 45 dakikalık bir oturumda düşürür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brings down a bright star in a 45-minute session"
+          }
+        }
+      }
+    },
+    "Boğa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taurus"
+          }
+        }
+      }
+    },
+    "Bugün gördüğümüz ışığı yaklaşık 2,5 milyon yıl önce yola çıktı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The light we see from it today set out about 2.5 million years ago."
+          }
+        }
+      }
+    },
+    "Bulutsu göğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebula sky"
+          }
+        }
+      }
+    },
+    "Büyük Ayı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ursa Major"
+          }
+        }
+      }
+    },
+    "Büyük Ayı'nın kuyruğundaki kavisi takip edersen Arcturus'a varırsın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow the arc of Ursa Major's tail and you arrive at Arcturus."
+          }
+        }
+      }
+    },
+    "Castor ve Pollux, adını mitolojideki ikiz kardeşlerden alır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Castor and Pollux are named after the twin brothers of myth."
+          }
+        }
+      }
+    },
+    "Dalga" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waves"
+          }
+        }
+      }
+    },
+    "Deneb, Vega ve Altair ile birlikte “Yaz Üçgeni”ni oluşturur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneb forms the “Summer Triangle” together with Vega and Altair."
+          }
+        }
+      }
+    },
+    "Dere" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stream"
+          }
+        }
+      }
+    },
+    "Dört yıldızı “Pegasus'un Büyük Karesi”ni oluşturur. Bu yıldızlardan biri aslında Andromeda'ya ait olan Alpheratz'dır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Four of its stars form the “Great Square of Pegasus”. One of them, Alpheratz, actually belongs to Andromeda."
+          }
+        }
+      }
+    },
+    "Dünya'nın ekseni yavaşça yalpaladığı için binlerce yıl sonra Vega kutup yıldızı olacak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Because Earth's axis slowly wobbles, Vega will be the pole star thousands of years from now."
+          }
+        }
+      }
+    },
+    "En fazla 3 tane taşıyabilirsin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can carry up to 3"
+          }
+        }
+      }
+    },
+    "En parlak yedi yıldızı “Büyük Kepçe” olarak bilinir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its seven brightest stars are known as the “Big Dipper”."
+          }
+        }
+      }
+    },
+    "Enif kanatlı atın burnunu temsil eder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enif marks the winged horse's nose."
+          }
+        }
+      }
+    },
+    "Gece" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night"
+          }
+        }
+      }
+    },
+    "Gece gökyüzünün en parlak yıldızıdır ve yanında sönük bir beyaz cüce eşi vardır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The brightest star in the night sky, with a faint white dwarf companion at its side."
+          }
+        }
+      }
+    },
+    "Gece kuşu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night owl"
+          }
+        }
+      }
+    },
+    "Geminidler (İkizler)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geminids"
+          }
+        }
+      }
+    },
+    "Gökyüzünde belirgin bir W ya da M harfi çizer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It draws a clear W or M across the sky."
+          }
+        }
+      }
+    },
+    "Güneş'e en yakın yıldız sistemidir. Üç yıldızından biri olan Proxima, bize en yakın yıldızdır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The star system closest to the Sun. One of its three stars, Proxima, is the nearest star to us."
+          }
+        }
+      }
+    },
+    "Hedef: %@ takımyıldızını tamamla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal: complete %@"
+          }
+        }
+      }
+    },
+    "Hedef: %lld günlük seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal: a %lld-day streak"
+          }
+        }
+      }
+    },
+    "Hedef: toplam %lld saat odak" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Goal: %lld hour of focus in total"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Goal: %lld hours of focus in total"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Herkül Kümesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hercules Cluster"
+          }
+        }
+      }
+    },
+    "Hiç telefona bakmadın, %%%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone untouched, +%lld%%"
+          }
+        }
+      }
+    },
+    "Işık yolculuğunda Alfa Centauri'ye var" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reach Alpha Centauri on the Journey of Light"
+          }
+        }
+      }
+    },
+    "Işık yolculuğunda Ülker'e var" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reach the Pleiades on the Journey of Light"
+          }
+        }
+      }
+    },
+    "Jüpiter" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jupiter"
+          }
+        }
+      }
+    },
+    "Kahverengi gürültü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brown noise"
+          }
+        }
+      }
+    },
+    "Karanlık bir gecede çıplak gözle bulanık bir leke gibi görünür, dürbünle bakınca çok daha belirginleşir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On a dark night it shows to the naked eye as a hazy smudge, and through binoculars it comes into much clearer view."
+          }
+        }
+      }
+    },
+    "Karanlık bir gökyüzünde dürbünle bulanık bir yıldız gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under a dark sky, binoculars show it as a fuzzy star."
+          }
+        }
+      }
+    },
+    "Karenin içi çıplak gözle bakınca şaşırtıcı derecede boş görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To the naked eye, the inside of the square looks surprisingly empty."
+          }
+        }
+      }
+    },
+    "Kartal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquila"
+          }
+        }
+      }
+    },
+    "Kassiopeia" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassiopeia"
+          }
+        }
+      }
+    },
+    "Kasım ortası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in mid-November"
+          }
+        }
+      }
+    },
+    "Kasımdaki Leonid meteor yağmuru bu yönden geliyor gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "November's Leonid meteor shower seems to come from this direction."
+          }
+        }
+      }
+    },
+    "Katı mod, ×1,5" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strict mode, ×1.5"
+          }
+        }
+      }
+    },
+    "Kayan yıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shooting star"
+          }
+        }
+      }
+    },
+    "Kochab ve Pherkad “kutbun bekçileri” diye anılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kochab and Pherkad are known as the “guardians of the pole”."
+          }
+        }
+      }
+    },
+    "Kuadrantidler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quadrantids"
+          }
+        }
+      }
+    },
+    "Kutup Yıldızı'nın Büyük Ayı'ya göre tam karşı tarafında durur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It sits on the far side of the North Star from Ursa Major."
+          }
+        }
+      }
+    },
+    "Kutup ışığı göğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aurora sky"
+          }
+        }
+      }
+    },
+    "Kuyruğu Türkiye'den güney ufkunun hemen üstünde, alçakta görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From Turkey its tail hangs low, just above the southern horizon."
+          }
+        }
+      }
+    },
+    "Kuyruğunun ucundaki yıldız Polaris, yani Kutup Yıldızı'dır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The star at the tip of its tail is Polaris, the North Star."
+          }
+        }
+      }
+    },
+    "Kuğu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cygnus"
+          }
+        }
+      }
+    },
+    "Kütüphane" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library"
+          }
+        }
+      }
+    },
+    "Küçük Ayı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ursa Minor"
+          }
+        }
+      }
+    },
+    "Kırmızı cüce göğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red dwarf sky"
+          }
+        }
+      }
+    },
+    "Kış akşamları Avcı'nın kemerini bul ve oradan sağa, yukarı doğru ilerle." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On winter evenings, find Orion's Belt and follow it up and to the right."
+          }
+        }
+      }
+    },
+    "Kış akşamları Avcı'nın kuzeydoğusunda, yüksekte görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On winter evenings it stands high, northeast of Orion."
+          }
+        }
+      }
+    },
+    "Kış akşamları güneye bak. Önce kemerdeki üç yıldızı bul." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On winter evenings, look south. Find the three stars of the belt first."
+          }
+        }
+      }
+    },
+    "Kış gecesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Winter night"
+          }
+        }
+      }
+    },
+    "Leonidler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leonids"
+          }
+        }
+      }
+    },
+    "Lir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyra"
+          }
+        }
+      }
+    },
+    "Lir takımyıldızının kalbidir ve binlerce yıl sonra kutup yıldızı olacak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The heart of Lyra, and the pole star thousands of years from now."
+          }
+        }
+      }
+    },
+    "Lir, mitolojide Orpheus'un çalgısını temsil eder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In myth, Lyra is the instrument of Orpheus."
+          }
+        }
+      }
+    },
+    "Liridler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrids"
+          }
+        }
+      }
+    },
+    "Mars" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mars"
+          }
+        }
+      }
+    },
+    "Merak'tan Dubhe'ye giden çizgiyi yaklaşık beş kat uzatırsan Kutup Yıldızı'na varırsın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extend the line from Merak to Dubhe about five times and you reach the North Star."
+          }
+        }
+      }
+    },
+    "Merkür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mercury"
+          }
+        }
+      }
+    },
+    "Meteor avcısı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteor hunter"
+          }
+        }
+      }
+    },
+    "Meteor yağmuru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteor shower"
+          }
+        }
+      }
+    },
+    "Meteorlar Avcı yönünden geliyor gibi görünür. En iyisi gece yarısından sonra, şehir ışıklarından uzak bir yerden izlemektir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The meteors seem to come from the direction of Orion. Watch after midnight, somewhere far from city lights."
+          }
+        }
+      }
+    },
+    "Meteorlar Vega'nın yakınından geliyor gibi görünür. En iyi izleme zamanı şafaktan hemen öncesidir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The meteors seem to fly out from near Vega. The best time to watch is just before dawn."
+          }
+        }
+      }
+    },
+    "Mitolojide Medusa'yı yenen kahramanı temsil eder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In myth, it is the hero who defeated Medusa."
+          }
+        }
+      }
+    },
+    "Mizar'ın hemen yanında sönük Alcor durur. İkisini ayırt etmek eskiden bir göz testiydi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faint Alcor sits right beside Mizar. Telling the two apart was once a test of eyesight."
+          }
+        }
+      }
+    },
+    "Neptün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neptune"
+          }
+        }
+      }
+    },
+    "Nisan sonu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in late April"
+          }
+        }
+      }
+    },
+    "Ocak başı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in early January"
+          }
+        }
+      }
+    },
+    "Odak süresi, %lld dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus time, %lld min"
+          }
+        }
+      }
+    },
+    "Orionidler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orionids"
+          }
+        }
+      }
+    },
+    "Orman" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forest"
+          }
+        }
+      }
+    },
+    "Ortadaki üç yıldıza “Avcı'nın Kemeri” denir. Bu dizilim gökyüzünde en kolay bulunanlardan biridir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The three stars in the middle are called “Orion's Belt”, one of the easiest patterns to find in the sky."
+          }
+        }
+      }
+    },
+    "Parlak yıldız bileti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bright star ticket"
+          }
+        }
+      }
+    },
+    "Pegasus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pegasus"
+          }
+        }
+      }
+    },
+    "Pek çok bulutsu ve yıldız kümesi bu bölgede toplanır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Many nebulae and star clusters gather in this part of the sky."
+          }
+        }
+      }
+    },
+    "Perseidler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perseids"
+          }
+        }
+      }
+    },
+    "Perseus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perseus"
+          }
+        }
+      }
+    },
+    "Polaris kuzey gök kutbuna çok yakın olduğu için gece boyunca neredeyse hiç yer değiştirmez." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polaris sits so close to the north celestial pole that it barely moves all night."
+          }
+        }
+      }
+    },
+    "Pollux, Castor'dan biraz daha parlaktır ve turuncumsu görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pollux is a little brighter than Castor and looks faintly orange."
+          }
+        }
+      }
+    },
+    "Proxima" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxima"
+          }
+        }
+      }
+    },
+    "Proxima rozeti ve üçlü yıldız sisteminin hikâyesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Proxima badge and the story of the triple star system"
+          }
+        }
+      }
+    },
+    "Regulus ekliptiğe çok yakın olduğu için Ay sık sık önünden geçer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulus lies so close to the ecliptic that the Moon often passes in front of it."
+          }
+        }
+      }
+    },
+    "Samanyolu'na en yakın büyük sarmal galaksidir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The nearest large spiral galaxy to the Milky Way."
+          }
+        }
+      }
+    },
+    "Samanyolu'nun merkezi bu yöndedir, bu yüzden çaydanlığın ağzından buhar yükseliyor gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The center of the Milky Way lies this way, so steam seems to rise from the teapot's spout."
+          }
+        }
+      }
+    },
+    "Samanyolu'nun parlak bir bölgesinin kenarında durur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It sits at the edge of a bright stretch of the Milky Way."
+          }
+        }
+      }
+    },
+    "Samanyolu'nun tam üzerinde uzanır ve “Kuzey Haçı” olarak da bilinir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It stretches right along the Milky Way and is also known as the “Northern Cross”."
+          }
+        }
+      }
+    },
+    "Satürn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saturn"
+          }
+        }
+      }
+    },
+    "Seri bonusu, %lld. gün %%%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak bonus, day %lld, +%lld%%"
+          }
+        }
+      }
+    },
+    "Seri koruyucu bulut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak-saving cloud"
+          }
+        }
+      }
+    },
+    "Sirius" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sirius"
+          }
+        }
+      }
+    },
+    "Sonbahar akşamları başucuna yakın bir yerde görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On autumn evenings it passes close to overhead."
+          }
+        }
+      }
+    },
+    "Sonbahar akşamları güney gökyüzünde, yüksekte görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On autumn evenings it rides high in the southern sky."
+          }
+        }
+      }
+    },
+    "Sonbahar ve kış akşamları kuzeydoğuda görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On autumn and winter evenings it appears in the northeast."
+          }
+        }
+      }
+    },
+    "Sonraki oturumda Işığın iki katına çıkar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doubles your Light in the next session"
+          }
+        }
+      }
+    },
+    "Sonraki yıldızı sen seç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You choose the next star"
+          }
+        }
+      }
+    },
+    "TRAPPIST-1" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TRAPPIST-1"
+          }
+        }
+      }
+    },
+    "Teleskop" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telescope"
+          }
+        }
+      }
+    },
+    "Toplam %lld saat odaklanınca açılır." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Opens once you have focused for %lld hour in total."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Opens once you have focused for %lld hours in total."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Türkiye'den kış akşamları güney gökyüzünde çıplak gözle görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On winter evenings it shines in the southern sky, plain to the naked eye."
+          }
+        }
+      }
+    },
+    "Türkiye'den yıl boyunca kuzeyde görülür ama en iyi bahar akşamları izlenir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It is in the northern sky all year, but spring evenings show it best."
+          }
+        }
+      }
+    },
+    "Uranüs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uranus"
+          }
+        }
+      }
+    },
+    "Uzak fırtına" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distant storm"
+          }
+        }
+      }
+    },
+    "Vega" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vega"
+          }
+        }
+      }
+    },
+    "Vega, gece gökyüzünün en parlak yıldızlarından biridir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vega is one of the brightest stars in the night sky."
+          }
+        }
+      }
+    },
+    "Venüs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venus"
+          }
+        }
+      }
+    },
+    "Yay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sagittarius"
+          }
+        }
+      }
+    },
+    "Yaz akşamları başucuna bak ve mavi-beyaz Vega'yı ara." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On summer evenings, look straight up and search for blue-white Vega."
+          }
+        }
+      }
+    },
+    "Yaz akşamları güney ufkunun hemen üstünde görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On summer evenings it appears just above the southern horizon."
+          }
+        }
+      }
+    },
+    "Yaz akşamları güney ufkunun üstünde, Akrep'in solunda görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On summer evenings it appears above the southern horizon, to the left of Scorpius."
+          }
+        }
+      }
+    },
+    "Yaz akşamları güneyde, Kuğu'nun altında görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On summer evenings it appears in the south, below Cygnus."
+          }
+        }
+      }
+    },
+    "Yaz gecesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summer night"
+          }
+        }
+      }
+    },
+    "Yaz ve sonbahar akşamları başucuna yakın bir yerde görülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On summer and autumn evenings it passes close to overhead."
+          }
+        }
+      }
+    },
+    "Yazın en bereketli meteor yağmurudur. Gece yarısından sonra kuzeydoğuya bak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The richest meteor shower of summer. Look northeast after midnight."
+          }
+        }
+      }
+    },
+    "Yağmur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rain"
+          }
+        }
+      }
+    },
+    "Yedi Kız Kardeş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seven Sisters"
+          }
+        }
+      }
+    },
+    "Yedi Kız Kardeş olarak bilinen bir yıldız kümesidir. Buradan bakınca Güneş artık sönük bir nokta gibi görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A star cluster known as the Seven Sisters. From here, the Sun is just a faint dot."
+          }
+        }
+      }
+    },
+    "Yedi Kız Kardeş olarak da bilinen, genç ve sıcak yıldızlardan oluşan bir kümedir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also known as the Seven Sisters, it is a cluster of young, hot stars."
+          }
+        }
+      }
+    },
+    "Yedi Kız Kardeş rozeti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Seven Sisters badge"
+          }
+        }
+      }
+    },
+    "Yedi gezegeni olan küçük bir kırmızı cüce sistemidir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A small red dwarf system with seven planets."
+          }
+        }
+      }
+    },
+    "Yeni bir ses paketi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A new sound pack"
+          }
+        }
+      }
+    },
+    "Yeni yıldızların doğduğu dev bir gaz ve toz bulutudur. Avcı'nın Kemeri'nin hemen altında, “kılıç” denen bölgede yer alır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A vast cloud of gas and dust where new stars are born. It sits just below Orion's Belt, in the part known as the “sword”."
+          }
+        }
+      }
+    },
+    "Yüz binlerce yıldızın top gibi bir araya toplandığı küresel bir kümedir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A globular cluster where hundreds of thousands of stars gather into a ball."
+          }
+        }
+      }
+    },
+    "Yıl boyunca kuzeyde görülür ama en iyi sonbahar akşamları izlenir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It is in the northern sky all year, but autumn evenings show it best."
+          }
+        }
+      }
+    },
+    "Yıl boyunca tam kuzeyde görülür. Şehir ışığında sönük yıldızlarını seçmek zordur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It stands due north all year. In city light its faint stars are hard to make out."
+          }
+        }
+      }
+    },
+    "Zirvesi kısa sürer, bu yüzden gece yarısından sonra kuzeydoğuya bak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its peak is brief, so look northeast after midnight."
+          }
+        }
+      }
+    },
+    "latin.andromeda" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Chained Princess"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.aquila" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Eagle"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.bootes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Herdsman"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.cassiopeia" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Queen"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.cygnus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Swan"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.gemini" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Twins"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.leo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Lion"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.lyra" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Lyre"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.orion" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Hunter"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.pegasus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Winged Horse"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.perseus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Hero"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.sagittarius" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Archer"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.scorpius" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Scorpion"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.taurus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Bull"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.ursa-major" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Great Bear"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "latin.ursa-minor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Little Bear"
+          }
+        }
+      },
+      "comment" : "Under the constellation's name. In English the name is already Latin, so this says what it means."
+    },
+    "Çoban" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boötes"
+          }
+        }
+      }
+    },
+    "Çoban'ın kuzeyi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "northern Boötes"
+          }
+        }
+      }
+    },
+    "Çıplak gözle altı ya da yedi yıldızı seçilebilir, dürbünle bakınca onlarcası görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The naked eye picks out six or seven of its stars; binoculars reveal dozens."
+          }
+        }
+      }
+    },
+    "Çıplak gözle görülebilen en uzak nesnelerden biri olan Andromeda Galaksisi bu takımyıldızda bulunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Andromeda Galaxy, one of the most distant things the naked eye can see, lies in this constellation."
+          }
+        }
+      }
+    },
+    "Ülker" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pleiades"
+          }
+        }
+      }
+    },
+    "Ülker (Yedi Kız Kardeş) yıldız kümesi Boğa'nın sırtında durur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Pleiades star cluster, the Seven Sisters, rides on the Bull's back."
+          }
+        }
+      }
+    },
+    "İkizler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemini"
+          }
+        }
+      }
+    },
+    "İlk oturumunu tamamla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete your first session"
+          }
+        }
+      }
+    },
+    "İlk ışık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First light"
+          }
+        }
+      }
+    },
+    "Şömine" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fireplace"
+          }
+        }
+      }
+    },
+    "“Kırmızı cüce” gök teması" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The “Red dwarf” sky theme"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

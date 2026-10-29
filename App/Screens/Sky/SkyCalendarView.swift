@@ -6,7 +6,10 @@ import SwiftUI
 /// eclipse or planet event as a dot. Below the calendar the period's events follow as cards with
 /// when to look, how full the Moon will be and a reminder; tapping a day narrows them to that day.
 struct SkyCalendarView: View {
-    enum Mode: String, CaseIterable { case month = "Ay", week = "Hafta" }
+    enum Mode: String, CaseIterable {
+        case month = "Ay", week = "Hafta"
+        var title: String { self == .month ? String(localized: "Ay") : String(localized: "Hafta") }
+    }
 
     @State private var reminded: Set<String> = []
     @State private var mode: Mode = .month
@@ -43,7 +46,7 @@ struct SkyCalendarView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 Picker("Görünüm", selection: $mode) {
-                    ForEach(Mode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                    ForEach(Mode.allCases, id: \.self) { Text($0.title).tag($0) }
                 }
                 .pickerStyle(.segmented)
                 .padding(.top, 8)
@@ -68,7 +71,7 @@ struct SkyCalendarView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(selected.map(dayTitle) ?? (mode == .month ? "Bu ay" : "Bu hafta"))
+                        Text(selected.map(dayTitle) ?? (mode == .month ? String(localized: "Bu ay") : String(localized: "Bu hafta")))
                             .font(.serif(22)).foregroundStyle(Theme.paper)
                         Spacer()
                         if selected != nil {
@@ -87,7 +90,7 @@ struct SkyCalendarView: View {
             }
             .padding(22)
         }
-        .pinnedHeader { BackHeader(title: "Gökyüzü takvimi", subtitle: nil) }
+        .pinnedHeader { BackHeader(title: String(localized: "Gökyüzü takvimi"), subtitle: nil) }
         .background(StarField(seed: 47, count: 90, grid: false))
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -118,7 +121,7 @@ struct SkyCalendarView: View {
 
     private var weekdayHeader: some View {
         HStack(spacing: 4) {
-            ForEach(["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"], id: \.self) { d in
+            ForEach(AppLanguage.isEnglish ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] : ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"], id: \.self) { d in
                 Text(d).font(.system(size: 11, weight: .semibold)).foregroundStyle(Theme.paper3).frame(maxWidth: .infinity)
             }
         }
@@ -201,13 +204,12 @@ struct SkyCalendarView: View {
         if mode == .month { return monthTitle(p.start) }
         let last = cal.date(byAdding: .day, value: 6, to: p.start) ?? p.start
         let a = cal.dateComponents([.day, .month], from: p.start), b = cal.dateComponents([.day, .month], from: last)
-        let ma = MeteorShower.monthNames[(a.month ?? 1) - 1], mb = MeteorShower.monthNames[(b.month ?? 1) - 1]
-        return a.month == b.month ? "\(a.day ?? 1)–\(b.day ?? 1) \(mb)" : "\(a.day ?? 1) \(ma) – \(b.day ?? 1) \(mb)"
+        return AppLanguage.dayRange((a.day ?? 1, a.month ?? 1), (b.day ?? 1, b.month ?? 1))
     }
 
     private func dayTitle(_ day: Date) -> String {
         let c = cal.dateComponents([.day, .month], from: day)
-        return "\(c.day ?? 1) \(MeteorShower.monthNames[(c.month ?? 1) - 1])"
+        return AppLanguage.dayMonth(day: c.day ?? 1, month: c.month ?? 1)
     }
 
     private func row(_ e: SkyEvent) -> some View {
@@ -217,7 +219,7 @@ struct SkyCalendarView: View {
             HStack(alignment: .top, spacing: 14) {
                 VStack(spacing: 0) {
                     Text("\(comps.day ?? 1)").font(.serif(26)).foregroundStyle(Theme.paper).monospacedDigit()
-                    Text(MeteorShower.monthNames[(comps.month ?? 1) - 1].prefix(3).uppercased(with: Locale(identifier: "tr_TR")))
+                    Text(MeteorShower.monthNames[(comps.month ?? 1) - 1].prefix(3).uppercased(with: AppLanguage.locale))
                         .font(.system(size: 10, weight: .semibold)).tracking(1).foregroundStyle(tint)
                 }
                 .frame(width: 46, height: 58)
@@ -275,13 +277,13 @@ struct SkyCalendarView: View {
     }
 
     private func subtitle(_ e: SkyEvent) -> String {
-        if let shower = e.shower { return "Zirve \(e.whenText(calendar: cal)) · \(shower.radiant) yönü" }
+        if let shower = e.shower { return String(localized: "Zirve \(e.whenText(calendar: cal)) · \(shower.radiant) yönü") }
         return "\(AstroEventView.kindName(e.astro?.kind)) · \(e.whenText(calendar: cal))"
     }
 
     private func footnote(_ e: SkyEvent) -> String {
-        if e.shower != nil { return moonText(e.moon) + (e.zhr.map { " · saatte ~\($0) meteor" } ?? "") }
-        if e.astro?.kind == .solarEclipse { return "Ay, Güneş'in önünden geçiyor" }
+        if e.shower != nil { return moonText(e.moon) + (e.zhr.map { String(localized: " · saatte ~\($0) meteor") } ?? "") }
+        if e.astro?.kind == .solarEclipse { return String(localized: "Ay, Güneş'in önünden geçiyor") }
         return moonText(e.moon)
     }
 
@@ -291,13 +293,13 @@ struct SkyCalendarView: View {
     }
 
     private func status(_ e: SkyEvent) -> String {
-        if e.contains(now) { return e.shower != nil ? "Sürüyor" : "Bugün" }
+        if e.contains(now) { return e.shower != nil ? String(localized: "Sürüyor") : String(localized: "Bugün") }
         let days = cal.dateComponents([.day], from: cal.startOfDay(for: now), to: e.start).day ?? 0
-        return days <= 1 ? "Yarın" : "\(days) gün sonra"
+        return days <= 1 ? String(localized: "Yarın") : String(localized: "\(days) gün sonra")
     }
 
     private func moonText(_ moon: Int) -> String {
-        moon >= 70 ? "Ay %\(moon), parlak" : moon <= 30 ? "Ay %\(moon), karanlık gök" : "Ay %\(moon)"
+        moon >= 70 ? String(localized: "Ay %\(moon), parlak") : moon <= 30 ? String(localized: "Ay %\(moon), karanlık gök") : String(localized: "Ay %\(moon)")
     }
 
     private func monthTitle(_ month: Date) -> String {

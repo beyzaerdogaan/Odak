@@ -264,9 +264,11 @@ struct Planisphere: View {
 
     private var accessibilitySummary: String {
         let parts = shown.map { c in
-            progress.isComplete(c.id) ? "\(c.name) tamam" : "\(c.name) \(c.stars.count) yıldızdan \(progress.litCount(in: c))"
+            progress.isComplete(c.id) ? String(localized: "\(c.name) tamam")
+                : String(localized: "\(c.name) \(c.stars.count) yıldızdan \(progress.litCount(in: c))")
         }
         let burnt = progress.burntOutStars.count
-        return "Senin gökyüzün: " + parts.joined(separator: ", ") + (burnt > 0 ? " ve \(burnt) sönmüş yıldız" : "")
+        let sky = parts.joined(separator: ", ")
+        return burnt > 0 ? String(localized: "Senin gökyüzün: \(sky) ve \(burnt) sönmüş yıldız") : String(localized: "Senin gökyüzün: \(sky)")
     }
 }

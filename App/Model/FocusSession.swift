@@ -5,9 +5,9 @@ enum BlockMode: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .selected: "Seçtiklerim"
-        case .all: "Tümü"
-        case .none: "Yok"
+        case .selected: String(localized: "Seçtiklerim")
+        case .all: String(localized: "Tümü")
+        case .none: String(localized: "Yok")
         }
     }
 }

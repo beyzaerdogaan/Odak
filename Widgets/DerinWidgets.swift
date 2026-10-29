@@ -67,9 +67,9 @@ struct FocusLiveActivity: Widget {
 
     private func label(_ phase: FocusActivityPhase) -> String {
         switch phase {
-        case .focus: "Derin odak"
-        case .onBreak: "Mola"
-        case .done: "Yıldızın hazır"
+        case .focus: String(localized: "Derin odak")
+        case .onBreak: String(localized: "Mola")
+        case .done: String(localized: "Yıldızın hazır")
         }
     }
 }

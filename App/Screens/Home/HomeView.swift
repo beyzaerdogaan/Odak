@@ -9,9 +9,9 @@ struct HomeView: View {
 
     private var greeting: String {
         switch Calendar.current.component(.hour, from: .now) {
-        case 5..<12: "Günaydın"
-        case 12..<18: "İyi günler"
-        default: "İyi akşamlar"
+        case 5..<12: String(localized: "Günaydın")
+        case 12..<18: String(localized: "İyi günler")
+        default: String(localized: "İyi akşamlar")
         }
     }
 
@@ -53,9 +53,9 @@ struct HomeView: View {
                 .accessibilityHint("Koleksiyon haritasını açar")
 
                 StatStrip(items: [
-                    ("\(p.starCount)", "yıldız yaktın"),
-                    ("\(p.completedConstellations.count)", "takımyıldız tamamlandı"),
-                    ("\(p.unlockedPlanets.count + p.deepSky.count)", "gök cismi açıldı"),
+                    ("\(p.starCount)", String(localized: "yıldız yaktın")),
+                    ("\(p.completedConstellations.count)", String(localized: "takımyıldız tamamlandı")),
+                    ("\(p.unlockedPlanets.count + p.deepSky.count)", String(localized: "gök cismi açıldı")),
                 ])
                 .padding(.horizontal, 22)
 
@@ -74,7 +74,7 @@ struct HomeView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
-        .collapsingTitle("Evrenin")
+        .collapsingTitle(String(localized: "Evrenin"))
         .background(StarField(seed: 12, count: 90, depth: 0.7, grid: false, theme: p.selectedTheme, falloff: true))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showSettings) { SettingsView() }
@@ -98,29 +98,30 @@ private struct NextStepCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            PrimaryButton(title: "Odaklanmaya başla", action: onStart)
+            PrimaryButton(title: String(localized: "Odaklanmaya başla"), action: onStart)
         }
         .plate(radius: 24)
     }
 
     private func title(_ p: SkyProgress) -> String {
-        if p.records.isEmpty { return "İlk yıldızını yakmaya hazır mısın?" }
+        if p.records.isEmpty { return String(localized: "İlk yıldızını yakmaya hazır mısın?") }
         if p.journeyUnlocked, let stop = p.nextStop {
-            return "\(stop.name) durağına \(String(format: "%.1f", max(0, stop.lightYears - p.lightYearsTravelled)).replacingOccurrences(of: ".", with: ",")) ışık yılı kaldı"
+            let distance = max(0, stop.lightYears - p.lightYearsTravelled).formatted(.number.precision(.fractionLength(1)).locale(AppLanguage.locale))
+            return String(localized: "\(stop.name) durağına \(distance) ışık yılı kaldı")
         }
-        guard let c = p.nearestConstellation else { return "Gökyüzün tamamlandı" }
+        guard let c = p.nearestConstellation else { return String(localized: "Gökyüzün tamamlandı") }
         let left = c.stars.count - p.litCount(in: c)
-        return left == 1 ? "\(c.name) takımyıldızını bitirmene bir yıldız kaldı" : "\(c.name) takımyıldızı için \(left) yıldız kaldı"
+        return left == 1 ? String(localized: "\(c.name) takımyıldızını bitirmene bir yıldız kaldı") : String(localized: "\(c.name) takımyıldızı için \(left) yıldız kaldı")
     }
 
     private func detail(_ p: SkyProgress) -> String {
-        if p.records.isEmpty { return "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen gökyüzüne sönmüş bir yıldız düşer ama odaklandığın dakikalar yine de sayılır." }
-        guard let c = p.nearestConstellation else { return "Her odak saati seni bir ışık yılı ileri taşır." }
+        if p.records.isEmpty { return String(localized: "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen gökyüzüne sönmüş bir yıldız düşer ama odaklandığın dakikalar yine de sayılır.") }
+        guard let c = p.nearestConstellation else { return String(localized: "Her odak saati seni bir ışık yılı ileri taşır.") }
         let remaining = c.stars.filter { !p.isLit($0.id) }
         if let bright = remaining.first(where: \.isBright), remaining.allSatisfy(\.isBright) {
-            return "\(bright.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer."
+            return String(localized: "\(bright.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer.")
         }
-        return "Hangi yıldızın düşeceği oturum bitince belli olur."
+        return String(localized: "Hangi yıldızın düşeceği oturum bitince belli olur.")
     }
 }
 

@@ -34,18 +34,18 @@ public enum LightRules {
     /// Integer percentage, rounded half up, so 4.5 Işık is always 5.
     static func percent(_ value: Int, _ pct: Int) -> Int { (value * pct + 50) / 100 }
 
-    public static func ledger(minutes: Int, noLook: Bool, streakDays: Int, strict: Bool, doubled: Bool, doubledBy: String = "Kayan yıldız") -> LightLedger {
-        var lines = [LightLedger.Line(label: "Odak süresi, \(minutes) dk", amount: minutes)]
-        if noLook { lines.append(.init(label: "Hiç telefona bakmadın, %\(noLookPercent)", amount: percent(minutes, noLookPercent))) }
+    public static func ledger(minutes: Int, noLook: Bool, streakDays: Int, strict: Bool, doubled: Bool, doubledBy: String = loc("Kayan yıldız")) -> LightLedger {
+        var lines = [LightLedger.Line(label: loc("Odak süresi, \(minutes) dk"), amount: minutes)]
+        if noLook { lines.append(.init(label: loc("Hiç telefona bakmadın, %\(noLookPercent)"), amount: percent(minutes, noLookPercent))) }
         let pct = streakPercent(days: streakDays)
-        if pct > 0 { lines.append(.init(label: "Seri bonusu, \(streakDays). gün %\(pct)", amount: percent(minutes, pct))) }
+        if pct > 0 { lines.append(.init(label: loc("Seri bonusu, \(streakDays). gün %\(pct)"), amount: percent(minutes, pct))) }
         var subtotal = lines.reduce(0) { $0 + $1.amount }
         if strict {
             let extra = percent(subtotal, strictExtraPercent)
-            lines.append(.init(label: "Katı mod, ×1,5", amount: extra))
+            lines.append(.init(label: loc("Katı mod, ×1,5"), amount: extra))
             subtotal += extra
         }
-        if doubled { lines.append(.init(label: "\(doubledBy), ×2", amount: subtotal)) }
+        if doubled { lines.append(.init(label: loc("\(doubledBy), ×2"), amount: subtotal)) }
         return LightLedger(lines: lines)
     }
 }
@@ -238,7 +238,7 @@ extension SkyProgress {
         let doubled = armedShootingStar || caught
         let ledger = LightRules.ledger(minutes: input.focusedMinutes, noLook: !input.lookedAway, streakDays: streakDays,
                                        strict: input.strict, doubled: doubled,
-                                       doubledBy: armedShootingStar ? "Kayan yıldız" : "Meteor yağmuru")
+                                       doubledBy: armedShootingStar ? loc("Kayan yıldız") : loc("Meteor yağmuru"))
         armedShootingStar = false
         light += ledger.total
         records[records.count - 1].light = ledger.total
@@ -301,8 +301,8 @@ extension SkyProgress {
         }
         guard journeyStartMinutes != nil else { return (false, []) }
         var reached: [JourneyStop] = []
-        for stop in Journey.stops where !reachedStops.contains(stop.name) && lightYearsTravelled >= stop.lightYears {
-            reachedStops.append(stop.name)
+        for stop in Journey.stops where !reachedStops.contains(stop.id) && lightYearsTravelled >= stop.lightYears {
+            reachedStops.append(stop.id)
             switch stop.reward {
             case let .badge(b): if badges[b.rawValue] == nil { badges[b.rawValue] = now }
             case let .light(n): light += n
@@ -348,8 +348,8 @@ extension SkyProgress {
         switch p.goal {
         case let .focusHours(h):
             let done = max(0, totalFocusedMinutes - p.baselineMinutes) / 60
-            return "\(min(done, h)) / \(h) sa"
-        case let .streakDays(d): return "\(min(streak(on: now, calendar: calendar), d)) / \(d) gün"
+            return loc("\(min(done, h)) / \(h) sa")
+        case let .streakDays(d): return loc("\(min(streak(on: now, calendar: calendar), d)) / \(d) gün")
         case let .constellation(id):
             guard let c = Catalog.constellation(id) else { return "" }
             return "\(c.name) \(litCount(in: c)) / \(c.stars.count)"

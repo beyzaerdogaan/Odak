@@ -93,22 +93,36 @@ public struct AstroEvent: Codable, Hashable, Identifiable, Sendable {
     public let id: String
     /// Stored as text so a calendar with kinds this version does not know still decodes.
     let kindName: String
-    public let title: String
+    /// Turkish texts; `title`, `detail` and `tip` give them in the app's language.
+    let trTitle: String
     /// The moment of the event: greatest eclipse, opposition, closest approach, full moon.
     public let peak: Date
     public let sky: Sky
     /// "sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn".
     public let bodies: [String]
-    public let detail: String
-    public let tip: String
+    let trDetail: String
+    let trTip: String
+    /// The texts in other languages, by language code ("en"). Optional so an older copy without them still loads.
+    let translations: [String: Texts]?
     /// Eclipses only: the fraction of the Sun's diameter covered, or the Moon's umbral magnitude
     /// (negative for a penumbral eclipse, above 1 for a total one).
     public let magnitude: Double?
 
+    public struct Texts: Codable, Hashable, Sendable {
+        public let title: String
+        public let detail: String
+        public let tip: String
+    }
+
     public var kind: Kind? { Kind(rawValue: kindName) }
 
+    private var translated: Texts? { AppLanguage.current == "tr" ? nil : translations?[AppLanguage.current] }
+    public var title: String { translated?.title ?? trTitle }
+    public var detail: String { translated?.detail ?? trDetail }
+    public var tip: String { translated?.tip ?? trTip }
+
     enum CodingKeys: String, CodingKey {
-        case id, kindName = "kind", title, peak, sky, bodies, detail, tip, magnitude
+        case id, kindName = "kind", trTitle = "title", peak, sky, bodies, trDetail = "detail", trTip = "tip", magnitude, translations
     }
 }
 

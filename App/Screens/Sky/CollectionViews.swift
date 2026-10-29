@@ -26,22 +26,22 @@ struct CollectionMapView: View {
         let nextPlanet = p.nextPlanet
         let hours = p.totalFocusedMinutes / 60
         return [
-            Layer(n: 1, title: "Başlangıç göğü", right: "\(p.completedConstellations.count) / \(total)",
+            Layer(n: 1, title: String(localized: "Başlangıç göğü"), right: "\(p.completedConstellations.count) / \(total)",
                   bar: Double(p.completedConstellations.count) / Double(total),
-                  text: starterDone ? "16 tanınmış takımyıldızın hepsini yaktın." : "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın.",
+                  text: starterDone ? String(localized: "16 tanınmış takımyıldızın hepsini yaktın.") : String(localized: "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın."),
                   color: Theme.accent, state: starterDone ? .done : .here, route: nil),
-            Layer(n: 2, title: "Tüm gökyüzü", right: "Yakında",
-                  bar: nil, text: "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek.",
+            Layer(n: 2, title: String(localized: "Tüm gökyüzü"), right: String(localized: "Yakında"),
+                  bar: nil, text: String(localized: "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek."),
                   color: Theme.paper3, state: .locked, route: nil),
-            Layer(n: 3, title: "Derin gök nesneleri", right: "\(p.deepSky.count) / \(DeepSky.catalogueSize)",
-                  bar: nil, text: "Başlangıç göğüyle paralel ilerler ve bulutsuları, galaksileri, yıldız kümelerini kapsar. İlk nesne Avcı Bulutsusu'dur ve Avcı takımyıldızı tamamlandıktan sonra 90 dakikalık bir oturumla birlikte açılır.",
+            Layer(n: 3, title: String(localized: "Derin gök nesneleri"), right: "\(p.deepSky.count) / \(DeepSky.catalogueSize)",
+                  bar: nil, text: String(localized: "Başlangıç göğüyle paralel ilerler ve bulutsuları, galaksileri, yıldız kümelerini kapsar. İlk nesne Avcı Bulutsusu'dur ve Avcı takımyıldızı tamamlandıktan sonra 90 dakikalık bir oturumla birlikte açılır."),
                   color: Theme.nebula, state: .parallel, route: .deepSky),
-            Layer(n: 4, title: "Gezegenler ve Ay", right: "\(planets) / \(Planets.all.count)",
+            Layer(n: 4, title: String(localized: "Gezegenler ve Ay"), right: "\(planets) / \(Planets.all.count)",
                   bar: nextPlanet.map { Double(p.totalFocusedMinutes) / Double($0.hours * 60) },
-                  text: nextPlanet.map { "Toplam odak sürene göre paralel ilerler. Sıradaki gök cismi \($0.name) ve \($0.hours) saatte açılır, sen şu an \(hours) saattesin." } ?? "Bütün gezegenler ve Ay açıldı.",
+                  text: nextPlanet.map { String(localized: "Toplam odak sürene göre paralel ilerler. Sıradaki gök cismi \($0.name) ve \($0.hours) saatte açılır, sen şu an \(hours) saattesin.") } ?? String(localized: "Bütün gezegenler ve Ay açıldı."),
                   color: Theme.ice, state: .parallel, route: .deepSky),
-            Layer(n: 5, title: "Işık yolculuğu", right: p.journeyUnlocked ? "\(p.reachedStops.count) durak" : "Kilitli",
-                  bar: nil, text: "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez.",
+            Layer(n: 5, title: String(localized: "Işık yolculuğu"), right: p.journeyUnlocked ? String(localized: "\(p.reachedStops.count) durak") : String(localized: "Kilitli"),
+                  bar: nil, text: String(localized: "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez."),
                   color: p.journeyUnlocked ? Theme.accent : Theme.paper3, state: p.journeyUnlocked ? .parallel : .locked, route: .journey),
         ]
     }
@@ -83,7 +83,7 @@ struct CollectionMapView: View {
             railTail = tail
         }
         .pinnedHeader {
-            BackHeader(title: "Koleksiyon haritası", subtitle: nil) {
+            BackHeader(title: String(localized: "Koleksiyon haritası"), subtitle: nil) {
                 HStack(spacing: 5) { Spark(size: 10); Text("\(model.progress.totalFocusedMinutes / 60) sa") }
                     .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
                     .padding(.horizontal, 11).frame(height: 30)
@@ -175,7 +175,7 @@ struct DeepSkyView: View {
                 }
                 planets(p)
                 if unlocked, let theme = obj.theme, model.canUse(theme) {
-                    PrimaryButton(title: p.selectedTheme == theme ? "Tema uygulandı" : "Temayı uygula") { model.selectTheme(theme) }
+                    PrimaryButton(title: p.selectedTheme == theme ? String(localized: "Tema uygulandı") : String(localized: "Temayı uygula")) { model.selectTheme(theme) }
                         .disabled(p.selectedTheme == theme)
                 }
                 if found.count < DeepSky.objects.count {
@@ -194,7 +194,7 @@ struct DeepSkyView: View {
             }
             .padding(22)
         }
-        .pinnedHeader { BackHeader(title: "Derin gök", subtitle: nil) }
+        .pinnedHeader { BackHeader(title: String(localized: "Derin gök"), subtitle: nil) }
         .background(StarField(seed: 8, count: 110, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -278,7 +278,7 @@ struct MeteorEventView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(shower.name)\nmeteor yağmuru").font(.serif(42)).foregroundStyle(Theme.paper)
-                    Text(active != nil ? "Şu an sürüyor, zirvesi \(shower.peakText())." : "\(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(Locale(identifier: "tr_TR")))) tarihinde başlıyor.")
+                    Text(active != nil ? "Şu an sürüyor, zirvesi \(shower.peakText())." : "\(shower.nextStart(after: .now).formatted(.dateTime.day().month(.wide).locale(AppLanguage.locale))) tarihinde başlıyor.")
                         .font(.system(size: 13)).foregroundStyle(Theme.meteor2)
                 }
                 .padding(.top, 24)
@@ -349,7 +349,7 @@ struct MeteorEventView: View {
             }
             .padding(22)
         }
-        .pinnedHeader(fade: .clear) { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
+        .pinnedHeader(fade: .clear) { BackHeader(title: String(localized: "Gökyüzü etkinliği"), subtitle: nil) }
         .background { EventBackdrop(shower: shower, active: active != nil) }
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -370,7 +370,7 @@ struct JourneyView: View {
     var body: some View {
         let p = model.progress
         let next = p.nextStop
-        let prev = Journey.stops.last { p.reachedStops.contains($0.name) }?.lightYears ?? 0
+        let prev = Journey.stops.last { p.reachedStops.contains($0.id) }?.lightYears ?? 0
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 Text(p.journeyUnlocked
@@ -396,7 +396,7 @@ struct JourneyView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Rota").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
                     ForEach(Journey.stops) { stop in
-                        let reached = p.reachedStops.contains(stop.name)
+                        let reached = p.reachedStops.contains(stop.id)
                         HStack {
                             VStack(alignment: .leading, spacing: 1) {
                                 Text(stop.name).font(.serif(19, italic: true))
@@ -417,21 +417,22 @@ struct JourneyView: View {
             .padding(22)
         }
         .pinnedHeader {
-            BackHeader(title: "Işık yolculuğu",
-                       subtitle: "\(p.completedConstellations.count) / \(Catalog.constellations.count) takımyıldız")
+            BackHeader(title: String(localized: "Işık yolculuğu"),
+                       subtitle: String(localized: "\(p.completedConstellations.count) / \(Catalog.constellations.count) takımyıldız"))
         }
         .background(StarField(seed: 10, count: 120, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
     }
 
     private func ly(_ d: Double) -> String {
-        (d.rounded() == d ? String(Int(d)) : String(format: "%.1f", d)).replacingOccurrences(of: ".", with: ",")
+        d.formatted(.number.precision(.fractionLength(0...1)).locale(AppLanguage.locale))
     }
 }
 
 /// The voyage line from the Sun across the stops. Spacing is schematic; labels carry the real distances.
 struct RouteChart: View {
     let travelled: Double
+    /// Ids of the stops reached.
     let reached: [String]
 
     var body: some View {
@@ -461,7 +462,7 @@ struct RouteChart: View {
                         let p = CGPoint(x: xs[i], y: y(xs[i]))
                         ctx.fill(Path(ellipseIn: CGRect(x: p.x - 4.5, y: p.y - 4.5, width: 9, height: 9)), with: .color(Theme.night))
                         ctx.stroke(Path(ellipseIn: CGRect(x: p.x - 4.5, y: p.y - 4.5, width: 9, height: 9)),
-                                   with: .color(reached.contains(Journey.stops[i - 1].name) ? Theme.accent : Theme.star.opacity(0.7)), lineWidth: 1.2)
+                                   with: .color(reached.contains(Journey.stops[i - 1].id) ? Theme.accent : Theme.star.opacity(0.7)), lineWidth: 1.2)
                     }
                 }
                 Flare(radius: 3.2, color: Theme.ember).position(x: xs[0], y: y(xs[0]))
@@ -470,7 +471,7 @@ struct RouteChart: View {
                     let x = xs[i + 1], up = i % 2 == 0
                     VStack(spacing: 0) {
                         Text(stop.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
-                        Text("\(stop.lightYears.formatted(.number.locale(Locale(identifier: "tr_TR")))) ı.y.").font(.system(size: 10)).foregroundStyle(Theme.paper3)
+                        Text("\(stop.lightYears.formatted(.number.locale(AppLanguage.locale))) ı.y.").font(.system(size: 10)).foregroundStyle(Theme.paper3)
                     }
                     .fixedSize()
                     .position(x: min(x, w - 34), y: y(x) + (up ? -26 : 28))

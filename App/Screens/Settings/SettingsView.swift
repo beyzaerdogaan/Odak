@@ -36,7 +36,7 @@ struct SettingsView: View {
 
                 Section("Spotify") {
                     if model.spotify.isConnected {
-                        LabeledContent("Durum", value: "Bağlı")
+                        LabeledContent("Durum", value: String(localized: "Bağlı"))
                         Button("Bağlantıyı kes", role: .destructive) { model.spotify.disconnect() }
                     } else if model.spotify.isConfigured {
                         Button("Spotify hesabını bağla") { Task { await connectSpotify() } }
@@ -48,7 +48,7 @@ struct SettingsView: View {
                 if SubscriptionStore.isOffered {
                     Section("Zenit") {
                         if model.isZenit {
-                            LabeledContent("Durum", value: "Aktif")
+                            LabeledContent("Durum", value: String(localized: "Aktif"))
                         } else {
                             Button("Zenit'e geç") { showZenit = true }
                         }
@@ -116,7 +116,7 @@ private struct AccountSection: View {
                         .frame(width: 36, height: 36)
                         .background(Theme.plate2, in: Circle())
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(account.name ?? "Hesabın").foregroundStyle(Theme.paper)
+                        Text(account.name ?? String(localized: "Hesabın")).foregroundStyle(Theme.paper)
                         if let email = account.email { Text(email).small() }
                     }
                 }
@@ -142,10 +142,10 @@ private struct AccountSection: View {
 
     private var syncText: String {
         let cloud = model.cloud
-        if cloud.isSyncing { return "Eşitleniyor…" }
-        if cloud.failed { return "Bağlantı bekleniyor" }
-        guard let date = cloud.lastSynced else { return "Henüz eşitlenmedi" }
-        if Date.now.timeIntervalSince(date) < 60 { return "Az önce" }
-        return date.formatted(.relative(presentation: .named).locale(Locale(identifier: "tr_TR")))
+        if cloud.isSyncing { return String(localized: "Eşitleniyor…") }
+        if cloud.failed { return String(localized: "Bağlantı bekleniyor") }
+        guard let date = cloud.lastSynced else { return String(localized: "Henüz eşitlenmedi") }
+        if Date.now.timeIntervalSince(date) < 60 { return String(localized: "Az önce") }
+        return date.formatted(.relative(presentation: .named).locale(AppLanguage.locale))
     }
 }

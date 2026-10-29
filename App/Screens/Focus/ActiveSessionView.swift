@@ -29,7 +29,7 @@ struct ActiveSessionView: View {
                         .shadow(color: s.isOnBreak ? Theme.ice : Theme.aurora, radius: 4)
                     Text(s.isOnBreak ? "Moladasın" : "Derin odak sürüyor").meta()
                 }
-                Text(s.task.isEmpty ? "Odak" : s.task).font(.system(size: 18, weight: .medium)).foregroundStyle(Theme.paper)
+                Text(s.task.isEmpty ? String(localized: "Odak") : s.task).font(.system(size: 18, weight: .medium)).foregroundStyle(Theme.paper)
                     .lineLimit(1)
             }
             .padding(.top, 12)
@@ -54,7 +54,7 @@ struct ActiveSessionView: View {
                     Chip(text: lockText(s), systemImage: s.blockMode == .none || !model.screenTime.isAuthorized ? "lock.open" : "lock")
                         .glassEffect(.regular, in: .capsule)
                     if s.silenceCalls && model.settings.focusShortcutsReady {
-                        Chip(text: "Bildirimler susturuldu", systemImage: "moon").glassEffect(.regular, in: .capsule)
+                        Chip(text: String(localized: "Bildirimler susturuldu"), systemImage: "moon").glassEffect(.regular, in: .capsule)
                     }
                 }
             }
@@ -71,9 +71,9 @@ struct ActiveSessionView: View {
 
             VStack(spacing: 10) {
                 if s.isOnBreak {
-                    SecondaryButton(title: "Molayı bitir", detail: "· \(clock(s.breakRemaining(at: now)))") { model.endBreak() }
+                    SecondaryButton(title: String(localized: "Molayı bitir"), detail: "· \(clock(s.breakRemaining(at: now)))") { model.endBreak() }
                 } else {
-                    SecondaryButton(title: "5 dk mola ver", detail: s.breakUsed ? "· hakkın kullanıldı" : "· 1 hakkın var") { model.startBreak() }
+                    SecondaryButton(title: String(localized: "5 dk mola ver"), detail: s.breakUsed ? String(localized: "· hakkın kullanıldı") : String(localized: "· 1 hakkın var")) { model.startBreak() }
                         .disabled(s.breakUsed)
                 }
                 if s.strict {
@@ -122,10 +122,10 @@ struct ActiveSessionView: View {
     }
 
     private func lockText(_ s: FocusSession) -> String {
-        guard s.blockMode != .none, model.screenTime.isAuthorized else { return "Uygulama engeli kapalı" }
-        if s.blockMode == .all { return "Uygulamalar kilitli" }
+        guard s.blockMode != .none, model.screenTime.isAuthorized else { return String(localized: "Uygulama engeli kapalı") }
+        if s.blockMode == .all { return String(localized: "Uygulamalar kilitli") }
         let n = model.screenTime.blockedCount
-        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitlenecek uygulama seçilmedi"
+        return n > 0 ? String(localized: "\(n) uygulama ve kategori kilitli") : String(localized: "Kilitlenecek uygulama seçilmedi")
     }
 
     private func clock(_ t: TimeInterval) -> String {
@@ -201,7 +201,7 @@ struct NowPlayingCard: View {
                             in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Button(action: onOpen) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(playlist?.name ?? (sounds.active.isEmpty ? "Ses ve müzik" : sounds.active.map(\.title).joined(separator: " ve ")))
+                    Text(playlist?.name ?? (sounds.active.isEmpty ? String(localized: "Ses ve müzik") : sounds.active.map(\.title).formatted(.list(type: .and).locale(AppLanguage.locale))))
                         .font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.paper).lineLimit(1)
                     Text(subtitle(playlist: playlist)).small().lineLimit(1)
                 }
@@ -232,8 +232,8 @@ struct NowPlayingCard: View {
     }
 
     private func subtitle(playlist: (name: String, service: String)?) -> String {
-        let ambient = model.sounds.active.map { "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi" }
-        if let playlist { return ([playlist.service] + ambient).joined(separator: " ve ") }
-        return ambient.isEmpty ? "Ortam sesi ya da müzik seç" : ambient.joined(separator: ", ")
+        let ambient = model.sounds.active.map { String(localized: "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi") }
+        if let playlist { return ([playlist.service] + ambient).formatted(.list(type: .and).locale(AppLanguage.locale)) }
+        return ambient.isEmpty ? String(localized: "Ortam sesi ya da müzik seç") : ambient.joined(separator: ", ")
     }
 }
