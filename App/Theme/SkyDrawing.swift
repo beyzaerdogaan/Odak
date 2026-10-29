@@ -244,7 +244,7 @@ struct Planisphere: View {
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.hair))
                         .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
                         .fixedSize()
-                        .position(x: min(max(b.point.x, 110), geo.size.width - 110), y: b.point.y - 24)
+                        .position(x: min(max(b.point.x, 110), geo.size.width - 110), y: max(b.point.y - 24, 14))
                         .onTapGesture { withAnimation(.easeOut(duration: 0.15)) { shownBurntOut = nil } }
                         .transition(.opacity)
                         .accessibilityHidden(true)
