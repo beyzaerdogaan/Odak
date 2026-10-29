@@ -7,13 +7,15 @@ APP="${1:-build/dd/Build/Products/Debug-iphonesimulator/Derin.app}"
 OUT="${2:-screenshots}"
 SCREENS="home focus active sounds reward constellation sky badges rewards map deepsky event calendar astro-eclipse-lunar-2028-12 journey stars star signin lockscreen"
 
+# SIM_MAX=1 picks a Pro Max (6.9", 1320x2868), the size App Store Connect asks for.
 UDID=$(xcrun simctl list devices available -j | python3 -c '
-import json, sys
+import json, os, sys
 devices = json.load(sys.stdin)["devices"]
 runtimes = sorted((k for k in devices if "iOS" in k), reverse=True)
 for rt in runtimes:
     phones = [d for d in devices[rt] if d["name"].startswith("iPhone")]
-    pro = [d for d in phones if "Pro" in d["name"] and "Max" not in d["name"]]
+    want_max = os.environ.get("SIM_MAX") == "1"
+    pro = [d for d in phones if "Pro" in d["name"] and ("Max" in d["name"]) == want_max]
     pick = (pro or phones)
     if pick:
         print(pick[0]["udid"]); break
