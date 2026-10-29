@@ -72,7 +72,7 @@ struct ActiveSessionView: View {
             VStack(spacing: 10) {
                 if s.isOnBreak {
                     SecondaryButton(title: "Molayı bitir", detail: "· \(clock(s.breakRemaining(at: now)))") { model.endBreak() }
-                } else {
+                } else if s.allowsBreak {
                     SecondaryButton(title: "5 dk mola ver", detail: s.breakUsed ? "· hakkın kullanıldı" : "· 1 hakkın var") { model.startBreak() }
                         .disabled(s.breakUsed)
                 }
