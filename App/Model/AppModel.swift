@@ -109,7 +109,7 @@ final class AppModel {
     }
 
     func startBreak() {
-        guard var s = session, !s.breakUsed else { return }
+        guard var s = session, s.allowsBreak, !s.breakUsed else { return }
         s.startBreak(at: .now)
         session = s
         Notifications.cancelSessionEnd()

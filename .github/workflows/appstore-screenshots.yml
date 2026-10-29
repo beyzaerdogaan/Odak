@@ -1,0 +1,59 @@
+# App Store screenshots on a 6.9" simulator, published to the appstore-screenshots branch:
+# raw shots at the root, the store images with headlines (ci/appstore_frames.py) under magaza/<locale>/.
+name: App Store screenshots
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [.github/workflows/appstore-screenshots.yml, ci/appstore_frames.py]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: appstore-screenshots
+  cancel-in-progress: true
+
+jobs:
+  shots:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XCODE" ]; then sudo xcode-select -s "$XCODE"; fi
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Build app
+        run: |
+          set -o pipefail
+          xcodegen generate
+          xcodebuild build -project Odak.xcodeproj -scheme Odak \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
+            -skipPackagePluginValidation -skipMacroValidation CODE_SIGNING_ALLOWED=NO -quiet
+
+      - name: Screenshots
+        run: SIM_MAX=1 ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
+
+      - name: Store images with headlines
+        run: |
+          python3 -m venv /tmp/frames && /tmp/frames/bin/pip install -q pillow
+          /tmp/frames/bin/python ci/appstore_frames.py screenshots magaza
+
+      - name: Publish to the appstore-screenshots branch
+        run: |
+          SRC="$PWD/screenshots"
+          DEST=$(mktemp -d)
+          cd "$DEST"
+          git init -q -b appstore-screenshots
+          cp "$SRC"/*.png .
+          cp -R "$SRC/../magaza" magaza
+          git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
+            commit -q -m "App Store screenshots at ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" appstore-screenshots

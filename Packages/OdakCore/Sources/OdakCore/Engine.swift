@@ -119,10 +119,12 @@ public enum StarDraw {
     /// are a little likelier, so every session moves the user toward a finish. Returns nil only when
     /// every remaining star is bright and this session cannot earn one.
     public static func pick<R: RandomNumberGenerator>(progress p: SkyProgress, minutes: Int, strict: Bool, rng: inout R) -> String? {
-        if let t = p.telescopeTarget, !p.isLit(t), let c = Catalog.constellation(containing: t), p.openConstellations.contains(c.id) {
+        let bright = brightAllowed(minutes: minutes, strict: strict, ticket: p.armedBrightTicket) || p.dryStreak >= pityAfter
+        // A bright telescope target obeys the bright rule; otherwise it stays aimed for a later session.
+        if let t = p.telescopeTarget, !p.isLit(t), let c = Catalog.constellation(containing: t), p.openConstellations.contains(c.id),
+           bright || c.star(t)?.isBright != true {
             return t
         }
-        let bright = brightAllowed(minutes: minutes, strict: strict, ticket: p.armedBrightTicket) || p.dryStreak >= pityAfter
         var pools: [(weight: Double, stars: [CatalogStar])] = []
         for id in p.openConstellations {
             guard let c = Catalog.constellation(id) else { continue }

@@ -131,6 +131,16 @@
         }
       }
     },
+    "%@ parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is bright: it will fall in a 60-minute session, in strict mode, or in 45 minutes with a ticket"
+          }
+        }
+      }
+    },
     "%@ sonraki oturum için hazır" : {
       "localizations" : {
         "en" : {
@@ -1585,6 +1595,16 @@
         }
       }
     },
+    "Destek ve iletişim" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support and contact"
+          }
+        }
+      }
+    },
     "Devam" : {
       "localizations" : {
         "en" : {
@@ -1845,6 +1865,16 @@
         }
       }
     },
+    "Gizlilik politikası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy policy"
+          }
+        }
+      }
+    },
     "Google ile devam et" : {
       "localizations" : {
         "en" : {
@@ -2081,6 +2111,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weekend brunch out"
+          }
+        }
+      }
+    },
+    "Hakkında" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
           }
         }
       }
@@ -2913,6 +2953,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bright star ticket ready"
+          }
+        }
+      }
+    },
+    "Parlak yıldızlar teleskopla da yalnızca en az 60 dakikalık bir oturumda, katı modda ya da parlak yıldız biletiyle 45 dakikada düşer. Daha kısa bir oturumda başka bir yıldız düşer, teleskop seçtiğin yıldızda kalır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Even with the telescope, bright stars only fall in a session of 60 minutes or more, in strict mode, or in 45 minutes with a bright star ticket. A shorter session brings down another star, and the telescope stays on the one you chose."
           }
         }
       }
