@@ -179,12 +179,19 @@ public struct FocusInput: Sendable {
 public enum ShopError: Error, Equatable { case notEnoughLight, alreadyOwned, notForSale, limitReached }
 
 extension SkyProgress {
-    /// Gives up a session: the star goes out, but the minutes count toward hours, planets and the journey.
-    public mutating func abandon(_ input: FocusInput) {
+    /// Giving up this soon after starting leaves no record and no burnt-out star.
+    public static let abandonGrace: TimeInterval = 10
+
+    /// Gives up a session: the star goes out and a burnt-out star stays in the sky, but the minutes count toward
+    /// hours, planets and the journey. Returns false when it was within the grace period and nothing was recorded.
+    @discardableResult
+    public mutating func abandon(_ input: FocusInput) -> Bool {
+        guard input.end.timeIntervalSince(input.start) >= Self.abandonGrace else { return false }
         records.append(FocusRecord(task: input.task, start: input.start, end: input.end, plannedMinutes: input.plannedMinutes,
                                    focusedMinutes: input.focusedMinutes, completed: false, strict: input.strict,
                                    lookedAway: input.lookedAway))
         afterMinutesChanged(now: input.end)
+        return true
     }
 
     public mutating func complete<R: RandomNumberGenerator>(_ input: FocusInput, calendar cal: Calendar = .current, rng: inout R) -> SessionSummary {

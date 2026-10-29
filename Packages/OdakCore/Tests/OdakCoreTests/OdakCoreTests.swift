@@ -146,6 +146,46 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(p.light, 0)
     }
 
+    func testAbandonWithinGraceLeavesNoRecord() {
+        var p = SkyProgress()
+        let end = date(2026, 10, 1)
+        XCTAssertFalse(p.abandon(FocusInput(task: "Tez", start: end.addingTimeInterval(-9), end: end, plannedMinutes: 25,
+                                            focusedMinutes: 0, strict: false, lookedAway: false)))
+        XCTAssertTrue(p.records.isEmpty)
+        XCTAssertTrue(p.burntOutStars.isEmpty)
+    }
+
+    func testAbandonAtGraceBoundaryLeavesBurntOutStar() {
+        var p = SkyProgress()
+        let end = date(2026, 10, 1)
+        XCTAssertTrue(p.abandon(FocusInput(task: "Tez", start: end.addingTimeInterval(-10), end: end, plannedMinutes: 25,
+                                           focusedMinutes: 0, strict: false, lookedAway: false)))
+        XCTAssertEqual(p.burntOutStars.map(\.task), ["Tez"])
+    }
+
+    func testCompletedSessionIsNotBurntOut() {
+        var p = SkyProgress()
+        var rng = SeededGenerator(seed: 1)
+        _ = p.complete(input(25, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        p.records.append(FocusRecord(task: "Eski", start: date(2026, 9, 1), end: date(2026, 9, 1, 21), plannedMinutes: 60,
+                                     focusedMinutes: 5, completed: false, strict: false, lookedAway: false))
+        XCTAssertEqual(p.burntOutStars.map(\.task), ["Eski"])
+    }
+
+    func testBurntOutStarLayoutIsStableInsideDiscAndOffSlots() {
+        let slots = [DiscRect(x: 0.14, y: 0.22, width: 0.36, height: 0.30), DiscRect(x: 0.56, y: 0.26, width: 0.30, height: 0.26),
+                     DiscRect(x: 0.50, y: 0.58, width: 0.30, height: 0.34), DiscRect(x: 0.18, y: 0.56, width: 0.28, height: 0.28)]
+        for _ in 0..<200 {
+            let id = UUID()
+            let p = BurntOutStarLayout.point(for: id, avoiding: slots)
+            XCTAssertEqual(p, BurntOutStarLayout.point(for: id, avoiding: slots))
+            let r = hypot(p.x - 0.5, p.y - 0.5)
+            XCTAssertLessThanOrEqual(r, 0.46)
+            XCTAssertGreaterThanOrEqual(r, 0.06)
+            XCTAssertFalse(slots.contains { $0.contains(p) })
+        }
+    }
+
     func testOrionidsCountAndBadge() {
         var p = SkyProgress()
         var rng = SeededGenerator(seed: 9)
