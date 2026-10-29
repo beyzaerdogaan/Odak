@@ -51,6 +51,8 @@ struct FocusSession: Codable, Equatable, Identifiable {
     var lockedAt: Date?
 
     static let breakLength: TimeInterval = 5 * 60
+    /// Shorter sessions get no break: pausing 5 minutes of a 25-minute block defeats its purpose.
+    static let minutesForBreak = 45
 
     init(task: String, minutes: Int, strict: Bool, blockMode: BlockMode, silenceCalls: Bool, now: Date = .now) {
         self.task = task
@@ -64,6 +66,8 @@ struct FocusSession: Codable, Equatable, Identifiable {
     }
 
     var isOnBreak: Bool { breakStartedAt != nil }
+
+    var allowsBreak: Bool { plannedMinutes >= Self.minutesForBreak }
 
     func remaining(at now: Date) -> TimeInterval {
         max(0, end.timeIntervalSince(breakStartedAt ?? now))
@@ -84,7 +88,7 @@ struct FocusSession: Codable, Equatable, Identifiable {
     }
 
     mutating func startBreak(at now: Date) {
-        guard !breakUsed, breakStartedAt == nil else { return }
+        guard allowsBreak, !breakUsed, breakStartedAt == nil else { return }
         breakUsed = true
         breakStartedAt = now
     }
