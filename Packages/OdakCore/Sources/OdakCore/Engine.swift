@@ -34,7 +34,8 @@ public enum LightRules {
     /// Integer percentage, rounded half up, so 4.5 Işık is always 5.
     static func percent(_ value: Int, _ pct: Int) -> Int { (value * pct + 50) / 100 }
 
-    public static func ledger(minutes: Int, noLook: Bool, streakDays: Int, strict: Bool, doubled: Bool, doubledBy: String = loc("Kayan yıldız")) -> LightLedger {
+    public static func ledger(minutes: Int, noLook: Bool, streakDays: Int, strict: Bool, doubled: Bool, doubledBy: String? = nil) -> LightLedger {
+        let doubledBy = doubledBy ?? loc("Kayan yıldız")
         var lines = [LightLedger.Line(label: loc("Odak süresi, \(minutes) dk"), amount: minutes)]
         if noLook { lines.append(.init(label: loc("Hiç telefona bakmadın, %\(noLookPercent)"), amount: percent(minutes, noLookPercent))) }
         let pct = streakPercent(days: streakDays)
