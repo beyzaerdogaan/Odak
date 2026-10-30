@@ -128,20 +128,15 @@ struct SoundsSheet: View {
                 Button("Liste ekle", systemImage: "plus") { showAddMusic = true }
                     .buttonStyle(.glass).controlSize(.small)
             }
+            if model.session == nil {
+                Text("Seçtiğin liste odaklanmaya başladığında çalmaya başlar.").small()
+            }
             if let err = service.lastError ?? model.appleMusic.lastError {
                 Text(err).font(.system(size: 12)).foregroundStyle(Theme.alarm)
             }
             VStack(spacing: 0) {
                 ForEach(model.music.lists) { list in
-                    row(id: list.id, name: list.name, subtitle: subtitle(for: list), artwork: list.artwork) {
-                        if list.service == .appleMusic, await model.appleMusic.play(list) { return }
-                        model.handOff()
-                        if list.service == .spotify, !list.isAlbum, let id = list.spotifyURI?.absoluteString.split(separator: ":").last {
-                            await service.play(SpotifyPlaylist(id: String(id), name: list.name, subtitle: ""))
-                        } else {
-                            await model.music.open(list)
-                        }
-                    }
+                    row(id: list.id, name: list.name, subtitle: subtitle(for: list), artwork: list.artwork)
                     .contextMenu {
                         Button("Listeden kaldır", systemImage: "trash", role: .destructive) {
                             if model.settings.spotifyPlaylist == list.id { model.settings.spotifyPlaylist = nil }
@@ -150,10 +145,7 @@ struct SoundsSheet: View {
                     }
                 }
                 ForEach(suggested) { list in
-                    row(id: list.id, name: list.name, subtitle: "Spotify · \(list.subtitle)", artwork: nil) {
-                        model.handOff()
-                        await service.play(list)
-                    }
+                    row(id: list.id, name: list.name, subtitle: "Spotify · \(list.subtitle)", artwork: nil)
                 }
             }
             if service.isConnected {
@@ -164,14 +156,16 @@ struct SoundsSheet: View {
         }
     }
 
-    private func row(id: String, name: String, subtitle: String, artwork: URL?, play: @escaping () async -> Void) -> some View {
+    private func row(id: String, name: String, subtitle: String, artwork: URL?) -> some View {
         let selected = model.settings.spotifyPlaylist == id
+        let inSession = model.session != nil
         return VStack(spacing: 0) {
             Button {
                 model.settings.spotifyPlaylist = selected ? nil : id
                 // Only one list plays at a time; an Apple Music list stops when another is picked.
+                // Before a session the pick is only remembered, and it starts with the session.
                 model.appleMusic.pause()
-                if !selected { Task { await play() } }
+                if !selected, inSession { Task { await model.play(listID: id) } }
             } label: {
                 HStack(spacing: 12) {
                     AsyncImage(url: artwork) { image in
@@ -187,7 +181,7 @@ struct SoundsSheet: View {
                         Text(subtitle).small().lineLimit(1)
                     }
                     Spacer()
-                    if selected { Image(systemName: "play.fill").foregroundStyle(Theme.aurora) }
+                    if selected { Image(systemName: inSession ? "play.fill" : "checkmark").foregroundStyle(Theme.aurora) }
                 }
                 .frame(minHeight: 62)
                 .contentShape(.rect)

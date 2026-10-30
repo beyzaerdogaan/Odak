@@ -9,6 +9,7 @@ struct FocusSetupView: View {
     @State private var showPicker = false
     @State private var showBlockingInfo = false
     @State private var showShortcutsGuide = false
+    @State private var showSounds = false
     /// The block-mode picker runs on local state so its Liquid Glass slide isn't interrupted by
     /// model writes; the choice is committed once it settles (and always before starting).
     @State private var blockMode: BlockMode = .selected
@@ -23,6 +24,7 @@ struct FocusSetupView: View {
                 taskField($model.settings.task)
                 durationSection
                 blockingSection
+                soundsSection
                 togglesSection
                 armedBoosters
             }
@@ -65,6 +67,7 @@ struct FocusSetupView: View {
         .sheet(isPresented: $showPicker) { AppPickerSheet() }
         .sheet(isPresented: $showBlockingInfo) { BlockingInfoSheet() }
         .sheet(isPresented: $showShortcutsGuide) { FocusShortcutsGuide() }
+        .sheet(isPresented: $showSounds) { SoundsSheet() }
     }
 
     private var header: some View {
@@ -160,6 +163,14 @@ struct FocusSetupView: View {
                 }
                 .buttonStyle(.plain)
             }
+        }
+    }
+
+    /// Sounds and the playlist can be picked ahead of time; they start together with the session.
+    private var soundsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Ses ve müzik").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
+            NowPlayingCard(onOpen: { showSounds = true })
         }
     }
 

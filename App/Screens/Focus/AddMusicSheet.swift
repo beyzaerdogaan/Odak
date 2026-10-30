@@ -119,7 +119,7 @@ struct AddMusicSheet: View {
                         Button {
                             model.music.add(list)
                             choose(list.id)
-                            Task { _ = await player.play(list) }
+                            if model.session != nil { Task { _ = await player.play(list) } }
                         } label: {
                             HStack(spacing: 12) {
                                 AsyncImage(url: list.artwork) { image in
