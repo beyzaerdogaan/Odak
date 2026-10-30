@@ -40,7 +40,7 @@ jobs:
             -skipPackagePluginValidation -skipMacroValidation CODE_SIGNING_ALLOWED=NO -quiet
 
       - name: Screenshots
-        run: SIM_MAX=1 ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
+        run: SIM_MAX=1 EN_SCREENS="home active reward constellation calendar lockscreen journey" ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
 
       - name: Store images with headlines
         run: |

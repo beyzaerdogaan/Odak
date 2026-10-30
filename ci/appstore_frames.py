@@ -21,7 +21,8 @@ FRAMES = [
     ("lockscreen", "Kalan süreyi kilit ekranında gör", "See the time left on your Lock Screen"),
     ("journey", "Gökyüzü bitince Işık yolculuğu başlar", "When the sky is full, the journey begins"),
 ]
-LOCALES = {"tr": 1, "en-US": 2}
+# locale: (headline column in FRAMES, file prefix of that language's screenshots)
+LOCALES = {"tr": (1, "dark-"), "en-US": (2, "dark-en-")}
 
 W, H = 1320, 2868
 TOP, BOTTOM = (11, 13, 22), (24, 29, 56)
@@ -123,11 +124,11 @@ def frame(shot, headline):
 
 def main():
     src, out = sys.argv[1], sys.argv[2]
-    for locale, column in LOCALES.items():
+    for locale, (column, prefix) in LOCALES.items():
         os.makedirs(os.path.join(out, locale), exist_ok=True)
         for n, row in enumerate(FRAMES, 1):
             screen = row[0]
-            path = os.path.join(src, f"dark-{screen}.png")
+            path = os.path.join(src, f"{prefix}{screen}.png")
             if not os.path.exists(path):
                 print(f"missing {path}")
                 continue

@@ -8,6 +8,7 @@ APP="${1:-build/dd/Build/Products/Debug-iphonesimulator/Derin.app}"
 OUT="${2:-screenshots}"
 SCREENS="home focus active sounds reward constellation sky badges rewards map deepsky event calendar astro-eclipse-lunar-2028-12 journey stars star signin lockscreen"
 
+# EN_SCREENS overrides which screens are also shot in English (the store images need all of theirs).
 # SIM_MAX=1 picks a Pro Max (6.9", 1320x2868), the size App Store Connect asks for.
 UDID=$(xcrun simctl list devices available -j | python3 -c '
 import json, os, sys
@@ -62,7 +63,7 @@ for mode in dark; do
   sleep 6
   xcrun simctl io "$UDID" screenshot "$OUT/$mode-home-info.png" >/dev/null
   echo "shot $mode-home-info"
-  for s in home reward; do
+  for s in ${EN_SCREENS:-home reward}; do
     xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
     xcrun simctl launch "$UDID" "$BID" "${EN[@]}" -demo -screen "$s" >/dev/null
     sleep 6
