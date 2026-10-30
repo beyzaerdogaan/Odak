@@ -44,7 +44,7 @@ struct MusicList: Codable, Hashable, Identifiable {
     var appleMusicID: String?
     var id: String { link.absoluteString }
 
-    var kindTitle: String { isAlbum ? "Albüm" : "Çalma listesi" }
+    var kindTitle: String { isAlbum ? String(localized: "Albüm") : String(localized: "Çalma listesi") }
 
     /// Spotify's own URI opens the app directly instead of going through the web link.
     var spotifyURI: URL? {
@@ -91,7 +91,7 @@ enum MusicLink {
             guard let link = c.url else { return nil }
             let slug = parts.count > i + 2 ? parts[i + 1] : ""
             let name = slug.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
-            return MusicList(service: .appleMusic, link: link, name: name.isEmpty ? "Apple Music listesi" : name,
+            return MusicList(service: .appleMusic, link: link, name: name.isEmpty ? String(localized: "Apple Music listesi") : name,
                              isAlbum: parts[i] == "album")
         }
         if host == "music.youtube.com" || host.hasSuffix("youtube.com") {
@@ -101,7 +101,7 @@ enum MusicLink {
             var c = URLComponents(string: "https://music.youtube.com/playlist")!
             c.queryItems = [URLQueryItem(name: "list", value: list)]
             // YouTube Music albums are playlists whose IDs start with OLAK5uy_.
-            return MusicList(service: .youtubeMusic, link: c.url!, name: "YouTube Music listesi", isAlbum: list.hasPrefix("OLAK5uy_"))
+            return MusicList(service: .youtubeMusic, link: c.url!, name: String(localized: "YouTube Music listesi"), isAlbum: list.hasPrefix("OLAK5uy_"))
         }
         return nil
     }
@@ -109,7 +109,7 @@ enum MusicLink {
     private static func spotify(kind: String, id: String) -> MusicList? {
         guard !id.isEmpty, id.allSatisfy({ $0.isLetter || $0.isNumber }) else { return nil }
         return MusicList(service: .spotify, link: URL(string: "https://open.spotify.com/\(kind)/\(id)")!,
-                         name: "Spotify listesi", isAlbum: kind == "album")
+                         name: String(localized: "Spotify listesi"), isAlbum: kind == "album")
     }
 
     /// Short share links (spotify.link, spoti.fi) only redirect to the real address.

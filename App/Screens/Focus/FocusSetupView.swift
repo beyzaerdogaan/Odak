@@ -32,9 +32,9 @@ struct FocusSetupView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .defaultScrollAnchor(Demo.scrolled ? .bottom : nil)
-        .collapsingTitle("Odak")
+        .collapsingTitle(String(localized: "Odak"))
         .safeAreaInset(edge: .bottom) {
-            PrimaryButton(title: "Odaklanmaya başla") {
+            PrimaryButton(title: String(localized: "Odaklanmaya başla")) {
                 taskFocused = false
                 blockModeCommit?.cancel()
                 model.settings.blockMode = blockMode
@@ -74,7 +74,7 @@ struct FocusSetupView: View {
                     HStack(spacing: 5) { Spark(size: 12); Text("\(model.streak) günlük seri") }
                         .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
                 }
-                Text(model.todayMinutes > 0 ? "Bugün \(model.todayMinutes.minutesText) odaklandın" : "Bugün henüz odaklanmadın").meta()
+                Text(model.todayMinutes > 0 ? String(localized: "Bugün \(model.todayMinutes.minutesText) odaklandın") : String(localized: "Bugün henüz odaklanmadın")).meta()
             }
             Text("Ne üzerinde\nodaklanıyorsun?").font(.serif(36)).foregroundStyle(Theme.paper)
                 .fixedSize(horizontal: false, vertical: true)
@@ -148,8 +148,8 @@ struct FocusSetupView: View {
             HStack(spacing: 6) {
                 switch blockMode {
                 case .selected: Chip(text: model.screenTime.selectionSummary, systemImage: "lock")
-                case .all: Chip(text: "Telefon ve izin verdiklerin dışında her şey kilitlenir", systemImage: "lock")
-                case .none: Chip(text: "Hiçbir uygulama kilitlenmez", systemImage: "lock.open")
+                case .all: Chip(text: String(localized: "Telefon ve izin verdiklerin dışında her şey kilitlenir"), systemImage: "lock")
+                case .none: Chip(text: String(localized: "Hiçbir uygulama kilitlenmez"), systemImage: "lock.open")
                 }
             }
             .background(Theme.plate, in: .capsule)
@@ -166,15 +166,15 @@ struct FocusSetupView: View {
     private var togglesSection: some View {
         @Bindable var model = model
         return VStack(spacing: 0) {
-            toggleRow("Arama ve mesajları sustur", isOn: $model.settings.silenceCalls)
+            toggleRow(String(localized: "Arama ve mesajları sustur"), isOn: $model.settings.silenceCalls)
                 .onChange(of: model.settings.silenceCalls) { _, on in
                     // The one-time Shortcuts setup is offered when the toggle is first turned on.
                     if on && !model.settings.focusShortcutsReady { showShortcutsGuide = true }
                 }
             Divider().overlay(Theme.hair)
-            toggleRow("Favoriler arayabilsin", isOn: $model.settings.allowFavorites)
+            toggleRow(String(localized: "Favoriler arayabilsin"), isOn: $model.settings.allowFavorites)
             Divider().overlay(Theme.hair)
-            toggleRow("Katı mod", info: "Süre bitmeden kilit açılmaz ve Işık 1,5 katına çıkar", isOn: $model.settings.strict)
+            toggleRow(String(localized: "Katı mod"), info: String(localized: "Süre bitmeden kilit açılmaz ve Işık 1,5 katına çıkar"), isOn: $model.settings.strict)
         }
     }
 
@@ -188,9 +188,9 @@ struct FocusSetupView: View {
 
     @ViewBuilder private var armedBoosters: some View {
         let p = model.progress
-        let armed = [p.armedShootingStar ? "Kayan yıldız hazır, bu oturumda Işık iki katına çıkacak" : nil,
-                     p.armedBrightTicket ? "Parlak yıldız bileti hazır" : nil,
-                     p.telescopeTarget.flatMap { id in Catalog.constellation(containing: id)?.star(id).map { "Teleskop \($0.name) yıldızına çevrildi" } }]
+        let armed = [p.armedShootingStar ? String(localized: "Kayan yıldız hazır, bu oturumda Işık iki katına çıkacak") : nil,
+                     p.armedBrightTicket ? String(localized: "Parlak yıldız bileti hazır") : nil,
+                     p.telescopeTarget.flatMap { id in Catalog.constellation(containing: id)?.star(id).map { String(localized: "Teleskop \($0.name) yıldızına çevrildi") } }]
             .compactMap { $0 }
         if !armed.isEmpty {
             VStack(alignment: .leading, spacing: 6) {
@@ -276,7 +276,7 @@ struct AppPickerSheet: View {
                 if picking == 0 {
                     FamilyActivityPicker(selection: $screenTime.selection)
                 } else {
-                    FamilyActivityPicker(headerText: "“Tümü” modunda bile açık kalmasını istediğin uygulamaları seç, örneğin Spotify'ı.",
+                    FamilyActivityPicker(headerText: String(localized: "“Tümü” modunda bile açık kalmasını istediğin uygulamaları seç, örneğin Spotify'ı."),
                                          selection: $screenTime.exemptions)
                 }
             }
@@ -321,11 +321,11 @@ struct FocusShortcutsGuide: View {
     @Environment(\.dismiss) private var dismiss
 
     private let steps = [
-        ("moon", "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy."),
-        ("person.2", "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler."),
-        ("square.stack.3d.up", "Kestirmeler uygulamasında “Derin Başlat” adında bir kestirme oluştur. İçine “Odağı Ayarla” eylemini ekle, Odak olarak Derin'i seç ve Açık konumuna getir."),
-        ("square.stack.3d.down.right", "Aynı şekilde “Derin Bitir” adında ikinci bir kestirme oluştur. Bu kez eylemi Kapalı konumuna getir."),
-        ("checkmark.circle", "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir."),
+        ("moon", String(localized: "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy.")),
+        ("person.2", String(localized: "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler.")),
+        ("square.stack.3d.up", String(localized: "Kestirmeler uygulamasında “Derin Başlat” adında bir kestirme oluştur. İçine “Odağı Ayarla” eylemini ekle, Odak olarak Derin'i seç ve Açık konumuna getir.")),
+        ("square.stack.3d.down.right", String(localized: "Aynı şekilde “Derin Bitir” adında ikinci bir kestirme oluştur. Bu kez eylemi Kapalı konumuna getir.")),
+        ("checkmark.circle", String(localized: "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir.")),
     ]
 
     var body: some View {
@@ -345,8 +345,8 @@ struct FocusShortcutsGuide: View {
                         }
                     }
                     HStack(spacing: 10) {
-                        SecondaryButton(title: "Ayarlar") { UIApplication.shared.open(FocusModeShortcuts.focusSettingsURL) }
-                        SecondaryButton(title: "Kestirmeler") { UIApplication.shared.open(URL(string: "shortcuts://")!) }
+                        SecondaryButton(title: String(localized: "Ayarlar")) { UIApplication.shared.open(FocusModeShortcuts.focusSettingsURL) }
+                        SecondaryButton(title: String(localized: "Kestirmeler")) { UIApplication.shared.open(URL(string: "shortcuts://")!) }
                     }
                     Toggle("Kurulumu tamamladım", isOn: $model.settings.focusShortcutsReady)
                         .font(.system(size: 15, weight: .semibold))

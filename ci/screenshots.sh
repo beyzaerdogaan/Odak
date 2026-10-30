@@ -1,6 +1,7 @@
 #!/bin/bash
 # Photographs every screen in dark mode (the app has no light look) on the iOS simulator, using the app's
-# screenshot mode (-demo -screen <name>). Output: screenshots/<mode>-<screen>.png
+# screenshot mode (-demo -screen <name>), in Turkish, plus a few in English.
+# Output: screenshots/<mode>-<screen>.png and screenshots/<mode>-en-<screen>.png
 set -euo pipefail
 
 APP="${1:-build/dd/Build/Products/Debug-iphonesimulator/Derin.app}"
@@ -27,12 +28,16 @@ xcrun simctl install "$UDID" "$APP"
 BID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Info.plist")
 xcrun simctl status_bar "$UDID" override --time "21:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3 || true
 
+# The simulator speaks English; the app's base language is Turkish.
+TR=(-AppleLanguages "(tr)" -AppleLocale tr_TR)
+EN=(-AppleLanguages "(en)" -AppleLocale en_US)
+
 mkdir -p "$OUT"
 for mode in dark; do
   xcrun simctl ui "$UDID" appearance "$mode"
   for s in $SCREENS; do
     xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
-    xcrun simctl launch "$UDID" "$BID" -demo -screen "$s" >/dev/null
+    xcrun simctl launch "$UDID" "$BID" "${TR[@]}" -demo -screen "$s" >/dev/null
     sleep 6
     xcrun simctl io "$UDID" screenshot "$OUT/$mode-$s.png" >/dev/null
     echo "shot $mode-$s"
@@ -40,21 +45,28 @@ for mode in dark; do
   # Pinned back header: the longest back-header screen, opened scrolled to the bottom.
   for s in deepsky; do
     xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
-    xcrun simctl launch "$UDID" "$BID" -demo -screen "$s" -scrolled >/dev/null
+    xcrun simctl launch "$UDID" "$BID" "${TR[@]}" -demo -screen "$s" -scrolled >/dev/null
     sleep 6
     xcrun simctl io "$UDID" screenshot "$OUT/$mode-$s-scrolled.png" >/dev/null
     echo "shot $mode-$s-scrolled"
   done
   # Odak screen scrolled to its toggles, with the Katı mod info popover open.
   xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
-  xcrun simctl launch "$UDID" "$BID" -demo -screen focus -scrolled -info >/dev/null
+  xcrun simctl launch "$UDID" "$BID" "${TR[@]}" -demo -screen focus -scrolled -info >/dev/null
   sleep 6
   xcrun simctl io "$UDID" screenshot "$OUT/$mode-focus-info.png" >/dev/null
   echo "shot $mode-focus-info"
   # Home with a burnt-out star's bubble open.
   xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
-  xcrun simctl launch "$UDID" "$BID" -demo -screen home -info >/dev/null
+  xcrun simctl launch "$UDID" "$BID" "${TR[@]}" -demo -screen home -info >/dev/null
   sleep 6
   xcrun simctl io "$UDID" screenshot "$OUT/$mode-home-info.png" >/dev/null
   echo "shot $mode-home-info"
+  for s in home reward; do
+    xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+    xcrun simctl launch "$UDID" "$BID" "${EN[@]}" -demo -screen "$s" >/dev/null
+    sleep 6
+    xcrun simctl io "$UDID" screenshot "$OUT/$mode-en-$s.png" >/dev/null
+    echo "shot $mode-en-$s"
+  done
 done

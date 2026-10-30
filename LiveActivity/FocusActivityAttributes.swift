@@ -16,7 +16,7 @@ struct FocusActivityAttributes: ActivityAttributes {
     var task: String
     var plannedMinutes: Int
 
-    var title: String { task.isEmpty ? "Odak" : task }
+    var title: String { task.isEmpty ? String(localized: "Odak") : task }
 }
 
 /// What the activity shows at a given moment. The system re-renders once the content goes stale, which is how

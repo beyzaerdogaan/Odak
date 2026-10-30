@@ -77,8 +77,8 @@ struct RewardView: View {
         .scrollIndicators(.hidden)
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 8) {
-                PrimaryButton(title: summary.completedConstellation != nil ? "Takımyıldızı gör" : "Devam", action: onContinue)
-                SecondaryButton(title: "Gökyüzüme bak", action: onSky)
+                PrimaryButton(title: summary.completedConstellation != nil ? String(localized: "Takımyıldızı gör") : String(localized: "Devam"), action: onContinue)
+                SecondaryButton(title: String(localized: "Gökyüzüme bak"), action: onSky)
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 8)
@@ -105,7 +105,7 @@ struct RewardView: View {
             } else if summary.journeyStarted || model.progress.journeyUnlocked {
                 Text("Yolculuk sürüyor").meta()
                 Text("\(summary.record.focusedMinutes) dk").font(.serif(64, italic: true)).foregroundStyle(Theme.paper)
-                Text("Bu oturum seni \(String(format: "%.1f", Double(summary.record.focusedMinutes) / 60).replacingOccurrences(of: ".", with: ",")) ışık yılı ileri taşıdı")
+                Text("Bu oturum seni \((Double(summary.record.focusedMinutes) / 60).formatted(.number.precision(.fractionLength(1)).locale(AppLanguage.locale))) ışık yılı ileri taşıdı")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper)
             } else {
                 Text("Bu oturumda yıldız düşmedi").meta()
@@ -174,11 +174,11 @@ struct RewardView: View {
 
     private var extraItems: [(String, String, Color)] {
         var items: [(String, String, Color)] = []
-        for o in summary.newDeepSky { items.append(("sparkles", "\(o.name) keşfedildi ve \(o.light) Işık kazandın", Theme.nebula)) }
-        for p in summary.newPlanets { items.append(("circle.fill", "\(p.name) açıldı", Theme.ice)) }
-        for s in summary.reachedStops { items.append(("location.north.fill", "\(s.name) durağına vardın, ödülün: \(s.rewardText)", Theme.accentInk)) }
-        if summary.journeyStarted { items.append(("airplane", "Işık yolculuğu başladı", Theme.accentInk)) }
-        if summary.caughtShootingStar { items.append(("sparkle", "Kayan yıldız yakaladın, bu oturumun Işığı iki katına çıktı", Theme.meteor)) }
+        for o in summary.newDeepSky { items.append(("sparkles", String(localized: "\(o.name) keşfedildi ve \(o.light) Işık kazandın"), Theme.nebula)) }
+        for p in summary.newPlanets { items.append(("circle.fill", String(localized: "\(p.name) açıldı"), Theme.ice)) }
+        for s in summary.reachedStops { items.append(("location.north.fill", String(localized: "\(s.name) durağına vardın, ödülün: \(s.rewardText)"), Theme.accentInk)) }
+        if summary.journeyStarted { items.append(("airplane", String(localized: "Işık yolculuğu başladı"), Theme.accentInk)) }
+        if summary.caughtShootingStar { items.append(("sparkle", String(localized: "Kayan yıldız yakaladın, bu oturumun Işığı iki katına çıktı"), Theme.meteor)) }
         return items
     }
 
@@ -207,7 +207,7 @@ struct RewardView: View {
     private func brightNote(_ c: Constellation) -> String? {
         let left = c.stars.filter { !model.progress.isLit($0.id) }
         guard left.count == 1, let last = left.first, last.isBright else { return nil }
-        return "Son yıldız \(last.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer."
+        return String(localized: "Son yıldız \(last.name) parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer.")
     }
 }
 
@@ -256,11 +256,11 @@ struct ConstellationCompleteView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Tamamlama ödülleri").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
                     HStack {
-                        prize(icon: AnyView(Spark(size: 18)), value: "+\(LightRules.constellationReward)", label: "Işık", color: Theme.accentInk)
+                        prize(icon: AnyView(Spark(size: 18)), value: "+\(LightRules.constellationReward)", label: String(localized: "Işık"), color: Theme.accentInk)
                         if let s = c.unlocksSound {
-                            prize(icon: AnyView(Image(systemName: "snowflake").foregroundStyle(Theme.ice)), value: s.title, label: "Ses paketi", color: Theme.ice)
+                            prize(icon: AnyView(Image(systemName: "snowflake").foregroundStyle(Theme.ice)), value: s.title, label: String(localized: "Ses paketi"), color: Theme.ice)
                         }
-                        prize(icon: AnyView(ConstellationMedal(constellation: c, size: 44)), value: c.name, label: "Rozet", color: Theme.accentInk)
+                        prize(icon: AnyView(ConstellationMedal(constellation: c, size: 44)), value: c.name, label: String(localized: "Rozet"), color: Theme.accentInk)
                     }
                 }
             }
@@ -271,11 +271,11 @@ struct ConstellationCompleteView: View {
         .scrollIndicators(.hidden)
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 8) {
-                PrimaryButton(title: "Gerçek gökyüzünde bul", systemImage: "safari") { showFinder = true }
+                PrimaryButton(title: String(localized: "Gerçek gökyüzünde bul"), systemImage: "safari") { showFinder = true }
                 if let next = model.progress.openConstellations.last.flatMap(Catalog.constellation(_:)) {
-                    SecondaryButton(title: "Sıradaki takımyıldız:", detail: next.name, action: onDone)
+                    SecondaryButton(title: String(localized: "Sıradaki takımyıldız:"), detail: next.name, action: onDone)
                 } else {
-                    SecondaryButton(title: "Gökyüzüme bak", action: onDone)
+                    SecondaryButton(title: String(localized: "Gökyüzüme bak"), action: onDone)
                 }
             }
             .padding(.horizontal, 22)
