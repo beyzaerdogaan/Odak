@@ -1975,6 +1975,16 @@
         }
       }
     },
+    "Gökyüzünde sönmüş yıldız yok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no burnt-out stars in your sky"
+          }
+        }
+      }
+    },
     "Gökyüzüne bakma zamanı." : {
       "localizations" : {
         "en" : {
@@ -2613,6 +2623,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I've finished the setup"
+          }
+        }
+      }
+    },
+    "Kuyrukluyıldız bu oturumu yolculukta iki kat saydı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The comet counted this session double on the journey"
+          }
+        }
+      }
+    },
+    "Kuyrukluyıldız hazır, bu oturum yolculukta iki kat sayılacak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comet ready: this session counts double on the journey"
+          }
+        }
+      }
+    },
+    "Kuyrukluyıldız, Işık yolculuğu başlayınca kullanılabilir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can use the comet once the Journey of Light begins"
           }
         }
       }
@@ -3333,6 +3373,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Presentation prep"
+          }
+        }
+      }
+    },
+    "Sönmüş bir yıldız yeniden yandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A burnt-out star is shining again"
           }
         }
       }
@@ -4383,6 +4433,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In the free version you can keep %lld promises at a time. With Zenith, make as many as you like."
+          }
+        }
+      }
+    },
+    "İkiz yıldız hazır, 45 dakika ya da daha uzun bir oturumda iki yıldız yanacak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twin star ready: a session of 45 minutes or more lights two stars"
+          }
+        }
+      }
+    },
+    "İkiz yıldız: %@ takımyıldızında %@ da yandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twin star: %2$@ in %1$@ lit up too"
           }
         }
       }

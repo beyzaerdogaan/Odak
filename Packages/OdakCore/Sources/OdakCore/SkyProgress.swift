@@ -11,6 +11,8 @@ public struct FocusRecord: Codable, Hashable, Identifiable, Sendable {
     public var strict: Bool
     public var lookedAway: Bool
     public var starID: String?
+    /// The second star an İkiz yıldız lit in this session.
+    public var twinStarID: String?
     public var light: Int
 
     public init(id: UUID = UUID(), task: String, start: Date, end: Date, plannedMinutes: Int, focusedMinutes: Int,
@@ -52,7 +54,17 @@ public struct SelfPromise: Codable, Hashable, Identifiable, Sendable {
 }
 
 public enum DialStyle: String, Codable, CaseIterable, Hashable, Sendable {
-    case classic, analog, meteor
+    case classic, analog, meteor, moonPhase, orbit
+
+    public var title: String {
+        switch self {
+        case .classic: loc("Klasik sayaç")
+        case .analog: loc("Analog sayaç")
+        case .meteor: loc("Meteor izi")
+        case .moonPhase: loc("Ay evresi sayacı")
+        case .orbit: loc("Yörünge sayacı")
+        }
+    }
 }
 
 /// Everything the user has earned. Persisted as JSON; every field decodes with a default so
@@ -69,12 +81,18 @@ public struct SkyProgress: Codable, Hashable, Sendable {
     public var armedShootingStar = false
     public var armedBrightTicket = false
     public var telescopeTarget: String?
+    public var armedTwinStar = false
+    public var armedComet = false
+    /// Extra focus minutes a Kuyrukluyıldız added to the journey.
+    public var cometMinutes = 0
+    /// Abandoned sessions whose burnt-out star a Kıvılcım lit again.
+    public var rekindled: Set<UUID> = []
     public var ownedSounds: Set<SoundID> = Set(SoundID.allCases.filter(\.isFree))
     public var ownedThemes: Set<SkyTheme> = [.night]
     public var selectedTheme: SkyTheme = .night
     public var ownedDials: Set<DialStyle> = [.classic]
     public var selectedDial: DialStyle = .classic
-    public var ownsAppIcon = false
+    public var ownedIcons: Set<AppIconStyle> = []
     public var badges: [String: Date] = [:]
     public var promises: [SelfPromise] = []
     public var deepSky: [String: Date] = [:]
@@ -94,7 +112,7 @@ public struct SkyProgress: Codable, Hashable, Sendable {
     public func hasBadge(_ b: Badge) -> Bool { badges[b.rawValue] != nil }
     public func isLit(_ starID: String) -> Bool { litStars[starID] != nil }
     /// The focus session that lit this star, if it was earned in one.
-    public func record(forStar starID: String) -> FocusRecord? { records.last { $0.starID == starID } }
+    public func record(forStar starID: String) -> FocusRecord? { records.last { $0.starID == starID || $0.twinStarID == starID } }
     public func isComplete(_ constellationID: String) -> Bool { completedConstellations.contains(constellationID) }
 
     public func litCount(in c: Constellation) -> Int { c.stars.filter { isLit($0.id) }.count }
@@ -109,7 +127,7 @@ public struct SkyProgress: Codable, Hashable, Sendable {
     public var journeyUnlocked: Bool { journeyStartMinutes != nil }
     public var lightYearsTravelled: Double {
         guard let start = journeyStartMinutes else { return 0 }
-        return Double(totalFocusedMinutes - start) / 60 * Journey.lightYearsPerHour
+        return Double(totalFocusedMinutes - start + cometMinutes) / 60 * Journey.lightYearsPerHour
     }
     public var nextStop: JourneyStop? { Journey.stops.first { !reachedStops.contains($0.id) } }
 
@@ -117,8 +135,8 @@ public struct SkyProgress: Codable, Hashable, Sendable {
 
     private enum K: String, CodingKey {
         case light, litStars, openConstellations, completedConstellations, records, dryStreak, boosters,
-             armedShootingStar, armedBrightTicket, telescopeTarget, ownedSounds, ownedThemes, selectedTheme,
-             ownedDials, selectedDial, ownsAppIcon, badges, promises, deepSky, coveredDays, meteorProgress,
+             armedShootingStar, armedBrightTicket, telescopeTarget, armedTwinStar, armedComet, cometMinutes, rekindled, ownedSounds, ownedThemes, selectedTheme,
+             ownedDials, selectedDial, ownsAppIcon, ownedIcons, badges, promises, deepSky, coveredDays, meteorProgress,
              journeyStartMinutes, reachedStops
     }
 
@@ -136,14 +154,24 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         armedShootingStar = v(.armedShootingStar, d.armedShootingStar)
         armedBrightTicket = v(.armedBrightTicket, d.armedBrightTicket)
         telescopeTarget = v(.telescopeTarget, d.telescopeTarget)
+        armedTwinStar = v(.armedTwinStar, d.armedTwinStar)
+        armedComet = v(.armedComet, d.armedComet)
+        cometMinutes = v(.cometMinutes, d.cometMinutes)
+        rekindled = v(.rekindled, d.rekindled)
         // Read leniently so a sound that was later retired (e.g. "cafe") doesn't drop the others.
         ownedSounds = (try? c.decodeIfPresent([String].self, forKey: .ownedSounds))
             .map { Set($0.compactMap(SoundID.init(rawValue:))).union(d.ownedSounds) } ?? d.ownedSounds
-        ownedThemes = v(.ownedThemes, d.ownedThemes)
+        // Lenient like sounds, so a sky saved by a newer release with more looks still opens.
+        func lenient<T: RawRepresentable & Hashable>(_ k: K, _ fallback: Set<T>) -> Set<T> where T.RawValue == String {
+            (try? c.decodeIfPresent([String].self, forKey: k)).map { Set($0.compactMap(T.init(rawValue:))) } ?? fallback
+        }
+        ownedThemes = lenient(.ownedThemes, d.ownedThemes).union(d.ownedThemes)
         selectedTheme = v(.selectedTheme, d.selectedTheme)
-        ownedDials = v(.ownedDials, d.ownedDials)
+        ownedDials = lenient(.ownedDials, d.ownedDials).union(d.ownedDials)
         selectedDial = v(.selectedDial, d.selectedDial)
-        ownsAppIcon = v(.ownsAppIcon, d.ownsAppIcon)
+        // Before the Gece yarısı icon there was one alternate icon, saved as `ownsAppIcon`.
+        ownedIcons = lenient(.ownedIcons, d.ownedIcons)
+        if v(.ownsAppIcon, false) { ownedIcons.insert(.dawn) }
         badges = v(.badges, d.badges)
         promises = v(.promises, d.promises)
         deepSky = v(.deepSky, d.deepSky)
@@ -165,12 +193,17 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         try c.encode(armedShootingStar, forKey: .armedShootingStar)
         try c.encode(armedBrightTicket, forKey: .armedBrightTicket)
         try c.encodeIfPresent(telescopeTarget, forKey: .telescopeTarget)
+        try c.encode(armedTwinStar, forKey: .armedTwinStar)
+        try c.encode(armedComet, forKey: .armedComet)
+        try c.encode(cometMinutes, forKey: .cometMinutes)
+        try c.encode(rekindled, forKey: .rekindled)
         try c.encode(ownedSounds, forKey: .ownedSounds)
         try c.encode(ownedThemes, forKey: .ownedThemes)
         try c.encode(selectedTheme, forKey: .selectedTheme)
         try c.encode(ownedDials, forKey: .ownedDials)
         try c.encode(selectedDial, forKey: .selectedDial)
-        try c.encode(ownsAppIcon, forKey: .ownsAppIcon)
+        try c.encode(ownedIcons.contains(.dawn), forKey: .ownsAppIcon)
+        try c.encode(ownedIcons, forKey: .ownedIcons)
         try c.encode(badges, forKey: .badges)
         try c.encode(promises, forKey: .promises)
         try c.encode(deepSky, forKey: .deepSky)

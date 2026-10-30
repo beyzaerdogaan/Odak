@@ -109,6 +109,8 @@ extension SkyProgress {
 public enum StarDraw {
     public static let brightMinutes = 60
     public static let ticketMinutes = 45
+    /// Shortest session in which an İkiz yıldız lights its second star.
+    public static let twinMinutes = 45
     public static let pityAfter = 4
 
     public static func brightAllowed(minutes: Int, strict: Bool, ticket: Bool) -> Bool {
@@ -150,6 +152,8 @@ public struct SessionSummary: Hashable, Sendable {
     public var record: FocusRecord
     public var star: CatalogStar?
     public var constellation: Constellation?
+    /// The second star an İkiz yıldız lit.
+    public var twinStar: CatalogStar?
     public var completedConstellation: Constellation?
     public var ledger: LightLedger
     public var bonusLight: Int
@@ -160,6 +164,8 @@ public struct SessionSummary: Hashable, Sendable {
     public var journeyStarted = false
     public var meteorShower: MeteorShower?
     public var caughtShootingStar = false
+    /// A Kuyrukluyıldız counted this session twice on the journey.
+    public var cometUsed = false
     public var promisesKept: [SelfPromise] = []
     public var streak: Int
 }
@@ -203,33 +209,21 @@ extension SkyProgress {
         let planetsBefore = Set(unlockedPlanets.map(\.id))
         let completedBefore = Set(completedConstellations)
 
-        // Star
-        let starID = StarDraw.pick(progress: self, minutes: input.focusedMinutes, strict: input.strict, rng: &rng)
-        var star: CatalogStar?
-        var constellation: Constellation?
-        var finished: Constellation?
-        if let starID, let c = Catalog.constellation(containing: starID) {
-            star = c.star(starID)
-            constellation = c
-            if star?.isBright == true, !StarDraw.brightAllowed(minutes: input.focusedMinutes, strict: input.strict, ticket: false) {
-                armedBrightTicket = false
-            }
-            if telescopeTarget == starID { telescopeTarget = nil }
-            litStars[starID] = now
-            dryStreak = 0
-            if litCount(in: c) == c.stars.count {
-                finished = c
-                completeConstellation(c, now: now)
-            }
-        } else {
-            dryStreak += 1
-        }
+        // Star, and a second one when an İkiz yıldız is armed and the session is long enough
+        let twin = armedTwinStar && input.focusedMinutes >= StarDraw.twinMinutes
+        let starID = lightNextStar(input, now: now, rng: &rng)
+        let twinID = twin && starID != nil ? lightNextStar(input, now: now, countDry: false, rng: &rng) : nil
+        if twinID != nil { armedTwinStar = false }
+        let star = starID.flatMap { Catalog.constellation(containing: $0)?.star($0) }
+        let constellation = starID.flatMap(Catalog.constellation(containing:))
+        let finished = Catalog.constellations.filter { !completedBefore.contains($0.id) && isComplete($0.id) }
 
         // Işık
         let record = FocusRecord(task: input.task, start: input.start, end: input.end, plannedMinutes: input.plannedMinutes,
                                  focusedMinutes: input.focusedMinutes, completed: true, strict: input.strict,
                                  lookedAway: input.lookedAway, starID: starID)
         records.append(record)
+        records[records.count - 1].twinStarID = twinID
         let streakDays = streak(on: now, calendar: cal)
         let shower = MeteorShowers.active(on: now, calendar: cal)
         var caught = false
@@ -243,13 +237,19 @@ extension SkyProgress {
                                        strict: input.strict, doubled: doubled,
                                        doubledBy: armedShootingStar ? loc("Kayan yıldız") : loc("Meteor yağmuru"))
         armedShootingStar = false
+        let comet = armedComet && journeyUnlocked
+        if comet {
+            cometMinutes += input.focusedMinutes
+            armedComet = false
+        }
         light += ledger.total
         records[records.count - 1].light = ledger.total
 
         var summary = SessionSummary(record: records[records.count - 1], star: star, constellation: constellation,
-                                     completedConstellation: finished, ledger: ledger,
-                                     bonusLight: finished == nil ? 0 : LightRules.constellationReward,
-                                     meteorShower: shower, caughtShootingStar: caught, streak: streakDays)
+                                     twinStar: twinID.flatMap { Catalog.constellation(containing: $0)?.star($0) },
+                                     completedConstellation: finished.first, ledger: ledger,
+                                     bonusLight: finished.count * LightRules.constellationReward,
+                                     meteorShower: shower, caughtShootingStar: caught, cometUsed: comet, streak: streakDays)
 
         // Badges
         let hour = cal.component(.hour, from: now)
@@ -292,6 +292,24 @@ extension SkyProgress {
             summary.promisesKept.append(promises[i])
         }
         return summary
+    }
+
+    /// Draws and lights one star for a completed session, finishing its constellation when it was the last.
+    private mutating func lightNextStar<R: RandomNumberGenerator>(_ input: FocusInput, now: Date, countDry: Bool = true,
+                                                                  rng: inout R) -> String? {
+        guard let starID = StarDraw.pick(progress: self, minutes: input.focusedMinutes, strict: input.strict, rng: &rng),
+              let c = Catalog.constellation(containing: starID) else {
+            if countDry { dryStreak += 1 }
+            return nil
+        }
+        if c.star(starID)?.isBright == true, !StarDraw.brightAllowed(minutes: input.focusedMinutes, strict: input.strict, ticket: false) {
+            armedBrightTicket = false
+        }
+        if telescopeTarget == starID { telescopeTarget = nil }
+        litStars[starID] = now
+        dryStreak = 0
+        if litCount(in: c) == c.stars.count { completeConstellation(c, now: now) }
+        return starID
     }
 
     /// Opens the journey once the whole starter sky is lit and pays out any stops now reached.
@@ -374,8 +392,8 @@ extension SkyProgress {
         case .booster: false
         case let .sound(s): ownedSounds.contains(s)
         case let .theme(t): ownedThemes.contains(t)
-        case .analogDial: ownedDials.contains(.analog)
-        case .appIcon: ownsAppIcon
+        case let .dial(d): ownedDials.contains(d)
+        case let .appIcon(i): ownedIcons.contains(i)
         }
     }
 
@@ -389,12 +407,13 @@ extension SkyProgress {
         case let .booster(b): add(b)
         case let .sound(s): ownedSounds.insert(s)
         case let .theme(t): ownedThemes.insert(t)
-        case .analogDial: ownedDials.insert(.analog)
-        case .appIcon: ownsAppIcon = true
+        case let .dial(d): ownedDials.insert(d)
+        case let .appIcon(i): ownedIcons.insert(i)
         }
     }
 
-    /// Arms a booster for the next session. Telescope needs the chosen star.
+    /// Arms a booster for the next session. Telescope needs the chosen star; a Kıvılcım works at once on the
+    /// latest burnt-out star.
     public mutating func use(_ booster: Booster, target: String? = nil) -> Bool {
         guard count(booster) > 0 else { return false }
         switch booster {
@@ -408,6 +427,15 @@ extension SkyProgress {
         case .brightTicket:
             guard !armedBrightTicket else { return false }
             armedBrightTicket = true
+        case .twinStar:
+            guard !armedTwinStar else { return false }
+            armedTwinStar = true
+        case .comet:
+            guard journeyUnlocked, !armedComet else { return false }
+            armedComet = true
+        case .spark:
+            guard let r = burntOutStars.last else { return false }
+            rekindled.insert(r.id)
         case .cloud:
             return false // clouds are spent automatically
         }
@@ -427,6 +455,6 @@ extension SkyProgress {
         case .all: from = .distantPast
         }
         let rs = records.filter { $0.end >= from }
-        return (rs.reduce(0) { $0 + $1.focusedMinutes }, rs.filter { $0.starID != nil }.count, rs.filter(\.completed).count)
+        return (rs.reduce(0) { $0 + $1.focusedMinutes }, rs.reduce(0) { $0 + ($1.starID == nil ? 0 : 1) + ($1.twinStarID == nil ? 0 : 1) }, rs.filter(\.completed).count)
     }
 }

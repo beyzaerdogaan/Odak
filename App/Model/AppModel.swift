@@ -317,9 +317,10 @@ final class AppModel {
         progress.selectedTheme = t
     }
 
-    func setAlternateIcon(_ on: Bool) {
-        guard progress.ownsAppIcon || isZenit else { return }
-        UIApplication.shared.setAlternateIconName(on ? "AppIconDawn" : nil)
+    /// Switches to `icon`, or back to the default icon with nil.
+    func setAlternateIcon(_ icon: AppIconStyle?) {
+        if let icon, !(progress.ownedIcons.contains(icon) || isZenit) { return }
+        UIApplication.shared.setAlternateIconName(icon?.iconName)
     }
 
     func resetAll() {
