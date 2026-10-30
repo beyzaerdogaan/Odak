@@ -10,9 +10,11 @@ on:
 permissions:
   contents: write
 
+# Every branch publishes to the same appstore-screenshots branch, so runs wait for each other
+# instead of cancelling: a cancel from another branch's push used to turn this PR's check red.
 concurrency:
   group: appstore-screenshots
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   shots:
@@ -38,7 +40,7 @@ jobs:
             -skipPackagePluginValidation -skipMacroValidation CODE_SIGNING_ALLOWED=NO -quiet
 
       - name: Screenshots
-        run: SIM_MAX=1 ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
+        run: SIM_MAX=1 EN_SCREENS="home active reward constellation calendar lockscreen journey" ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots
 
       - name: Store images with headlines
         run: |

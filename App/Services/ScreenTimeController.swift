@@ -31,12 +31,12 @@ final class ScreenTimeController {
     var selectionSummary: String {
         #if SCREEN_TIME
         var parts: [String] = []
-        if !selection.applicationTokens.isEmpty { parts.append("\(selection.applicationTokens.count) uygulama") }
-        if !selection.categoryTokens.isEmpty { parts.append("\(selection.categoryTokens.count) kategori") }
-        if !selection.webDomainTokens.isEmpty { parts.append("\(selection.webDomainTokens.count) site") }
-        return parts.isEmpty ? "Henüz seçilmedi" : parts.joined(separator: ", ")
+        if !selection.applicationTokens.isEmpty { parts.append(String(localized: "\(selection.applicationTokens.count) uygulama")) }
+        if !selection.categoryTokens.isEmpty { parts.append(String(localized: "\(selection.categoryTokens.count) kategori")) }
+        if !selection.webDomainTokens.isEmpty { parts.append(String(localized: "\(selection.webDomainTokens.count) site")) }
+        return parts.isEmpty ? String(localized: "Henüz seçilmedi") : parts.joined(separator: ", ")
         #else
-        return "Ekran Süresi izni gerekiyor"
+        return String(localized: "Ekran Süresi izni gerekiyor")
         #endif
     }
 
@@ -59,10 +59,26 @@ final class ScreenTimeController {
         #endif
     }
 
+    /// Reads the permission again, and asks for it if it isn't granted yet.
+    ///
+    /// The status read at launch can still be "not determined" while Screen Time loads, and "Tümü" never
+    /// opens the app picker (the only other place that asks), so a cached flag could silently skip the shields.
+    /// For an app that already has the permission this returns at once, without a prompt.
+    func ensureAuthorized() async {
+        #if SCREEN_TIME
+        if AuthorizationCenter.shared.authorizationStatus == .approved {
+            isAuthorized = true
+        } else {
+            await requestAuthorization()
+        }
+        #endif
+    }
+
     func begin(mode: BlockMode, strict: Bool, until end: Date) {
         SharedStore.shieldAttempts = 0
         #if SCREEN_TIME
         guard isAuthorized, mode != .none else { return }
+        store.clearAllSettings()
         switch mode {
         case .selected:
             store.shield.applications = selection.applicationTokens.isEmpty ? nil : selection.applicationTokens

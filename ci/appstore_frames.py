@@ -21,7 +21,8 @@ FRAMES = [
     ("lockscreen", "Kalan süreyi kilit ekranında gör", "See the time left on your Lock Screen"),
     ("journey", "Gökyüzü bitince Işık yolculuğu başlar", "When the sky is full, the journey begins"),
 ]
-LOCALES = {"tr": 1, "en-US": 2}
+# locale: (headline column in FRAMES, file prefix of that language's screenshots)
+LOCALES = {"tr": (1, "dark-"), "en-US": (2, "dark-en-")}
 
 W, H = 1320, 2868
 TOP, BOTTOM = (11, 13, 22), (24, 29, 56)
@@ -37,8 +38,28 @@ SERIF = [
 def font(size):
     for path in SERIF:
         if os.path.exists(path):
-            return ImageFont.truetype(path, size)
+            f = ImageFont.truetype(path, size)
+            text_cut(f)
+            return f
     return ImageFont.load_default(size)
+
+
+def text_cut(f):
+    """New York is a variable font whose default is its hairline display cut, which loses the H's crossbar
+    at this size. Pick the sturdier text optical size and a medium weight instead."""
+    try:
+        axes = f.get_variation_axes()
+    except OSError:
+        return
+    want = {"opsz": 20, "optical": 20, "wght": 500, "weight": 500}
+    values = []
+    for axis in axes:
+        name = axis.get("name", b"")
+        name = (name.decode(errors="ignore") if isinstance(name, bytes) else str(name)).lower()
+        target = next((v for k, v in want.items() if k in name), axis["default"])
+        values.append(min(max(target, axis["minimum"]), axis["maximum"]))
+    print(f"font axes {axes} -> {values}")
+    f.set_variation_by_axes(values)
 
 
 def sky():
@@ -103,11 +124,11 @@ def frame(shot, headline):
 
 def main():
     src, out = sys.argv[1], sys.argv[2]
-    for locale, column in LOCALES.items():
+    for locale, (column, prefix) in LOCALES.items():
         os.makedirs(os.path.join(out, locale), exist_ok=True)
         for n, row in enumerate(FRAMES, 1):
             screen = row[0]
-            path = os.path.join(src, f"dark-{screen}.png")
+            path = os.path.join(src, f"{prefix}{screen}.png")
             if not os.path.exists(path):
                 print(f"missing {path}")
                 continue

@@ -170,14 +170,32 @@ struct Planisphere: View {
                         inner.fill(Path(ellipseIn: CGRect(x: c.x + rr * cos(aa) - s, y: c.y + rr * sin(aa) - s, width: s * 2, height: s * 2)),
                                    with: .color(ink.opacity(Double(CGFloat.random(in: 0.18...0.5, using: &rng)))))
                     }
-                    // Sessions given up on stay as grey stars with no glow: an ashen core in a faint haze and a
-                    // broken ring, as big as a lit star so they read at a glance.
+                    // Sessions given up on stay as stars that have gone out: a cooled, rust-red cinder with
+                    // a faint glow inside the thin shell of gas a dying star throws off. Each shell is tilted
+                    // and stretched by its record's id, so no two look stamped out of the same mould.
                     for b in burnt {
                         let p = b.point
-                        func circle(_ r: CGFloat) -> Path { Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)) }
-                        inner.fill(circle(10), with: .color(Theme.paper2.opacity(0.12)))
-                        inner.stroke(circle(7), with: .color(Theme.paper2.opacity(0.7)), style: StrokeStyle(lineWidth: 1, dash: [2, 2.5]))
-                        inner.fill(circle(3.2), with: .color(Theme.paper2.opacity(0.9)))
+                        let bytes = b.record.id.uuid
+                        var shell = inner
+                        shell.translateBy(x: p.x, y: p.y)
+                        shell.rotate(by: .degrees(Double(bytes.0) / 255 * 180))
+                        shell.scaleBy(x: 1, y: 0.72 + CGFloat(bytes.1) / 255 * 0.22)
+                        let shellR: CGFloat = 11
+                        shell.fill(Path(ellipseIn: CGRect(x: -shellR, y: -shellR, width: shellR * 2, height: shellR * 2)),
+                                   with: .radialGradient(Gradient(stops: [
+                                       .init(color: Theme.cinder.opacity(0), location: 0.35),
+                                       .init(color: Theme.cinder.opacity(0.22), location: 0.68),
+                                       .init(color: Theme.nebula.opacity(0.10), location: 0.82),
+                                       .init(color: Theme.cinder.opacity(0), location: 1),
+                                   ]), center: .zero, startRadius: 0, endRadius: shellR))
+                        let glowR: CGFloat = 6
+                        inner.fill(Path(ellipseIn: CGRect(x: p.x - glowR, y: p.y - glowR, width: glowR * 2, height: glowR * 2)),
+                                   with: .radialGradient(Gradient(colors: [Theme.cinder.opacity(0.45), Theme.cinder.opacity(0)]),
+                                                         center: p, startRadius: 0, endRadius: glowR))
+                        let coreR: CGFloat = 2.1
+                        inner.fill(Path(ellipseIn: CGRect(x: p.x - coreR, y: p.y - coreR, width: coreR * 2, height: coreR * 2)),
+                                   with: .radialGradient(Gradient(colors: [Theme.ember.opacity(0.85), Theme.cinder.opacity(0.9)]),
+                                                         center: p, startRadius: 0, endRadius: coreR))
                     }
                     // ecliptic
                     var ecl = inner
@@ -213,7 +231,7 @@ struct Planisphere: View {
                     let done = progress.isComplete(con.id)
                     HStack(spacing: 6) {
                         Text(con.name).font(.serif(12.5, italic: true)).foregroundStyle(Theme.paper)
-                        Text(done ? "tamam" : "\(progress.litCount(in: con))/\(con.stars.count)").font(.system(size: 10)).foregroundStyle(Theme.paper2)
+                        Text(done ? String(localized: "tamam") : "\(progress.litCount(in: con))/\(con.stars.count)").font(.system(size: 10)).foregroundStyle(Theme.paper2)
                     }
                     .fixedSize()
                     .position(x: disc.minX + slot.midX * disc.width, y: disc.minY + slot.maxY * disc.height + 10)
@@ -264,9 +282,11 @@ struct Planisphere: View {
 
     private var accessibilitySummary: String {
         let parts = shown.map { c in
-            progress.isComplete(c.id) ? "\(c.name) tamam" : "\(c.name) \(c.stars.count) yıldızdan \(progress.litCount(in: c))"
+            progress.isComplete(c.id) ? String(localized: "\(c.name) tamam")
+                : String(localized: "\(c.name) \(c.stars.count) yıldızdan \(progress.litCount(in: c))")
         }
         let burnt = progress.burntOutStars.count
-        return "Senin gökyüzün: " + parts.joined(separator: ", ") + (burnt > 0 ? " ve \(burnt) sönmüş yıldız" : "")
+        let sky = parts.joined(separator: ", ")
+        return burnt > 0 ? String(localized: "Senin gökyüzün: \(sky) ve \(burnt) sönmüş yıldız") : String(localized: "Senin gökyüzün: \(sky)")
     }
 }

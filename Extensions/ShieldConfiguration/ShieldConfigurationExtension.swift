@@ -11,10 +11,10 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             backgroundBlurStyle: .systemUltraThinMaterialDark,
             backgroundColor: UIColor(red: 0.035, green: 0.051, blue: 0.133, alpha: 0.92),
             icon: UIImage(systemName: "sparkle")?.withTintColor(accent, renderingMode: .alwaysOriginal),
-            title: .init(text: "Derin odak sürüyor", color: paper),
-            subtitle: .init(text: "Bu uygulama oturum bitene kadar kilitli. Yıldızın seni bekliyor.",
+            title: .init(text: String(localized: "Derin odak sürüyor"), color: paper),
+            subtitle: .init(text: String(localized: "Bu uygulama oturum bitene kadar kilitli. Yıldızın seni bekliyor."),
                             color: paper.withAlphaComponent(0.7)),
-            primaryButtonLabel: .init(text: "Odağa dön", color: UIColor(red: 0.11, green: 0.08, blue: 0.016, alpha: 1)),
+            primaryButtonLabel: .init(text: String(localized: "Odağa dön"), color: UIColor(red: 0.11, green: 0.08, blue: 0.016, alpha: 1)),
             primaryButtonBackgroundColor: accent)
     }
 

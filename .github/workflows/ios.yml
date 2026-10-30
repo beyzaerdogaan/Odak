@@ -41,6 +41,15 @@ jobs:
             -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
             -skipPackagePluginValidation -skipMacroValidation CODE_SIGNING_ALLOWED=NO -quiet
 
+      - name: Check English translations
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild -exportLocalizations -project Odak.xcodeproj -localizationPath build/loc -exportLanguage en \
+            -sdk iphonesimulator -derivedDataPath build/dd -skipPackagePluginValidation -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO -quiet
+          python3 ci/check_translations.py build/loc
+
       - name: Screenshots
         if: github.event_name == 'push'
         run: ./ci/screenshots.sh build/dd/Build/Products/Debug-iphonesimulator/Derin.app screenshots

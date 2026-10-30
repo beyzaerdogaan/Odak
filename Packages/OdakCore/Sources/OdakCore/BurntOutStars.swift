@@ -20,8 +20,8 @@ public struct DiscRect: Sendable {
 }
 
 extension SkyProgress {
-    /// Sessions the user gave up on. Each one stays in the sky as a burnt-out star.
-    public var burntOutStars: [FocusRecord] { records.filter { !$0.completed } }
+    /// Sessions the user gave up on. Each one stays in the sky as a burnt-out star until a Kıvılcım lights it again.
+    public var burntOutStars: [FocusRecord] { records.filter { !$0.completed && !rekindled.contains($0.id) } }
 }
 
 /// Where a burnt-out star sits in the sky disc. It depends only on the session's id, so it stays put across

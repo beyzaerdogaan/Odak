@@ -29,7 +29,7 @@ struct ActiveSessionView: View {
                         .shadow(color: s.isOnBreak ? Theme.ice : Theme.aurora, radius: 4)
                     Text(s.isOnBreak ? "Moladasın" : "Derin odak sürüyor").meta()
                 }
-                Text(s.task.isEmpty ? "Odak" : s.task).font(.system(size: 18, weight: .medium)).foregroundStyle(Theme.paper)
+                Text(s.task.isEmpty ? String(localized: "Odak") : s.task).font(.system(size: 18, weight: .medium)).foregroundStyle(Theme.paper)
                     .lineLimit(1)
             }
             .padding(.top, 12)
@@ -54,7 +54,7 @@ struct ActiveSessionView: View {
                     Chip(text: lockText(s), systemImage: s.blockMode == .none || !model.screenTime.isAuthorized ? "lock.open" : "lock")
                         .glassEffect(.regular, in: .capsule)
                     if s.silenceCalls && model.settings.focusShortcutsReady {
-                        Chip(text: "Bildirimler susturuldu", systemImage: "moon").glassEffect(.regular, in: .capsule)
+                        Chip(text: String(localized: "Bildirimler susturuldu"), systemImage: "moon").glassEffect(.regular, in: .capsule)
                     }
                 }
             }
@@ -71,9 +71,9 @@ struct ActiveSessionView: View {
 
             VStack(spacing: 10) {
                 if s.isOnBreak {
-                    SecondaryButton(title: "Molayı bitir", detail: "· \(clock(s.breakRemaining(at: now)))") { model.endBreak() }
+                    SecondaryButton(title: String(localized: "Molayı bitir"), detail: "· \(clock(s.breakRemaining(at: now)))") { model.endBreak() }
                 } else if s.allowsBreak {
-                    SecondaryButton(title: "5 dk mola ver", detail: s.breakUsed ? "· hakkın kullanıldı" : "· 1 hakkın var") { model.startBreak() }
+                    SecondaryButton(title: String(localized: "5 dk mola ver"), detail: s.breakUsed ? String(localized: "· hakkın kullanıldı") : String(localized: "· 1 hakkın var")) { model.startBreak() }
                         .disabled(s.breakUsed)
                 }
                 if s.strict {
@@ -122,10 +122,10 @@ struct ActiveSessionView: View {
     }
 
     private func lockText(_ s: FocusSession) -> String {
-        guard s.blockMode != .none, model.screenTime.isAuthorized else { return "Uygulama engeli kapalı" }
-        if s.blockMode == .all { return "Uygulamalar kilitli" }
+        guard s.blockMode != .none, model.screenTime.isAuthorized else { return String(localized: "Uygulama engeli kapalı") }
+        if s.blockMode == .all { return String(localized: "Uygulamalar kilitli") }
         let n = model.screenTime.blockedCount
-        return n > 0 ? "\(n) uygulama ve kategori kilitli" : "Kilitlenecek uygulama seçilmedi"
+        return n > 0 ? String(localized: "\(n) uygulama ve kategori kilitli") : String(localized: "Kilitlenecek uygulama seçilmedi")
     }
 
     private func clock(_ t: TimeInterval) -> String {
@@ -156,7 +156,7 @@ struct FocusDial: View {
                         var p = Path()
                         p.move(to: CGPoint(x: c.x + r1 * cos(a), y: c.y + r1 * sin(a)))
                         p.addLine(to: CGPoint(x: c.x + r2 * cos(a), y: c.y + r2 * sin(a)))
-                        let color = lit ? (style == .meteor ? Theme.meteor : Theme.accent) : Theme.star
+                        let color = lit ? style.tint : Theme.star
                         let o = lit ? (major ? 0.9 : 0.55) : (major ? 0.35 : 0.16)
                         ctx.stroke(p, with: .color(color.opacity(o)), style: StrokeStyle(lineWidth: major ? 1.6 : 1, lineCap: .round))
                     }
@@ -164,7 +164,11 @@ struct FocusDial: View {
                                with: .color(Theme.star.opacity(0.08)), lineWidth: 2)
                     var arc = Path()
                     arc.addArc(center: c, radius: r, startAngle: .degrees(-90), endAngle: .degrees(-90 + 360 * progress), clockwise: false)
-                    ctx.stroke(arc, with: .color(style == .meteor ? Theme.meteor : Theme.accent), style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
+                    ctx.stroke(arc, with: .color(style.tint), style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
+                    if style == .orbit {
+                        ctx.stroke(Path(ellipseIn: CGRect(x: c.x - r - 25, y: c.y - r - 25, width: (r + 25) * 2, height: (r + 25) * 2)),
+                                   with: .color(Theme.ice.opacity(0.16)), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
+                    }
                     if style == .analog {
                         for h in 0..<12 {
                             let a = CGFloat(Double(h) / 12 * 2 * .pi)
@@ -174,11 +178,91 @@ struct FocusDial: View {
                     }
                 }
                 let head = CGFloat(progress * 2 * .pi - .pi / 2)
-                Flare(radius: 4.2, color: style == .meteor ? Theme.meteor : Theme.accent)
-                    .position(x: c.x + r * cos(head), y: c.y + r * sin(head))
+                if style == .moonPhase {
+                    MoonPhase(fraction: progress, radius: 8)
+                        .position(x: c.x + r * cos(head), y: c.y + r * sin(head))
+                } else {
+                    Flare(radius: 4.2, color: style.tint)
+                        .position(x: c.x + r * cos(head), y: c.y + r * sin(head))
+                }
+                if style == .orbit {
+                    // A small ringed planet circles just outside the ticks, twice per session.
+                    let a = CGFloat(progress * 4 * .pi - .pi / 2), ro = r + 25
+                    RingedPlanet().frame(width: 18, height: 18)
+                        .position(x: c.x + ro * cos(a), y: c.y + ro * sin(a))
+                }
             }
         }
         .accessibilityHidden(true)
+    }
+}
+
+extension DialStyle {
+    /// Colour of the lit ticks, the arc and the head.
+    var tint: Color {
+        switch self {
+        case .meteor: Theme.meteor
+        case .moonPhase: Theme.star
+        case .orbit: Theme.ice
+        case .classic, .analog: Theme.accent
+        }
+    }
+}
+
+/// The Moon as it waxes from new (0) to full (1): the lit part grows from the right edge.
+struct MoonPhase: View {
+    let fraction: Double
+    var radius: CGFloat = 8
+
+    var body: some View {
+        Canvas { ctx, size in
+            let c = CGPoint(x: size.width / 2, y: size.height / 2)
+            ctx.fill(Path(ellipseIn: CGRect(x: c.x - radius, y: c.y - radius, width: radius * 2, height: radius * 2)),
+                     with: .color(Theme.star.opacity(0.16)))
+            // Right limb from top to bottom, then back up along the terminator, an ellipse whose
+            // half-width runs from +radius (new moon, nothing lit) to -radius (full moon).
+            let k = 1 - 2 * min(1, max(0, fraction))
+            var lit = Path()
+            for i in 0...24 {
+                let t = -Double.pi / 2 + Double.pi * Double(i) / 24
+                let p = CGPoint(x: c.x + radius * cos(t), y: c.y + radius * sin(t))
+                if i == 0 { lit.move(to: p) } else { lit.addLine(to: p) }
+            }
+            for i in 0...24 {
+                let t = Double.pi / 2 - Double.pi * Double(i) / 24
+                lit.addLine(to: CGPoint(x: c.x + k * radius * cos(t), y: c.y + radius * sin(t)))
+            }
+            lit.closeSubpath()
+            ctx.fill(lit, with: .color(Theme.core))
+        }
+        .frame(width: radius * 2 + 12, height: radius * 2 + 12)
+        .background(Circle().fill(Theme.star.opacity(0.10)).frame(width: radius * 3.4, height: radius * 3.4))
+        .accessibilityHidden(true)
+    }
+}
+
+/// A small planet with a tilted ring, for the Yörünge dial.
+struct RingedPlanet: View {
+    var body: some View {
+        ZStack {
+            Circle().fill(Theme.ice.opacity(0.15)).scaleEffect(1.8)
+            Circle().fill(LinearGradient(colors: [Theme.core, Theme.ice], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(width: 9, height: 9)
+            Ellipse().stroke(Theme.core.opacity(0.85), lineWidth: 1.2)
+                .frame(width: 18, height: 6).rotationEffect(.degrees(-20))
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+/// A focus dial in miniature for the shop's Görünüm tiles.
+struct DialPreview: View {
+    let style: DialStyle
+    var body: some View {
+        FocusDial(minutes: 25, progress: 0.62, style: style)
+            .frame(width: 150, height: 150)
+            .scaleEffect(0.4)
+            .frame(width: 60, height: 60)
     }
 }
 
@@ -201,7 +285,7 @@ struct NowPlayingCard: View {
                             in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Button(action: onOpen) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(playlist?.name ?? (sounds.active.isEmpty ? "Ses ve müzik" : sounds.active.map(\.title).joined(separator: " ve ")))
+                    Text(playlist?.name ?? (sounds.active.isEmpty ? String(localized: "Ses ve müzik") : sounds.active.map(\.title).formatted(.list(type: .and).locale(AppLanguage.locale))))
                         .font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.paper).lineLimit(1)
                     Text(subtitle(playlist: playlist)).small().lineLimit(1)
                 }
@@ -232,8 +316,8 @@ struct NowPlayingCard: View {
     }
 
     private func subtitle(playlist: (name: String, service: String)?) -> String {
-        let ambient = model.sounds.active.map { "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi" }
-        if let playlist { return ([playlist.service] + ambient).joined(separator: " ve ") }
-        return ambient.isEmpty ? "Ortam sesi ya da müzik seç" : ambient.joined(separator: ", ")
+        let ambient = model.sounds.active.map { String(localized: "%\(Int((model.sounds.volumes[$0] ?? 0) * 100)) \($0.title.lowercased()) sesi") }
+        if let playlist { return ([playlist.service] + ambient).formatted(.list(type: .and).locale(AppLanguage.locale)) }
+        return ambient.isEmpty ? String(localized: "Ortam sesi ya da müzik seç") : ambient.joined(separator: ", ")
     }
 }

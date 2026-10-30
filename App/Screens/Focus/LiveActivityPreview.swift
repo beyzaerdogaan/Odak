@@ -26,7 +26,9 @@ struct LiveActivityPreview: View {
             VStack(spacing: 0) {
                 Text(now, format: .dateTime.weekday(.wide).day().month(.wide))
                     .font(.system(size: 18, weight: .semibold))
-                Text(now, format: .dateTime.hour().minute().locale(Locale(identifier: "tr_TR")))
+                Text(now, format: Date.VerbatimFormatStyle(
+                    format: "\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits)",
+                    timeZone: .current, calendar: .current))
                     .font(.system(size: 92, weight: .bold, design: .rounded))
             }
             .foregroundStyle(Theme.paper)

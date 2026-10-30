@@ -20,9 +20,9 @@ struct AddMusicSheet: View {
                     Divider().overlay(Theme.hair)
 
                     VStack(alignment: .leading, spacing: 12) {
-                        step(1, "Aşağıdan müzik uygulamanı aç ve bir çalma listesi ya da albüm seç.")
-                        step(2, "Paylaş'a dokun, uygulamalar arasından Derin'i seç. Derin görünmüyorsa Diğer'e dokun.")
-                        step(3, "Derin'e döndüğünde liste burada olur.")
+                        step(1, String(localized: "Aşağıdan müzik uygulamanı aç ve bir çalma listesi ya da albüm seç."))
+                        step(2, String(localized: "Paylaş'a dokun, uygulamalar arasından Derin'i seç. Derin görünmüyorsa Diğer'e dokun."))
+                        step(3, String(localized: "Derin'e döndüğünde liste burada olur."))
                     }
                     VStack(spacing: 8) {
                         ForEach(MusicService.allCases) { service in
@@ -119,7 +119,7 @@ struct AddMusicSheet: View {
                         Button {
                             model.music.add(list)
                             choose(list.id)
-                            Task { _ = await player.play(list) }
+                            if model.session != nil { Task { _ = await player.play(list) } }
                         } label: {
                             HStack(spacing: 12) {
                                 AsyncImage(url: list.artwork) { image in
@@ -148,9 +148,9 @@ struct AddMusicSheet: View {
 
     private func openTitle(_ service: MusicService) -> String {
         switch service {
-        case .spotify: "Spotify'ı aç"
-        case .appleMusic: "Apple Music'i aç"
-        case .youtubeMusic: "YouTube Music'i aç"
+        case .spotify: String(localized: "Spotify'ı aç")
+        case .appleMusic: String(localized: "Apple Music'i aç")
+        case .youtubeMusic: String(localized: "YouTube Music'i aç")
         }
     }
 

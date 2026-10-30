@@ -1,11 +1,11 @@
 import UIKit
 
 /// iOS does not let apps silence calls and messages. Instead the user creates a "Derin" Focus and two
-/// Shortcuts once ("Derin Başlat" turns the Focus on, "Derin Bitir" turns it off); the app runs them
-/// at the start and end of each session and Shortcuts sends the user straight back.
+/// Shortcuts once ("Derin Başlat" turns the Focus on, "Derin Bitir" turns it off, named in the app's
+/// language); the app runs them at the start and end of each session and Shortcuts sends the user straight back.
 enum FocusModeShortcuts {
-    static let startName = "Derin Başlat"
-    static let endName = "Derin Bitir"
+    static let startName = String(localized: "Derin Başlat")
+    static let endName = String(localized: "Derin Bitir")
 
     /// Ready-made copies of the two shortcuts shared from iCloud, so setup is one "Add Shortcut" tap each.
     static let startShareURL = URL(string: "https://www.icloud.com/shortcuts/37aeb34462f94c87bb604415091e7867")!

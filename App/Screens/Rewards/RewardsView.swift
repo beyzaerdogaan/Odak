@@ -13,6 +13,15 @@ struct RewardsView: View {
     enum Category: String, CaseIterable, Identifiable {
         case all = "Tümü", boosters = "Güçlendirici", sounds = "Sesler", looks = "Görünüm", zenit = "Zenit"
         var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .all: String(localized: "Tümü")
+            case .boosters: String(localized: "Güçlendirici")
+            case .sounds: String(localized: "Sesler")
+            case .looks: String(localized: "Görünüm")
+            case .zenit: String(localized: "Zenit")
+            }
+        }
     }
 
     var body: some View {
@@ -37,7 +46,7 @@ struct RewardsView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
-        .collapsingTitle("Ödüller")
+        .collapsingTitle(String(localized: "Ödüller"))
         .background(StarField(seed: 6, count: 90, depth: 0.7, grid: false, theme: p.selectedTheme, falloff: true))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showNewPromise) { NewPromiseSheet(onNeedZenit: { showZenit = true }) }
@@ -54,7 +63,7 @@ struct RewardsView: View {
                     .font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.accentInk).frame(minHeight: 44)
             }
             if p.promises.isEmpty {
-                Text("Kendine bir ödül belirle, örneğin “10 saat odaklanınca yeni bir kitap alacağım” ya da “7 gün üst üste odaklanınca kahvaltıya çıkacağım”. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar.")
+                Text("Kendine bir ödül belirle. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar.")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper2).padding(.vertical, 8)
             }
             ForEach(p.promises.sorted { ($0.celebratedAt == nil ? 0 : 1) < ($1.celebratedAt == nil ? 0 : 1) }) { promise in
@@ -88,7 +97,7 @@ struct RewardsView: View {
                         Button {
                             withAnimation(.snappy) { category = c }
                         } label: {
-                            Text(c.rawValue)
+                            Text(c.title)
                                 .font(.system(size: 14, weight: category == c ? .semibold : .medium))
                                 .foregroundStyle(category == c ? Theme.night : Theme.paper2)
                                 .padding(.horizontal, 15).frame(height: 38)
@@ -108,12 +117,13 @@ struct RewardsView: View {
     private func boosters(_ p: SkyProgress) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Güçlendiriciler").font(.serif(24)).foregroundStyle(Theme.paper).padding(.bottom, 4)
-            ForEach(Booster.allCases) { b in
+            // The Kuyrukluyıldız only matters on the journey, so it waits until the journey opens.
+            ForEach(Booster.allCases.filter { $0 != .comet || p.journeyUnlocked || p.count($0) > 0 }) { b in
                 HStack(spacing: 12) {
                     IconDisc(systemImage: icon(b), color: color(b), fill: color(b).opacity(0.12), size: 46)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(b.title).font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                        Text(p.count(b) > 0 ? "\(b.detail) · Elinde \(p.count(b)) tane var" : b.detail).small()
+                        Text(p.count(b) > 0 ? String(localized: "\(b.detail) · Elinde \(p.count(b)) tane var") : b.detail).small()
                     }
                     Spacer(minLength: 4)
                     if p.count(b) > 0 && b != .cloud {
@@ -131,8 +141,16 @@ struct RewardsView: View {
     }
 
     private func use(_ b: Booster) {
-        if b == .telescope { showTelescope = true; return }
-        model.toast = model.progress.use(b) ? "\(b.title) sonraki oturum için hazır" : "Bu zaten hazır"
+        switch b {
+        case .telescope:
+            showTelescope = true
+        case .spark:
+            model.toast = model.progress.use(b) ? String(localized: "Sönmüş bir yıldız yeniden yandı") : String(localized: "Gökyüzünde sönmüş yıldız yok")
+        case .comet where !model.progress.journeyUnlocked:
+            model.toast = String(localized: "Kuyrukluyıldız, Işık yolculuğu başlayınca kullanılabilir")
+        default:
+            model.toast = model.progress.use(b) ? String(localized: "\(b.title) sonraki oturum için hazır") : String(localized: "Bu zaten hazır")
+        }
     }
 
     private func icon(_ b: Booster) -> String {
@@ -141,14 +159,17 @@ struct RewardsView: View {
         case .shootingStar: "sparkle"
         case .cloud: "cloud"
         case .brightTicket: "sun.max"
+        case .twinStar: "sparkles"
+        case .spark: "flame"
+        case .comet: "moon.stars"
         }
     }
 
     private func color(_ b: Booster) -> Color {
         switch b {
-        case .telescope, .shootingStar: Theme.accentInk
-        case .cloud: Theme.ice
-        case .brightTicket: Theme.ember
+        case .telescope, .shootingStar, .twinStar: Theme.accentInk
+        case .cloud, .comet: Theme.ice
+        case .brightTicket, .spark: Theme.ember
         }
     }
 
@@ -188,22 +209,26 @@ struct RewardsView: View {
                                  onBuy: { model.buy(.theme(theme)) }, onSelect: { model.selectTheme(theme) })
                     }
                 }
-                lookTile(preview: AnyView(Image(systemName: "clock").font(.system(size: 30, weight: .light)).foregroundStyle(Theme.paper2)),
-                         title: "Analog sayaç", owned: p.ownedDials.contains(.analog) || model.isZenit,
-                         selected: p.selectedDial == .analog, price: ShopItem.analogDial.price,
-                         onBuy: { model.buy(.analogDial) },
-                         onSelect: { model.progress.selectedDial = p.selectedDial == .analog ? .classic : .analog })
+                ForEach([DialStyle.analog, .moonPhase, .orbit], id: \.self) { dial in
+                    lookTile(preview: AnyView(DialPreview(style: dial)), title: dial.title,
+                             owned: p.ownedDials.contains(dial) || model.isZenit,
+                             selected: p.selectedDial == dial, price: ShopItem.dial(dial).price,
+                             onBuy: { model.buy(.dial(dial)) },
+                             onSelect: { model.progress.selectedDial = p.selectedDial == dial ? .classic : dial })
+                }
                 if p.ownedDials.contains(.meteor) {
-                    lookTile(preview: AnyView(Image(systemName: "sparkles").font(.system(size: 28)).foregroundStyle(Theme.meteor)),
-                             title: "Meteor izi", owned: true, selected: p.selectedDial == .meteor, price: nil, onBuy: {},
+                    lookTile(preview: AnyView(DialPreview(style: .meteor)),
+                             title: DialStyle.meteor.title, owned: true, selected: p.selectedDial == .meteor, price: nil, onBuy: {},
                              onSelect: { model.progress.selectedDial = p.selectedDial == .meteor ? .classic : .meteor })
                 }
-                lookTile(preview: AnyView(Image("AppIconPreview").resizable().scaledToFit().frame(width: 40, height: 40)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))),
-                         title: "Şafak uygulama ikonu", owned: p.ownsAppIcon || model.isZenit,
-                         selected: UIApplication.shared.alternateIconName != nil, price: ShopItem.appIcon.price,
-                         onBuy: { model.buy(.appIcon) },
-                         onSelect: { model.setAlternateIcon(UIApplication.shared.alternateIconName == nil) })
+                ForEach(AppIconStyle.allCases) { icon in
+                    lookTile(preview: AnyView(Image(icon.previewImage).resizable().scaledToFit().frame(width: 40, height: 40)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))),
+                             title: icon.title, owned: p.ownedIcons.contains(icon) || model.isZenit,
+                             selected: UIApplication.shared.alternateIconName == icon.iconName, price: ShopItem.appIcon(icon).price,
+                             onBuy: { model.buy(.appIcon(icon)) },
+                             onSelect: { model.setAlternateIcon(UIApplication.shared.alternateIconName == icon.iconName ? nil : icon) })
+                }
             }
         }
     }
@@ -242,14 +267,14 @@ struct RewardsView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(["Tüm ses paketleri ve gök temaları", "Ayrıntılı haftalık ve aylık istatistikler", "Sınırsız kendine söz"], id: \.self) { line in
+                ForEach([String(localized: "Tüm ses paketleri ve gök temaları"), String(localized: "Ayrıntılı haftalık ve aylık istatistikler"), String(localized: "Sınırsız kendine söz")], id: \.self) { line in
                     HStack(spacing: 10) { Spark(size: 11); Text(line).font(.system(size: 14)).foregroundStyle(Theme.paper) }
                 }
             }
             if model.isZenit {
                 Label("Zenit aktif", systemImage: "checkmark.seal.fill").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.aurora)
             } else {
-                PrimaryButton(title: "Zenit'e geç") { showZenit = true }
+                PrimaryButton(title: String(localized: "Zenit'e geç")) { showZenit = true }
             }
         }
         .padding(18)
@@ -371,7 +396,7 @@ struct NewPromiseSheet: View {
             onNeedZenit()
         } else {
             dismiss()
-            model.toast = "Aynı anda en fazla \(SkyProgress.freePromiseLimit) söz tutabilirsin"
+            model.toast = String(localized: "Aynı anda en fazla \(SkyProgress.freePromiseLimit) söz tutabilirsin")
         }
     }
 }
@@ -390,8 +415,8 @@ struct TelescopeSheet: View {
                             Button {
                                 if model.progress.use(.telescope, target: s.id) {
                                     model.toast = s.isBright
-                                        ? "\(s.name) parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek"
-                                        : "Sonraki yıldızın \(s.name) olacak"
+                                        ? String(localized: "\(s.name) parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek")
+                                        : String(localized: "Sonraki yıldızın \(s.name) olacak")
                                 }
                                 dismiss()
                             } label: {

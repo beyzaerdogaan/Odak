@@ -47,12 +47,16 @@ extension SkyProgress {
         m.armedBrightTicket = changed(\.armedBrightTicket)
         let lit = m.litStars
         m.telescopeTarget = changed(\.telescopeTarget).flatMap { lit[$0] == nil ? $0 : nil }
+        m.armedTwinStar = changed(\.armedTwinStar)
+        m.armedComet = changed(\.armedComet)
+        m.cometMinutes = added(\.cometMinutes)
+        m.rekindled = local.rekindled.union(remote.rekindled)
         m.ownedSounds = local.ownedSounds.union(remote.ownedSounds)
         m.ownedThemes = local.ownedThemes.union(remote.ownedThemes)
         m.selectedTheme = changed(\.selectedTheme)
         m.ownedDials = local.ownedDials.union(remote.ownedDials)
         m.selectedDial = changed(\.selectedDial)
-        m.ownsAppIcon = local.ownsAppIcon || remote.ownsAppIcon
+        m.ownedIcons = local.ownedIcons.union(remote.ownedIcons)
         m.badges = earliest(\.badges)
         m.deepSky = earliest(\.deepSky)
         m.coveredDays = local.coveredDays.union(remote.coveredDays)

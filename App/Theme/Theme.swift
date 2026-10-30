@@ -28,6 +28,8 @@ enum Theme {
     static let meteor = dynamic(light: 0x5D47BE, dark: 0xC9B8FF)
     static let meteor2 = dynamic(light: 0x463A7A, dark: 0xD6CFF0)
     static let ember = dynamic(light: 0xB9582A, dark: 0xF0A070)
+    /// Dull rust of a star that has gone out.
+    static let cinder = dynamic(light: 0x8C3F24, dark: 0xB4553A)
     static let alarm = dynamic(light: 0xB23A30, dark: 0xF2A49A)
 
     static func dynamic(light: UInt32, lightAlpha: Double = 1, dark: UInt32, darkAlpha: Double = 1) -> Color {
@@ -74,6 +76,21 @@ extension SkyTheme {
         case .twilight: [Color(hex: 0x6A3A3A, opacity: 0.5), Color(hex: 0xE59A6A, opacity: 0.35)]
         case .nebula: [Color(hex: 0x6A2F55, opacity: 0.45), Color(hex: 0xE6A6C7, opacity: 0.3)]
         case .redDwarf: [Color(hex: 0x5A1E1E, opacity: 0.5), Color(hex: 0xF07050, opacity: 0.3)]
+        case .blueHour: [Color(hex: 0x1E2A6A, opacity: 0.55), Color(hex: 0x6A6AD8, opacity: 0.35)]
+        case .milkyWay: [Color(hex: 0x2A2440, opacity: 0.4), Color(hex: 0xB89A7A, opacity: 0.22)]
+        }
+    }
+
+    /// How strongly the Milky Way band shows; the Samanyolu theme brings it out.
+    var milkyWayBoost: Double { self == .milkyWay ? 2.2 : 1 }
+}
+
+extension AppIconStyle {
+    /// Small picture of the icon for the shop tile.
+    var previewImage: String {
+        switch self {
+        case .dawn: "AppIconPreview"
+        case .midnight: "AppIconMidnightPreview"
         }
     }
 }
@@ -129,6 +146,12 @@ struct StarField: View {
                 }
 
                 if falloff {
+                    // The Samanyolu theme shows its band behind every screen, not only the full-screen skies.
+                    if theme == .milkyWay {
+                        milkyWay(ctx: ctx, size: size, light: light) { p, u in
+                            star(at: p, mag: u * 0.55, fade: 1 - p.y / size.height * 0.6)
+                        }
+                    }
                     fadingSky(ctx: ctx, size: size, light: light, tints: tints, rng: &rng)
                     return
                 }
@@ -250,7 +273,15 @@ struct StarField: View {
                 let w = CGFloat.random(in: 140...260, using: &g), h = CGFloat.random(in: 60...120, using: &g)
                 let dy = CGFloat.random(in: -18...18, using: &g)
                 layer.fill(Path(ellipseIn: CGRect(x: x, y: dy - h / 2, width: w, height: h)),
-                           with: .color(glow.opacity(light ? 0.28 : 0.07)))
+                           with: .color(glow.opacity((light ? 0.28 : 0.07) * theme.milkyWayBoost)))
+            }
+            if theme == .milkyWay {
+                // A warm core where the band is brightest, as in long-exposure photos.
+                for _ in 0..<4 {
+                    let x = CGFloat.random(in: -length * 0.15...length * 0.1, using: &g)
+                    layer.fill(Path(ellipseIn: CGRect(x: x, y: -45, width: 200, height: 90)),
+                               with: .color(Color(hex: 0xF2D2A8).opacity(light ? 0.22 : 0.08)))
+                }
             }
             // Dust lane slightly off the band's spine.
             for _ in 0..<5 {
@@ -262,7 +293,7 @@ struct StarField: View {
         }
 
         // Faint stars crowd along the band (offsets roughly Gaussian across it).
-        for _ in 0..<160 {
+        for _ in 0..<Int(160 * theme.milkyWayBoost) {
             let t = CGFloat.random(in: -length * 0.55...length * 0.55, using: &rng)
             let n = (CGFloat.random(in: -1...1, using: &rng) + CGFloat.random(in: -1...1, using: &rng)
                      + CGFloat.random(in: -1...1, using: &rng)) * 32
