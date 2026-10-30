@@ -320,12 +320,21 @@ struct FocusShortcutsGuide: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
 
+    private struct Step {
+        let icon: String
+        let text: String
+        var button: (title: String, url: URL)?
+    }
+
     private let steps = [
-        ("moon", "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy."),
-        ("person.2", "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler."),
-        ("square.stack.3d.up", "Kestirmeler uygulamasında “Derin Başlat” adında bir kestirme oluştur. İçine “Odağı Ayarla” eylemini ekle, Odak olarak Derin'i seç ve Açık konumuna getir."),
-        ("square.stack.3d.down.right", "Aynı şekilde “Derin Bitir” adında ikinci bir kestirme oluştur. Bu kez eylemi Kapalı konumuna getir."),
-        ("checkmark.circle", "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir."),
+        Step(icon: "moon", text: "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy.",
+             button: ("Ayarlar'ı aç", FocusModeShortcuts.focusSettingsURL)),
+        Step(icon: "person.2", text: "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler."),
+        Step(icon: "square.stack.3d.up", text: "Aşağıdaki düğmeye dokun ve açılan ekranda “Kestirmeyi Ekle”yi seç. Odak sorulursa Derin'i seç.",
+             button: ("Derin Başlat'ı ekle", FocusModeShortcuts.startShareURL)),
+        Step(icon: "square.stack.3d.down.right", text: "Aynı şekilde ikinci kestirmeyi de ekle.",
+             button: ("Derin Bitir'i ekle", FocusModeShortcuts.endShareURL)),
+        Step(icon: "checkmark.circle", text: "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir."),
     ]
 
     var body: some View {
@@ -333,20 +342,21 @@ struct FocusShortcutsGuide: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    Text("iOS, uygulamaların aramaları ve mesajları kendi başına susturmasına izin vermiyor. Bu yüzden bir kereliğine bir Odak modu ve iki kestirme kurmamız gerekiyor.")
+                    Text("iOS, uygulamaların aramaları ve mesajları kendi başına susturmasına izin vermiyor. Bu yüzden bir kereliğine bir Odak modu oluşturup iki hazır kestirmeyi eklemen gerekiyor.")
                         .font(.system(size: 15)).foregroundStyle(Theme.paperBody)
                     ForEach(Array(steps.enumerated()), id: \.offset) { i, step in
                         HStack(alignment: .top, spacing: 12) {
-                            IconDisc(systemImage: step.0, color: Theme.accentInk, size: 36)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Adım \(i + 1)").small()
-                                Text(step.1).font(.system(size: 15)).foregroundStyle(Theme.paper)
+                            IconDisc(systemImage: step.icon, color: Theme.accentInk, size: 36)
+                            VStack(alignment: .leading, spacing: 8) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Adım \(i + 1)").small()
+                                    Text(step.text).font(.system(size: 15)).foregroundStyle(Theme.paper)
+                                }
+                                if let button = step.button {
+                                    SecondaryButton(title: button.title, color: Theme.accentInk) { UIApplication.shared.open(button.url) }
+                                }
                             }
                         }
-                    }
-                    HStack(spacing: 10) {
-                        SecondaryButton(title: "Ayarlar") { UIApplication.shared.open(FocusModeShortcuts.focusSettingsURL) }
-                        SecondaryButton(title: "Kestirmeler") { UIApplication.shared.open(URL(string: "shortcuts://")!) }
                     }
                     Toggle("Kurulumu tamamladım", isOn: $model.settings.focusShortcutsReady)
                         .font(.system(size: 15, weight: .semibold))

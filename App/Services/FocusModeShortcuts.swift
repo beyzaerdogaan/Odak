@@ -7,6 +7,10 @@ enum FocusModeShortcuts {
     static let startName = "Derin Başlat"
     static let endName = "Derin Bitir"
 
+    /// Ready-made copies of the two shortcuts shared from iCloud, so setup is one "Add Shortcut" tap each.
+    static let startShareURL = URL(string: "https://www.icloud.com/shortcuts/PLACEHOLDER_START")!
+    static let endShareURL = URL(string: "https://www.icloud.com/shortcuts/PLACEHOLDER_END")!
+
     static func url(for name: String) -> URL? {
         var c = URLComponents(string: "shortcuts://x-callback-url/run-shortcut")!
         c.queryItems = [.init(name: "name", value: name), .init(name: "x-success", value: "derin://focus"),
