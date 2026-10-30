@@ -1,0 +1,4582 @@
+{
+  "sourceLanguage" : "tr",
+  "strings" : {
+    " · saatte ~%lld meteor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " · ~%lld meteors an hour"
+          }
+        }
+      }
+    },
+    "%%%lld %@ sesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% %@"
+          }
+        }
+      }
+    },
+    "%@\nmeteor yağmuru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@\nmeteor shower"
+          }
+        }
+      }
+    },
+    "%@ %lld yıldızdan %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %3$lld of %2$lld stars"
+          }
+        }
+      }
+    },
+    "%@ / %@ ı.y." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@ ly"
+          }
+        }
+      }
+    },
+    "%@ Oraya varmana %lld saatlik odak kaldı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Focus left to get there: %lld h."
+          }
+        }
+      }
+    },
+    "%@ açıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ unlocked"
+          }
+        }
+      }
+    },
+    "%@ durağına %@ ışık yılı kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ light-years to %1$@"
+          }
+        }
+      }
+    },
+    "%@ durağına vardın, ödülün: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You reached %@. Your reward: %@"
+          }
+        }
+      }
+    },
+    "%@ için odak süren doldu. Hangi yıldızı yaktığını gör." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your focus time for %@ is up. Come see which star you lit."
+          }
+        }
+      }
+    },
+    "%@ keşfedildi ve %lld Işık kazandın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You discovered %@ and earned %lld Light"
+          }
+        }
+      }
+    },
+    "%@ meteor yağmuru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ meteor shower"
+          }
+        }
+      }
+    },
+    "%@ parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is a bright star, so it only falls in a session of 60 minutes or more, or in strict mode."
+          }
+        }
+      }
+    },
+    "%@ parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is bright: it will fall in a 60-minute session, in strict mode, or in 45 minutes with a ticket"
+          }
+        }
+      }
+    },
+    "%@ sonraki oturum için hazır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is ready for your next session"
+          }
+        }
+      }
+    },
+    "%@ takımyıldızı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in %@"
+          }
+        }
+      }
+    },
+    "%@ takımyıldızı için %lld yıldız kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$lld stars left in %1$@"
+          }
+        }
+      }
+    },
+    "%@ takımyıldızı, %lld yıldızdan %lld tanesi yanık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %3$lld of %2$lld stars lit"
+          }
+        }
+      }
+    },
+    "%@ takımyıldızını bitirmene bir yıldız kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One more star to finish %@"
+          }
+        }
+      }
+    },
+    "%@ tamam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ complete"
+          }
+        }
+      }
+    },
+    "%@ tarihinde başlıyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begins on %@."
+          }
+        }
+      }
+    },
+    "%@ zirvede" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ at their peak"
+          }
+        }
+      }
+    },
+    "%@ · Elinde %lld tane var" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · You have %lld"
+          }
+        }
+      }
+    },
+    "%@ ı.y." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ly"
+          }
+        }
+      }
+    },
+    "%@, %lld nesneden %lld tanesi bulundu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %3$lld of %2$lld objects found"
+          }
+        }
+      }
+    },
+    "%lld / %lld oturum" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld sessions"
+          }
+        }
+      }
+    },
+    "%lld / %lld takımyıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld constellations"
+          }
+        }
+      }
+    },
+    "%lld / %lld tamam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld complete"
+          }
+        }
+      }
+    },
+    "%lld / %lld yıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld stars"
+          }
+        }
+      }
+    },
+    "%lld Işık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Light"
+          }
+        }
+      }
+    },
+    "%lld Işık ile satın al" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy for %lld Light"
+          }
+        }
+      }
+    },
+    "%lld dakika" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minute"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minutes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld dakika odak" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minute of focus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minutes of focus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld dakika telefona bakmadın" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You didn't look at your phone for %lld minute"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You didn't look at your phone for %lld minutes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        }
+      }
+    },
+    "%lld dk kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min left"
+          }
+        }
+      }
+    },
+    "%lld durak" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld stop"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld stops"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld gün" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld gün sonra" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld günlük seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld-day streak"
+          }
+        }
+      }
+    },
+    "%lld kategori" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld category"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld categories"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld oturum tamamlarsan %@ rozetini ve “Meteor izi” sayaç stilini kazanırsın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete %1$lld sessions to earn the %2$@ badge and the “Meteor trail” timer style."
+          }
+        }
+      }
+    },
+    "%lld sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h"
+          }
+        }
+      }
+    },
+    "%lld sa %lld dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h %lld min"
+          }
+        }
+      }
+    },
+    "%lld sa odak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h focus"
+          }
+        }
+      }
+    },
+    "%lld saat odak" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld hour of focus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld hours of focus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld seri koruyucu bulut" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld streak-saving cloud"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld streak-saving clouds"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld site" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld website"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld websites"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld uygulama" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld app"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld apps"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld uygulama ve kategori kilitli" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld app or category locked"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld apps and categories locked"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%llds" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lldh"
+          }
+        }
+      }
+    },
+    "+ Yeni söz" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ New promise"
+          }
+        }
+      }
+    },
+    "+%lld Işık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld Light"
+          }
+        }
+      }
+    },
+    ", %lld yıldız, %lld oturumda" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ", %lld stars in %lld sessions"
+          }
+        }
+      }
+    },
+    "16 tanınmış takımyıldızın hepsini yaktın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've lit all 16 well-known constellations."
+          }
+        }
+      }
+    },
+    "2 sese kadar karıştır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mix up to 2 sounds"
+          }
+        }
+      }
+    },
+    "5 dk mola ver" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a 5-min break"
+          }
+        }
+      }
+    },
+    "Adım %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %lld"
+          }
+        }
+      }
+    },
+    "Aktif" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
+    "Albüm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Album"
+          }
+        }
+      }
+    },
+    "Analog sayaç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analog timer"
+          }
+        }
+      }
+    },
+    "Apple Music Derin'de çalar, diğerleri kendi uygulamasında açılır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music plays inside Derin; the others open in their own app"
+          }
+        }
+      }
+    },
+    "Apple Music kitaplığın okunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read your Apple Music library."
+          }
+        }
+      }
+    },
+    "Apple Music kitaplığında çalma listesi yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no playlists in your Apple Music library."
+          }
+        }
+      }
+    },
+    "Apple Music kitaplığından seç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from your Apple Music library"
+          }
+        }
+      }
+    },
+    "Apple Music listesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music list"
+          }
+        }
+      }
+    },
+    "Apple Music listeyi çalamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music couldn't play this list."
+          }
+        }
+      }
+    },
+    "Apple Music · Derin'de çalar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music · plays in Derin"
+          }
+        }
+      }
+    },
+    "Apple Music'e erişim izni verilmedi. Ayarlar'dan açabilirsin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Derin wasn't given access to Apple Music. You can allow it in Settings."
+          }
+        }
+      }
+    },
+    "Apple Music'i aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Apple Music"
+          }
+        }
+      }
+    },
+    "Apple ile devam et" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Apple"
+          }
+        }
+      }
+    },
+    "Apple onayı bekleniyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Awaiting Apple's approval"
+          }
+        }
+      }
+    },
+    "Apple ya da Google hesabınla giriş yaparsan ilerlemen saklanır ve yeni telefonuna taşınır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with Apple or Google to keep your progress safe and bring it along to your next phone."
+          }
+        }
+      }
+    },
+    "Arama ve mesajları sustur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silence calls and messages"
+          }
+        }
+      }
+    },
+    "Arama ve mesajları susturma kurulumu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up silencing calls and messages"
+          }
+        }
+      }
+    },
+    "Avcı Bulutsusu çizimi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drawing of the Orion Nebula"
+          }
+        }
+      }
+    },
+    "Avcı ile açılır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocks with Orion"
+          }
+        }
+      }
+    },
+    "Avcı'yı tamamlayınca açılır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocks when you complete Orion"
+          }
+        }
+      }
+    },
+    "Ay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month"
+          }
+        }
+      }
+    },
+    "Ay %%%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moon %lld%%"
+          }
+        }
+      }
+    },
+    "Ay %%%lld, karanlık gök" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moon %lld%%, dark sky"
+          }
+        }
+      }
+    },
+    "Ay %%%lld, parlak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moon %lld%%, bright"
+          }
+        }
+      }
+    },
+    "Ay tutulması" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunar eclipse"
+          }
+        }
+      }
+    },
+    "Ay, Güneş'in önünden geçiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moon passes in front of the Sun"
+          }
+        }
+      }
+    },
+    "Ayarlar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Ayarlar > Odak bölümünde “+” düğmesine dokunarak yeni bir Odak oluştur ve adını “Derin” koy." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Settings > Focus, tap “+” to create a new Focus and name it “Derin”."
+          }
+        }
+      }
+    },
+    "Aynı anda %lld söz tutabilirsin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can keep %lld promises at a time."
+          }
+        }
+      }
+    },
+    "Aynı anda en fazla %lld söz tutabilirsin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can keep at most %lld promises at a time"
+          }
+        }
+      }
+    },
+    "Aynı şekilde “Derin Bitir” adında ikinci bir kestirme oluştur. Bu kez eylemi Kapalı konumuna getir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a second shortcut the same way and name it “End Derin”. This time, set the action to Off."
+          }
+        }
+      }
+    },
+    "Ayrıntılı haftalık ve aylık istatistikler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detailed weekly and monthly statistics"
+          }
+        }
+      }
+    },
+    "Ayrıntılı istatistikler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detailed statistics"
+          }
+        }
+      }
+    },
+    "Az önce" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just now"
+          }
+        }
+      }
+    },
+    "Açık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On"
+          }
+        }
+      }
+    },
+    "Açıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocked"
+          }
+        }
+      }
+    },
+    "Aşağıdan müzik uygulamanı aç ve bir çalma listesi ya da albüm seç." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open your music app below and choose a playlist or album."
+          }
+        }
+      }
+    },
+    "Bağlantı bekleniyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for a connection"
+          }
+        }
+      }
+    },
+    "Bağlantıyı kes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnect"
+          }
+        }
+      }
+    },
+    "Bağlı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected"
+          }
+        }
+      }
+    },
+    "Başlangıç göğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starter sky"
+          }
+        }
+      }
+    },
+    "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once the starter sky is complete, a journey toward real star systems begins. Every hour of focus carries you 1 light-year further, and the route never ends."
+          }
+        }
+      }
+    },
+    "Başlangıç göğünü tamamladığında yolculuk başlar. Her odak saatin seni 1 ışık yılı ileri taşıyacak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The journey begins once you complete the starter sky. Every hour of focus will carry you 1 light-year further."
+          }
+        }
+      }
+    },
+    "Başlangıç göğüyle paralel ilerler ve bulutsuları, galaksileri, yıldız kümelerini kapsar. İlk nesne Avcı Bulutsusu'dur ve Avcı takımyıldızı tamamlandıktan sonra 90 dakikalık bir oturumla birlikte açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Runs alongside the starter sky and covers nebulae, galaxies and star clusters. The first object is the Orion Nebula, which opens with a 90-minute session once Orion is complete."
+          }
+        }
+      }
+    },
+    "Bildirimler susturuldu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications silenced"
+          }
+        }
+      }
+    },
+    "Bilgi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        }
+      }
+    },
+    "Bir hesapla yıldızların, Işığın ve takımyıldızların saklanır. Telefonunu değiştirsen ya da uygulamayı silsen bile kaldığın yerden devam edersin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With an account, your stars, Light and constellations are kept safe. Even if you change phones or delete the app, you pick up right where you left off."
+          }
+        }
+      }
+    },
+    "Bitince müziği durdur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop the music when it ends"
+          }
+        }
+      }
+    },
+    "Bitti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "Bu ay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month"
+          }
+        }
+      }
+    },
+    "Bu bir liste bağlantısı değil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This isn't a link to a list"
+          }
+        }
+      }
+    },
+    "Bu bir çalma listesi ya da albüm bağlantısı değil." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This isn't a link to a playlist or album."
+          }
+        }
+      }
+    },
+    "Bu e-posta başka bir giriş yöntemiyle kayıtlı. O yöntemle giriş yap." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This email is registered with another sign-in method. Please sign in that way."
+          }
+        }
+      }
+    },
+    "Bu gece meteor yağmurunun zirvesi var. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tonight the meteor shower peaks. Find a spot away from city lights and look up after midnight."
+          }
+        }
+      }
+    },
+    "Bu hafta" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This week"
+          }
+        }
+      }
+    },
+    "Bu ne?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is it?"
+          }
+        }
+      }
+    },
+    "Bu oturum sana 1 yıldız ve yaklaşık %lld Işık kazandırır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This session earns you 1 star and about %lld Light"
+          }
+        }
+      }
+    },
+    "Bu oturum seni %@ ışık yılı ileri taşıdı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This session carried you %@ light-years further"
+          }
+        }
+      }
+    },
+    "Bu oturumda yıldız düşmedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No star fell this session"
+          }
+        }
+      }
+    },
+    "Bu tarihlerde bir gökyüzü etkinliği yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No sky events on these dates."
+          }
+        }
+      }
+    },
+    "Bu uygulama oturum bitene kadar kilitli. Yıldızın seni bekliyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app is locked until your session ends. Your star is waiting."
+          }
+        }
+      }
+    },
+    "Bu yıldız %@ tarihinde yandı, ama hangi odakla kazanıldığı kayıtlı değil." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This star was lit on %@, but the session that earned it wasn't recorded."
+          }
+        }
+      }
+    },
+    "Bu zaten hazır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is already ready"
+          }
+        }
+      }
+    },
+    "Bugün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        }
+      }
+    },
+    "Bugün %@ odaklandın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You focused for %@ today"
+          }
+        }
+      }
+    },
+    "Bugün henüz odaklanmadın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't focused yet today"
+          }
+        }
+      }
+    },
+    "Bugün zirvede, oturumlarında kayan yıldız düşebilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peaking today, so a shooting star may fall in your sessions."
+          }
+        }
+      }
+    },
+    "Bundan daha fazlasını taşıyamazsın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can't carry any more of these"
+          }
+        }
+      }
+    },
+    "Bunları biliyor muydun?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Did you know?"
+          }
+        }
+      }
+    },
+    "Bunun için yeterli Işığın yok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have enough Light for this"
+          }
+        }
+      }
+    },
+    "Bütün gezegenler ve Ay açıldı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every planet and the Moon are unlocked."
+          }
+        }
+      }
+    },
+    "Bütün ilerlemeyi sıfırla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset all progress"
+          }
+        }
+      }
+    },
+    "Bütün yıldızlar, Işık ve sözler silinsin mi?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all stars, Light and promises?"
+          }
+        }
+      }
+    },
+    "Dakika" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minutes"
+          }
+        }
+      }
+    },
+    "Derin %@ (%@). Takımyıldız bilgileri ve mesafeler yayından önce bir astronomi kaynağıyla doğrulanacak.\n\nOrtam sesi kayıtları Freesound'dan: yağmur jmbphilmes, orman kvgarlic, şömine 16FThumaF (CC0), dalga Luftrum (CC BY)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Derin %@ (%@). Constellation facts and distances will be checked against an astronomy source before release.\n\nAmbient recordings from Freesound: rain by jmbphilmes, forest by kvgarlic, fireplace by 16FThumaF (CC0), waves by Luftrum (CC BY)."
+          }
+        }
+      }
+    },
+    "Derin Başlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Derin"
+          }
+        }
+      }
+    },
+    "Derin Bitir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Derin"
+          }
+        }
+      }
+    },
+    "Derin Odak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep Focus"
+          }
+        }
+      }
+    },
+    "Derin gök" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep sky"
+          }
+        }
+      }
+    },
+    "Derin gök nesneleri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep-sky objects"
+          }
+        }
+      }
+    },
+    "Derin gök nesnesi keşfettin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You discovered a deep-sky object"
+          }
+        }
+      }
+    },
+    "Derin odak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep focus"
+          }
+        }
+      }
+    },
+    "Derin odak sürüyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep focus in progress"
+          }
+        }
+      }
+    },
+    "Derin'de Ses ve müzik bölümünde seni bekliyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's waiting for you in Derin, under Sound and music."
+          }
+        }
+      }
+    },
+    "Derin'e döndüğünde liste burada olur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you come back to Derin, the list will be here."
+          }
+        }
+      }
+    },
+    "Derin'e eklendi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added to Derin"
+          }
+        }
+      }
+    },
+    "Derin'in içinde çalmak için Apple Music aboneliği gerekiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playing inside Derin needs an Apple Music subscription."
+          }
+        }
+      }
+    },
+    "Destek ve iletişim" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support and contact"
+          }
+        }
+      }
+    },
+    "Devam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "Diğer uygulamaları kilitlemek Apple'ın Ekran Süresi (Family Controls) iznini gerektiriyor. Apple bu izni onayladığında bu özellik açılacak." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locking other apps needs Apple's Screen Time (Family Controls) permission. This feature turns on once Apple approves it."
+          }
+        }
+      }
+    },
+    "Duraklat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        }
+      }
+    },
+    "Durum" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        }
+      }
+    },
+    "Dönem" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Period"
+          }
+        }
+      }
+    },
+    "Düzenle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "Ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "Ekran Süresi izni gerekiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen Time permission needed"
+          }
+        }
+      }
+    },
+    "Ekran Süresi izni ver" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Screen Time"
+          }
+        }
+      }
+    },
+    "En büyük uzanım" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greatest elongation"
+          }
+        }
+      }
+    },
+    "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The 16 best-known constellations. You are here."
+          }
+        }
+      }
+    },
+    "Engelleme modu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocking mode"
+          }
+        }
+      }
+    },
+    "Engellenecek uygulamalar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps to block"
+          }
+        }
+      }
+    },
+    "Engellenecekler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To block"
+          }
+        }
+      }
+    },
+    "Etkinlik boyunca" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While it lasts"
+          }
+        }
+      }
+    },
+    "Evren" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Universe"
+          }
+        }
+      }
+    },
+    "Evrenin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Universe"
+          }
+        }
+      }
+    },
+    "Eşitleniyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing…"
+          }
+        }
+      }
+    },
+    "Favoriler arayabilsin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let Favorites call"
+          }
+        }
+      }
+    },
+    "Geri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The remaining 72 constellations arrive in a later version, first the Northern sky and then a Southern expedition."
+          }
+        }
+      }
+    },
+    "Gerçek gökyüzünde bul" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find it in the real sky"
+          }
+        }
+      }
+    },
+    "Gerçekte de izle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch it for real"
+          }
+        }
+      }
+    },
+    "Gezegenler ve Ay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planets and the Moon"
+          }
+        }
+      }
+    },
+    "Giriş yap veya hesap oluştur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in or create an account"
+          }
+        }
+      }
+    },
+    "Giriş yapılamadı. Biraz sonra tekrar dene." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't sign in. Try again in a little while."
+          }
+        }
+      }
+    },
+    "Gizlilik politikası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy policy"
+          }
+        }
+      }
+    },
+    "Google ile devam et" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Google"
+          }
+        }
+      }
+    },
+    "Gökyüzü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky"
+          }
+        }
+      }
+    },
+    "Gökyüzü etkinlikleri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky events"
+          }
+        }
+      }
+    },
+    "Gökyüzü etkinliği" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky event"
+          }
+        }
+      }
+    },
+    "Gökyüzü sayfası %lld / %lld, diğer takımyıldızlar için yana kaydır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky page %lld of %lld, swipe sideways for other constellations"
+          }
+        }
+      }
+    },
+    "Gökyüzü takvimi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky calendar"
+          }
+        }
+      }
+    },
+    "Gökyüzüm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Sky"
+          }
+        }
+      }
+    },
+    "Gökyüzüme bak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look at my sky"
+          }
+        }
+      }
+    },
+    "Gökyüzün seninle kalsın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your sky with you"
+          }
+        }
+      }
+    },
+    "Gökyüzün tamamlandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sky is complete"
+          }
+        }
+      }
+    },
+    "Gökyüzüne bakma zamanı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time to look up at the sky."
+          }
+        }
+      }
+    },
+    "Gökyüzünü yaktın, şimdi oraya gitme zamanı. Her odak saatin seni 1 ışık yılı ileri taşır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've lit up the sky; now it's time to travel there. Every hour of focus carries you 1 light-year further."
+          }
+        }
+      }
+    },
+    "Görev" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Task"
+          }
+        }
+      }
+    },
+    "Görünüm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looks"
+          }
+        }
+      }
+    },
+    "Gün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day"
+          }
+        }
+      }
+    },
+    "Günaydın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good morning"
+          }
+        }
+      }
+    },
+    "Güneş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sun"
+          }
+        }
+      }
+    },
+    "Güneş tutulması" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solar eclipse"
+          }
+        }
+      }
+    },
+    "Güneş'ten Ülker'e uzanan yolculuk rotası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The journey's route from the Sun to the Pleiades"
+          }
+        }
+      }
+    },
+    "Günlük grafikleri ve odak alışkanlıklarını Zenit ile görebilirsin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See daily charts and your focus habits with Zenith"
+          }
+        }
+      }
+    },
+    "Güçlendirici" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boosters"
+          }
+        }
+      }
+    },
+    "Güçlendiriciler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boosters"
+          }
+        }
+      }
+    },
+    "Hafta" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Week"
+          }
+        }
+      }
+    },
+    "Hafta sonu kahvaltıya çık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekend brunch out"
+          }
+        }
+      }
+    },
+    "Hakkında" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
+    },
+    "Hangi yıldızı yaktığını\noturum bitince göreceksin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You'll see which star you lit\nwhen the session ends"
+          }
+        }
+      }
+    },
+    "Hangi yıldızın düşeceği oturum bitince belli olur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which star falls is revealed when the session ends."
+          }
+        }
+      }
+    },
+    "Hatırlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me"
+          }
+        }
+      }
+    },
+    "Hatırlatma kuruldu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder set"
+          }
+        }
+      }
+    },
+    "Hedef" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal"
+          }
+        }
+      }
+    },
+    "Henüz eşitlenmedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not synced yet"
+          }
+        }
+      }
+    },
+    "Henüz seçilmedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing chosen yet"
+          }
+        }
+      }
+    },
+    "Hepsi bu kadar. Oturum başlarken ve biterken Derin bu kestirmeleri çalıştırır, Kestirmeler de seni hemen uygulamaya geri getirir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That's it. Derin runs these shortcuts as a session starts and ends, and Shortcuts brings you straight back to the app."
+          }
+        }
+      }
+    },
+    "Her odak saati seni bir ışık yılı ileri taşır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every hour of focus carries you one light-year further."
+          }
+        }
+      }
+    },
+    "Her zaman açık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always open"
+          }
+        }
+      }
+    },
+    "Hesabı kalıcı olarak sil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account permanently"
+          }
+        }
+      }
+    },
+    "Hesabı sil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        }
+      }
+    },
+    "Hesabın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account"
+          }
+        }
+      }
+    },
+    "Hesabın doğrulanıyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifying your account"
+          }
+        }
+      }
+    },
+    "Hesabın silindi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account was deleted"
+          }
+        }
+      }
+    },
+    "Hesabın silinsin mi?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete your account?"
+          }
+        }
+      }
+    },
+    "Hesabın ve içinde saklanan bütün yıldızlar, Işık ve sözler kalıcı olarak silinir. Önce kimliğini bir kez daha doğrulaman istenir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account and every star, all the Light and every promise kept in it will be deleted for good. You'll be asked to confirm it's you once more first."
+          }
+        }
+      }
+    },
+    "Hesap" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        }
+      }
+    },
+    "Hesaplar bu sürümde henüz açık değil." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accounts aren't available in this version yet."
+          }
+        }
+      }
+    },
+    "Hiçbir uygulama kilitlenmez" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No apps are locked"
+          }
+        }
+      }
+    },
+    "Işık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        }
+      }
+    },
+    "Işık birikti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light gathered"
+          }
+        }
+      }
+    },
+    "Işık yolculuğu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journey of Light"
+          }
+        }
+      }
+    },
+    "Işık yolculuğu başladı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Journey of Light has begun"
+          }
+        }
+      }
+    },
+    "Kalan süre %lld dakika" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minute left"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld minutes left"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Kalan yıldızların hepsi parlak, bu yüzden en az 60 dakikalık bir oturum ya da katı mod gerekiyor. Üst üste 4 oturumda yıldız düşmezse sıradaki oturumda yıldız garanti." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All the stars left are bright ones, so they need a session of at least 60 minutes or strict mode. If 4 sessions in a row bring no star, the next one is sure to."
+          }
+        }
+      }
+    },
+    "Kapat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "Karşı konum" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opposition"
+          }
+        }
+      }
+    },
+    "Katı mod" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strict mode"
+          }
+        }
+      }
+    },
+    "Katı moddasın, süre bitene kadar kilit açılmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're in strict mode; nothing unlocks until time is up."
+          }
+        }
+      }
+    },
+    "Kavuşum" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conjunction"
+          }
+        }
+      }
+    },
+    "Kayan yıldız hazır, bu oturumda Işık iki katına çıkacak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shooting star ready: your Light doubles this session"
+          }
+        }
+      }
+    },
+    "Kayan yıldız yakaladın, bu oturumun Işığı iki katına çıktı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You caught a shooting star, and this session's Light doubled"
+          }
+        }
+      }
+    },
+    "Kaydet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "Kazandığın Işık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light you earned"
+          }
+        }
+      }
+    },
+    "Kendine bir ödül belirle, örneğin “10 saat odaklanınca yeni bir kitap alacağım” ya da “7 gün üst üste odaklanınca kahvaltıya çıkacağım”. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set yourself a reward, like “I'll buy a new book after 10 hours of focus” or “I'll go out for brunch after focusing 7 days in a row”. Derin keeps track of your progress and celebrates with you when you get there."
+          }
+        }
+      }
+    },
+    "Kendine sözler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promises to yourself"
+          }
+        }
+      }
+    },
+    "Kendine verdiğin ödülü almanın zamanı geldi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's time to claim the reward you promised yourself."
+          }
+        }
+      }
+    },
+    "Kestirmeler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts"
+          }
+        }
+      }
+    },
+    "Kestirmeler uygulamasında “Derin Başlat” adında bir kestirme oluştur. İçine “Odağı Ayarla” eylemini ekle, Odak olarak Derin'i seç ve Açık konumuna getir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the Shortcuts app, create a shortcut named “Start Derin”. Add the “Set Focus” action to it, choose Derin as the Focus and turn it On."
+          }
+        }
+      }
+    },
+    "Keşfedince açılır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocks when discovered"
+          }
+        }
+      }
+    },
+    "Kilitlenecek uygulama seçilmedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No apps chosen to lock"
+          }
+        }
+      }
+    },
+    "Kilitli" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locked"
+          }
+        }
+      }
+    },
+    "Koleksiyon haritası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collection map"
+          }
+        }
+      }
+    },
+    "Koleksiyon haritasını açar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the collection map"
+          }
+        }
+      }
+    },
+    "Kullan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use"
+          }
+        }
+      }
+    },
+    "Kullanılıyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In use"
+          }
+        }
+      }
+    },
+    "Kurulumu tamamladım" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I've finished the setup"
+          }
+        }
+      }
+    },
+    "Liste" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List"
+          }
+        }
+      }
+    },
+    "Liste Apple Music'te bulunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This list couldn't be found on Apple Music."
+          }
+        }
+      }
+    },
+    "Liste ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a list"
+          }
+        }
+      }
+    },
+    "Liste okunuyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading the list"
+          }
+        }
+      }
+    },
+    "Listeden kaldır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from list"
+          }
+        }
+      }
+    },
+    "Listelerimi göster" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show my playlists"
+          }
+        }
+      }
+    },
+    "Lo-fi Çalışma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo-fi Study"
+          }
+        }
+      }
+    },
+    "Makale okuma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading a paper"
+          }
+        }
+      }
+    },
+    "Mağazada" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the shop"
+          }
+        }
+      }
+    },
+    "Mesafeler gerçek ve rota hiç bitmez. Koleksiyonun ve Işık bakiyen de olduğu gibi kalır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The distances are real and the route never ends. Your collection and your Light stay just as they are."
+          }
+        }
+      }
+    },
+    "Meteor izi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteor trail"
+          }
+        }
+      }
+    },
+    "Meteor yağmurları Uluslararası Meteor Örgütü'nün (IMO) yıllık takviminden, tutulmalar ise NASA'nın tutulma tablolarından alındı. Gezegen olayları ve saatler Türkiye'den görüldüğü gibi hesaplandı. Saatte görülen meteor sayısı karanlık bir gökyüzü için geçerlidir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteor showers come from the International Meteor Organization's (IMO) yearly calendar, and eclipses from NASA's eclipse tables. Planet events and times are worked out as seen from Turkey. Meteors per hour assume a dark sky."
+          }
+        }
+      }
+    },
+    "Mola" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break"
+          }
+        }
+      }
+    },
+    "Mola bitince sayaç kaldığı yerden devam eder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When the break ends, the timer picks up where it left off"
+          }
+        }
+      }
+    },
+    "Moladasın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On a break"
+          }
+        }
+      }
+    },
+    "Molayı bitir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End break"
+          }
+        }
+      }
+    },
+    "Müzik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Music"
+          }
+        }
+      }
+    },
+    "Ne üzerinde\nodaklanıyorsun?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What are you\nfocusing on?"
+          }
+        }
+      }
+    },
+    "O gece Ay %%%lld dolu; parlak gezegenler yine de rahatça görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moon will be %lld%% full that night, but bright planets still show clearly."
+          }
+        }
+      }
+    },
+    "O gece Ay yalnızca %%%lld dolu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moon will be only %lld%% full that night."
+          }
+        }
+      }
+    },
+    "O zamana kadar da Derin oturumu takip eder. Odak sırasında başka bir uygulamaya geçersen “hiç telefona bakmadın” bonusunu kaybedersin, ama telefonu kilitlemek bunu bozmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Until then, Derin still keeps an eye on the session. If you switch to another app while focusing, you lose the “phone untouched” bonus, but locking your phone doesn't count against you."
+          }
+        }
+      }
+    },
+    "Odak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus"
+          }
+        }
+      }
+    },
+    "Odak saati" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus hours"
+          }
+        }
+      }
+    },
+    "Odak süren doldu. Hangi yıldızı yaktığını gör." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your focus time is up. Come see which star you lit."
+          }
+        }
+      }
+    },
+    "Odak süresi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus time"
+          }
+        }
+      }
+    },
+    "Odaklanamadığın bir günde serini otomatik olarak korur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keeps your streak safe on a day you couldn't focus"
+          }
+        }
+      }
+    },
+    "Odaklandığın konu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What you focused on"
+          }
+        }
+      }
+    },
+    "Odaklanmaya başla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start focusing"
+          }
+        }
+      }
+    },
+    "Odağa dön" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to focus"
+          }
+        }
+      }
+    },
+    "Okuma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading"
+          }
+        }
+      }
+    },
+    "Ortam sesi ya da müzik seç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose an ambient sound or music"
+          }
+        }
+      }
+    },
+    "Ortam sesleri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ambient sounds"
+          }
+        }
+      }
+    },
+    "Oturumu bitirir ve gökyüzüne sönmüş bir yıldız düşer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ends the session, and a burnt-out star falls into your sky"
+          }
+        }
+      }
+    },
+    "Parlak yıldız bileti hazır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bright star ticket ready"
+          }
+        }
+      }
+    },
+    "Parlak yıldızlar teleskopla da yalnızca en az 60 dakikalık bir oturumda, katı modda ya da parlak yıldız biletiyle 45 dakikada düşer. Daha kısa bir oturumda başka bir yıldız düşer, teleskop seçtiğin yıldızda kalır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Even with the telescope, bright stars only fall in a session of 60 minutes or more, in strict mode, or in 45 minutes with a bright star ticket. A shorter session brings down another star, and the telescope stays on the one you chose."
+          }
+        }
+      }
+    },
+    "Paylaş menüsünde “Bağlantıyı kopyala”ya dokunup buraya dön." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the Share menu, tap “Copy Link” and come back here."
+          }
+        }
+      }
+    },
+    "Paylaş'a dokun, uygulamalar arasından Derin'i seç. Derin görünmüyorsa Diğer'e dokun." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap Share and choose Derin among the apps. If you don't see Derin, tap More."
+          }
+        }
+      }
+    },
+    "Rota" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        }
+      }
+    },
+    "Rozet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Badge"
+          }
+        }
+      }
+    },
+    "Rozet: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Badge: %@"
+          }
+        }
+      }
+    },
+    "Rozetler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Badges"
+          }
+        }
+      }
+    },
+    "Satın alımları geri yükle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        }
+      }
+    },
+    "Satın alındı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchased"
+          }
+        }
+      }
+    },
+    "Senin gökyüzün: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sky: %@"
+          }
+        }
+      }
+    },
+    "Senin gökyüzün: %@ ve %lld sönmüş yıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sky: %@. Burnt-out stars: %lld"
+          }
+        }
+      }
+    },
+    "Senin çalma listen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your playlist"
+          }
+        }
+      }
+    },
+    "Seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak"
+          }
+        }
+      }
+    },
+    "Ses paketi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound pack"
+          }
+        }
+      }
+    },
+    "Ses paketleri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound packs"
+          }
+        }
+      }
+    },
+    "Ses ve müzik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound and music"
+          }
+        }
+      }
+    },
+    "Sesi duraklat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause sound"
+          }
+        }
+      }
+    },
+    "Sesi çal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play sound"
+          }
+        }
+      }
+    },
+    "Sesler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sounds"
+          }
+        }
+      }
+    },
+    "Seçtiklerim" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My picks"
+          }
+        }
+      }
+    },
+    "Seçtiğin liste odaklanmaya başladığında çalmaya başlar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list you pick starts playing when you start focusing."
+          }
+        }
+      }
+    },
+    "Seçtiğin liste uygulamadan çıkmadan Derin'in içinde çalar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list you choose plays inside Derin, without leaving the app."
+          }
+        }
+      }
+    },
+    "Son 7 gün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last 7 days"
+          }
+        }
+      }
+    },
+    "Son değişikliklerin henüz hesabına ulaşmadı. İnternete bağlanmadan çıkarsan bu telefondaki son ilerleme kaybolur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your latest changes haven't reached your account yet. If you sign out before going online, the newest progress on this phone will be lost."
+          }
+        }
+      }
+    },
+    "Son yıldız %@ parlak bir yıldız, bu yüzden yalnızca en az 60 dakikalık bir oturumda ya da katı modda düşer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The last star, %@, is a bright one, so it only falls in a session of 60 minutes or more, or in strict mode."
+          }
+        }
+      }
+    },
+    "Sonraki" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
+    },
+    "Sonraki yıldızın %@ olacak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your next star will be %@"
+          }
+        }
+      }
+    },
+    "Spotify" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotify"
+          }
+        }
+      }
+    },
+    "Spotify bağlantısı iptal edildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecting to Spotify was cancelled."
+          }
+        }
+      }
+    },
+    "Spotify bağlantısını kes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnect Spotify"
+          }
+        }
+      }
+    },
+    "Spotify hesabın bağlı, odak boyunca engellenmez" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Spotify account is connected and won't be blocked while you focus"
+          }
+        }
+      }
+    },
+    "Spotify hesabını bağla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect your Spotify account"
+          }
+        }
+      }
+    },
+    "Spotify listesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotify list"
+          }
+        }
+      }
+    },
+    "Spotify · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotify · %@"
+          }
+        }
+      }
+    },
+    "Spotify'a bağlanılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't connect to Spotify."
+          }
+        }
+      }
+    },
+    "Spotify'ı aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Spotify"
+          }
+        }
+      }
+    },
+    "Spotify, Apple Music ya da YouTube Music'ten bir çalma listesi veya albüm paylaş." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share a playlist or album from Spotify, Apple Music or YouTube Music."
+          }
+        }
+      }
+    },
+    "Sunum hazırlığı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentation prep"
+          }
+        }
+      }
+    },
+    "Söz: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promise: %@"
+          }
+        }
+      }
+    },
+    "Sözü sil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete promise"
+          }
+        }
+      }
+    },
+    "Sözünü tuttun!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You kept your promise!"
+          }
+        }
+      }
+    },
+    "Süper Ay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supermoon"
+          }
+        }
+      }
+    },
+    "Süre bitmeden kilit açılmaz ve Işık 1,5 katına çıkar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing unlocks before time is up, and your Light grows 1.5 times"
+          }
+        }
+      }
+    },
+    "Süren doldu. Hangi yıldızı yaktığını görmek için Derin'i aç." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time's up. Open Derin to see which star you lit."
+          }
+        }
+      }
+    },
+    "Sürüyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under way"
+          }
+        }
+      }
+    },
+    "Sıfırla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "Sınırsız kendine söz" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited promises to yourself"
+          }
+        }
+      }
+    },
+    "Sıradaki durak: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next stop: %@"
+          }
+        }
+      }
+    },
+    "Sıradaki etkinlikler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming up"
+          }
+        }
+      }
+    },
+    "Sıradaki keşifler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discoveries ahead"
+          }
+        }
+      }
+    },
+    "Sıradaki takımyıldız:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next constellation:"
+          }
+        }
+      }
+    },
+    "Sıradaki: %@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next: %@, %@"
+          }
+        }
+      }
+    },
+    "Takvim" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        }
+      }
+    },
+    "Takımyıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Constellation"
+          }
+        }
+      }
+    },
+    "Takımyıldız koleksiyonu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Constellation collection"
+          }
+        }
+      }
+    },
+    "Takımyıldız tamamlandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Constellation complete"
+          }
+        }
+      }
+    },
+    "Takımyıldız ödülü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Constellation reward"
+          }
+        }
+      }
+    },
+    "Takımyıldızı gör" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the constellation"
+          }
+        }
+      }
+    },
+    "Tamam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Tamamladığın her oturum gökyüzüne bir yıldız ekler. Vazgeçersen gökyüzüne sönmüş bir yıldız düşer ama odaklandığın dakikalar yine de sayılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every session you complete adds a star to your sky. If you give up, a burnt-out star falls instead, but the minutes you focused still count."
+          }
+        }
+      }
+    },
+    "Tamamlama ödülleri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completion rewards"
+          }
+        }
+      }
+    },
+    "Telefon ve izin verdiklerin dışında her şey kilitlenir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything except Phone and the apps you allow is locked"
+          }
+        }
+      }
+    },
+    "Telefonu kilitlemek odak sayılır. Başka bir uygulamaya geçmek ise “hiç telefona bakmadın” bonusunu düşürür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locking your phone counts as focus. Switching to another app costs you the “phone untouched” bonus."
+          }
+        }
+      }
+    },
+    "Teleskop" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telescope"
+          }
+        }
+      }
+    },
+    "Teleskop %@ yıldızına çevrildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telescope pointed at %@"
+          }
+        }
+      }
+    },
+    "Tema uygulandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme applied"
+          }
+        }
+      }
+    },
+    "Temayı uygula" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply theme"
+          }
+        }
+      }
+    },
+    "Tez" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thesis"
+          }
+        }
+      }
+    },
+    "Tez · Bölüm 2" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thesis · Chapter 2"
+          }
+        }
+      }
+    },
+    "Tez · Bölüm 3 literatür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thesis · Chapter 3 literature"
+          }
+        }
+      }
+    },
+    "Toplam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
+    },
+    "Toplam %lld oturum yaptın ve bir oturum ortalama %lld dakika sürdü. Telefona hiç bakmadan bitirdiğin oturumların oranı %%%lld." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessions so far: %1$lld, averaging %2$lld minutes each. You never looked at your phone in %3$lld%% of the ones you finished."
+          }
+        }
+      }
+    },
+    "Toplam odak saatinle açılır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocked by your total focus hours"
+          }
+        }
+      }
+    },
+    "Toplam odak sürene göre paralel ilerler. Sıradaki gök cismi %@ ve %lld saatte açılır, sen şu an %lld saattesin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Runs alongside, following your total focus time. Next up is %1$@, which opens at %2$lld hours; you're at %3$lld h now."
+          }
+        }
+      }
+    },
+    "Tüm gökyüzü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The whole sky"
+          }
+        }
+      }
+    },
+    "Tüm ses paketleri ve gök temaları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every sound pack and sky theme"
+          }
+        }
+      }
+    },
+    "Tümü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
+    },
+    "Tür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
+    "Uygulama engeli kapalı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App blocking is off"
+          }
+        }
+      }
+    },
+    "Uygulama engelleme" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App blocking"
+          }
+        }
+      }
+    },
+    "Uygulama engelleme, Apple onay verdikten sonra açılacak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App blocking turns on once Apple approves it"
+          }
+        }
+      }
+    },
+    "Uygulamalar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps"
+          }
+        }
+      }
+    },
+    "Uygulamalar kilitli" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps are locked"
+          }
+        }
+      }
+    },
+    "Uygulamaları kilitlemek için Ekran Süresi izni gerekiyor. Ayarlar > Ekran Süresi'nden Derin'e izin verebilirsin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locking apps needs Screen Time permission. You can allow Derin in Settings > Screen Time."
+          }
+        }
+      }
+    },
+    "Vazgeç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Vazgeçersen gökyüzüne sönmüş bir yıldız düşer, ama odaklandığın dakikalar yine de sayılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you give up, a burnt-out star falls into your sky, but the minutes you focused still count."
+          }
+        }
+      }
+    },
+    "Vazgeçmek için basılı tut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold to give up"
+          }
+        }
+      }
+    },
+    "Ya da bağlantıyı yapıştır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or paste the link"
+          }
+        }
+      }
+    },
+    "Yaklaşıyor, zirvesi %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon, peaking %@."
+          }
+        }
+      }
+    },
+    "Yakında" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon"
+          }
+        }
+      }
+    },
+    "Yarın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomorrow"
+          }
+        }
+      }
+    },
+    "Yedekleme" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        }
+      }
+    },
+    "Yeni bir kitap al" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy a new book"
+          }
+        }
+      }
+    },
+    "Yeni bir yıldız yaktın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You lit a new star"
+          }
+        }
+      }
+    },
+    "Yeni söz" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New promise"
+          }
+        }
+      }
+    },
+    "Yok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        }
+      }
+    },
+    "Yolculuk sürüyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The journey goes on"
+          }
+        }
+      }
+    },
+    "YouTube Music listesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "YouTube Music list"
+          }
+        }
+      }
+    },
+    "YouTube Music'i aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open YouTube Music"
+          }
+        }
+      }
+    },
+    "Yıldızın hazır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your star is ready"
+          }
+        }
+      }
+    },
+    "Zenit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zenith"
+          }
+        }
+      }
+    },
+    "Zenit aktif" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zenith is active"
+          }
+        }
+      }
+    },
+    "Zenit ile açık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open with Zenith"
+          }
+        }
+      }
+    },
+    "Zenit'e geç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Zenith"
+          }
+        }
+      }
+    },
+    "Zenit, gökyüzünün en tepesi demek. Odaklanmak, yıldızlar ve Işık her zaman ücretsiz kalır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zenith is the highest point of the sky. Focusing, stars and Light always stay free."
+          }
+        }
+      }
+    },
+    "Zenit, gökyüzünün en tepesi demek. Odaklanmak, yıldızlar ve Işık her zaman ücretsiz kalır. Zenit ise bütün sesleri ve gök temalarını, ayrıntılı istatistikleri ve sınırsız kendine sözü açar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zenith is the highest point of the sky. Focusing, stars and Light always stay free. Zenith opens every sound and sky theme, detailed statistics and unlimited promises to yourself."
+          }
+        }
+      }
+    },
+    "Zirve %@ · %@ yönü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peaks %@ · look toward %@"
+          }
+        }
+      }
+    },
+    "Zirve gecesi Ay %%%lld dolu olacak; sönük meteorlar ay ışığında kaybolabilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moon will be %lld%% full on the peak night; faint meteors may be lost in its light."
+          }
+        }
+      }
+    },
+    "Zirve gecesi Ay yalnızca %%%lld dolu olacak, bu yüzden gökyüzü karanlık olur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Moon will be only %lld%% full on the peak night, so the sky will be dark."
+          }
+        }
+      }
+    },
+    "Zirve gecesi için hatırlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me on the peak night"
+          }
+        }
+      }
+    },
+    "Zirve gecesinde (%@) her oturumda %%25 ihtimalle bir kayan yıldız düşer ve o oturumda kazandığın Işık iki katına çıkar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On the peak night (%@), every session has a 25%% chance of catching a shooting star, which doubles the Light you earn in it."
+          }
+        }
+      }
+    },
+    "bu hafta" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "this week"
+          }
+        }
+      }
+    },
+    "bugün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "today"
+          }
+        }
+      }
+    },
+    "dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        }
+      }
+    },
+    "gök cismi açıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sky objects unlocked"
+          }
+        }
+      }
+    },
+    "gök teması" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sky theme"
+          }
+        }
+      }
+    },
+    "iOS, uygulamaların aramaları ve mesajları kendi başına susturmasına izin vermiyor. Bu yüzden bir kereliğine bir Odak modu ve iki kestirme kurmamız gerekiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS doesn't let apps silence calls and messages on their own, so we need to set up a Focus and two shortcuts, just once."
+          }
+        }
+      }
+    },
+    "kazanıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "earned"
+          }
+        }
+      }
+    },
+    "open.spotify.com/playlist/…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "open.spotify.com/playlist/…"
+          }
+        }
+      }
+    },
+    "parlak" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bright"
+          }
+        }
+      }
+    },
+    "seri" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "streak"
+          }
+        }
+      }
+    },
+    "takımyıldız tamamlandı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "constellations complete"
+          }
+        }
+      }
+    },
+    "tamam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "complete"
+          }
+        }
+      }
+    },
+    "toplam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "total"
+          }
+        }
+      }
+    },
+    "yıldız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "stars"
+          }
+        }
+      }
+    },
+    "yıldız yaktın" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "stars lit"
+          }
+        }
+      }
+    },
+    "· 1 hakkın var" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· 1 left"
+          }
+        }
+      }
+    },
+    "· hakkın kullanıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· already used"
+          }
+        }
+      }
+    },
+    "Çal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play"
+          }
+        }
+      }
+    },
+    "Çalma listesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist"
+          }
+        }
+      }
+    },
+    "Çıkış yap" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        }
+      }
+    },
+    "Çıkış yapıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signed out"
+          }
+        }
+      }
+    },
+    "Çıkış yapılsın mı?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out?"
+          }
+        }
+      }
+    },
+    "Ödüller" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rewards"
+          }
+        }
+      }
+    },
+    "Ödülün" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your reward"
+          }
+        }
+      }
+    },
+    "Önceki" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous"
+          }
+        }
+      }
+    },
+    "Önerilen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested"
+          }
+        }
+      }
+    },
+    "Önerilen listeler Spotify uygulamasında açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested lists open in the Spotify app."
+          }
+        }
+      }
+    },
+    "Önerilen, enstrümantal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested, instrumental"
+          }
+        }
+      }
+    },
+    "Örneğin: Tez, bölüm 3" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For example: Thesis, chapter 3"
+          }
+        }
+      }
+    },
+    "Örneğin: Yeni bir kitap al" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For example: Buy a new book"
+          }
+        }
+      }
+    },
+    "Özel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "Ücretsiz sürümde aynı anda %lld söz tutabilirsin. Zenit ile istediğin kadar söz verebilirsin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the free version you can keep %lld promises at a time. With Zenith, make as many as you like."
+          }
+        }
+      }
+    },
+    "İlerleme" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progress"
+          }
+        }
+      }
+    },
+    "İlerlemen hesabında saklı kalır ve bu telefondan kaldırılır. Tekrar giriş yapınca geri gelir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress stays safe in your account and is removed from this phone. It comes back when you sign in again."
+          }
+        }
+      }
+    },
+    "İlk girişte hesabın oluşturulur. Bu telefondaki ilerlemen hesabına eklenir, hiçbir şey silinmez." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account is created the first time you sign in. Progress on this phone is added to it, and nothing is deleted."
+          }
+        }
+      }
+    },
+    "İlk keşfin seni bekliyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your first discovery awaits"
+          }
+        }
+      }
+    },
+    "İlk yıldızını yakmaya hazır mısın?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready to light your first star?"
+          }
+        }
+      }
+    },
+    "İngilizce kelime" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vocabulary"
+          }
+        }
+      }
+    },
+    "İnternet bağlantısı yok gibi. Bağlanınca tekrar dene." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There seems to be no internet connection. Try again once you're online."
+          }
+        }
+      }
+    },
+    "İstatistik ödevi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics homework"
+          }
+        }
+      }
+    },
+    "İyi akşamlar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good evening"
+          }
+        }
+      }
+    },
+    "İyi günler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good afternoon"
+          }
+        }
+      }
+    },
+    "İzin gerekli" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission needed"
+          }
+        }
+      }
+    },
+    "İzin verilen kişilere Favoriler'i ekle, böylece acil durumda sana ulaşabilirler." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add your Favorites to the allowed people, so they can reach you in an emergency."
+          }
+        }
+      }
+    },
+    "Şafak uygulama ikonu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dawn app icon"
+          }
+        }
+      }
+    },
+    "Şehir ışıklarından uzaklaş, gözlerinin karanlığa alışması için 10–15 dakika bekle ve ekranın parlaklığını kıs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get away from city lights, give your eyes 10–15 minutes to adjust to the dark, and turn your screen brightness down."
+          }
+        }
+      }
+    },
+    "Şimdi vazgeçersen gökyüzünde iz kalmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you give up now, the sky keeps no trace."
+          }
+        }
+      }
+    },
+    "Şimdilik geç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip for now"
+          }
+        }
+      }
+    },
+    "Şu an sürüyor, zirvesi %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under way now, peaking %@."
+          }
+        }
+      }
+    },
+    "“%@” müzik listelerine eklendi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” was added to your music"
+          }
+        }
+      }
+    },
+    "“Tümü” modunda bile açık kalmasını istediğin uygulamaları seç, örneğin Spotify'ı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the apps that should stay open even in “All” mode, such as Spotify."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

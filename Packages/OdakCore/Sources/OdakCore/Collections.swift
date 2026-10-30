@@ -8,16 +8,16 @@ public enum SoundID: String, Codable, CaseIterable, Hashable, Sendable, Identifi
 
     public var title: String {
         switch self {
-        case .rain: "Yağmur"
-        case .forest: "Orman"
-        case .waves: "Dalga"
-        case .fire: "Şömine"
-        case .brownNoise: "Kahverengi gürültü"
-        case .winterNight: "Kış gecesi"
-        case .library: "Kütüphane"
-        case .summerNight: "Yaz gecesi"
-        case .stream: "Dere"
-        case .distantStorm: "Uzak fırtına"
+        case .rain: loc("Yağmur")
+        case .forest: loc("Orman")
+        case .waves: loc("Dalga")
+        case .fire: loc("Şömine")
+        case .brownNoise: loc("Kahverengi gürültü")
+        case .winterNight: loc("Kış gecesi")
+        case .library: loc("Kütüphane")
+        case .summerNight: loc("Yaz gecesi")
+        case .stream: loc("Dere")
+        case .distantStorm: loc("Uzak fırtına")
         }
     }
 
@@ -47,10 +47,10 @@ public struct DeepSkyObject: Hashable, Identifiable, Sendable {
     public var requirementText: String {
         switch requirement {
         case let .sessionAfter(cid, minutes):
-            "\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamladıktan sonra \(minutes) dakikalık bir oturumla açılır."
-        case let .totalHours(h): "Toplam \(h) saat odaklanınca açılır."
-        case let .completedSessions(n): "\(n) oturum tamamlayınca açılır."
-        case let .constellation(cid): "\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamlayınca açılır."
+            loc("\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamladıktan sonra \(minutes) dakikalık bir oturumla açılır.")
+        case let .totalHours(h): loc("Toplam \(h) saat odaklanınca açılır.")
+        case let .completedSessions(n): loc("\(n) oturum tamamlayınca açılır.")
+        case let .constellation(cid): loc("\(Catalog.constellation(cid)?.name ?? cid) takımyıldızını tamamlayınca açılır.")
         }
     }
 }
@@ -60,21 +60,21 @@ public enum DeepSky {
     public static let catalogueSize = 110
 
     public static let objects: [DeepSkyObject] = [
-        DeepSkyObject(id: "m42", name: "Avcı Bulutsusu", designation: "M42",
-                      about: ["Yeni yıldızların doğduğu dev bir gaz ve toz bulutudur. Avcı'nın Kemeri'nin hemen altında, “kılıç” denen bölgede yer alır.",
-                              "Karanlık bir gecede çıplak gözle bulanık bir leke gibi görünür, dürbünle bakınca çok daha belirginleşir."],
+        DeepSkyObject(id: "m42", name: loc("Avcı Bulutsusu"), designation: "M42",
+                      about: [loc("Yeni yıldızların doğduğu dev bir gaz ve toz bulutudur. Avcı'nın Kemeri'nin hemen altında, “kılıç” denen bölgede yer alır."),
+                              loc("Karanlık bir gecede çıplak gözle bulanık bir leke gibi görünür, dürbünle bakınca çok daha belirginleşir.")],
                       requirement: .sessionAfter(constellation: "orion", minutes: 90), light: 300, theme: .nebula),
-        DeepSkyObject(id: "m45", name: "Ülker", designation: "M45",
-                      about: ["Yedi Kız Kardeş olarak da bilinen, genç ve sıcak yıldızlardan oluşan bir kümedir.",
-                              "Çıplak gözle altı ya da yedi yıldızı seçilebilir, dürbünle bakınca onlarcası görünür."],
+        DeepSkyObject(id: "m45", name: loc("Ülker"), designation: "M45",
+                      about: [loc("Yedi Kız Kardeş olarak da bilinen, genç ve sıcak yıldızlardan oluşan bir kümedir."),
+                              loc("Çıplak gözle altı ya da yedi yıldızı seçilebilir, dürbünle bakınca onlarcası görünür.")],
                       requirement: .constellation("taurus"), light: 250, theme: nil),
-        DeepSkyObject(id: "m13", name: "Herkül Kümesi", designation: "M13",
-                      about: ["Yüz binlerce yıldızın top gibi bir araya toplandığı küresel bir kümedir.",
-                              "Karanlık bir gökyüzünde dürbünle bulanık bir yıldız gibi görünür."],
+        DeepSkyObject(id: "m13", name: loc("Herkül Kümesi"), designation: "M13",
+                      about: [loc("Yüz binlerce yıldızın top gibi bir araya toplandığı küresel bir kümedir."),
+                              loc("Karanlık bir gökyüzünde dürbünle bulanık bir yıldız gibi görünür.")],
                       requirement: .completedSessions(50), light: 250, theme: nil),
-        DeepSkyObject(id: "m31", name: "Andromeda Galaksisi", designation: "M31",
-                      about: ["Samanyolu'na en yakın büyük sarmal galaksidir.",
-                              "Bugün gördüğümüz ışığı yaklaşık 2,5 milyon yıl önce yola çıktı."],
+        DeepSkyObject(id: "m31", name: loc("Andromeda Galaksisi"), designation: "M31",
+                      about: [loc("Samanyolu'na en yakın büyük sarmal galaksidir."),
+                              loc("Bugün gördüğümüz ışığı yaklaşık 2,5 milyon yıl önce yola çıktı.")],
                       requirement: .totalHours(100), light: 500, theme: nil),
     ]
 }
@@ -89,10 +89,10 @@ public struct Planet: Hashable, Identifiable, Sendable {
 
 public enum Planets {
     public static let all: [Planet] = [
-        Planet(id: "moon", name: "Ay", hours: 5), Planet(id: "mercury", name: "Merkür", hours: 10),
-        Planet(id: "venus", name: "Venüs", hours: 25), Planet(id: "mars", name: "Mars", hours: 50),
-        Planet(id: "jupiter", name: "Jüpiter", hours: 100), Planet(id: "saturn", name: "Satürn", hours: 250),
-        Planet(id: "uranus", name: "Uranüs", hours: 500), Planet(id: "neptune", name: "Neptün", hours: 1000),
+        Planet(id: "moon", name: loc("Ay"), hours: 5), Planet(id: "mercury", name: loc("Merkür"), hours: 10),
+        Planet(id: "venus", name: loc("Venüs"), hours: 25), Planet(id: "mars", name: loc("Mars"), hours: 50),
+        Planet(id: "jupiter", name: loc("Jüpiter"), hours: 100), Planet(id: "saturn", name: loc("Satürn"), hours: 250),
+        Planet(id: "uranus", name: loc("Uranüs"), hours: 500), Planet(id: "neptune", name: loc("Neptün"), hours: 1000),
     ]
 }
 
@@ -102,13 +102,19 @@ public struct JourneyStop: Hashable, Identifiable, Sendable {
     public enum Reward: Hashable, Sendable {
         case badge(Badge), light(Int), sound(SoundID), theme(SkyTheme)
     }
-    public var id: String { name }
+    /// The stop's Turkish name, kept in `SkyProgress.reachedStops`.
+    public let id: String
     public let name: String
     /// Distance from the Sun in light-years; must be checked against an astronomy source before release.
     public let lightYears: Double
     public let story: String
     public let rewardText: String
     public let reward: Reward
+
+    init(id: String, name: String, lightYears: Double, story: String, rewardText: String, reward: Reward) {
+        self.id = id; self.name = name; self.lightYears = lightYears; self.story = story
+        self.rewardText = rewardText; self.reward = reward
+    }
 }
 
 public enum Journey {
@@ -116,16 +122,16 @@ public enum Journey {
     public static let lightYearsPerHour = 1.0
 
     public static let stops: [JourneyStop] = [
-        JourneyStop(name: "Alfa Centauri", lightYears: 4.4, story: "Güneş'e en yakın yıldız sistemidir. Üç yıldızından biri olan Proxima, bize en yakın yıldızdır.",
-                    rewardText: "Proxima rozeti ve üçlü yıldız sisteminin hikâyesi", reward: .badge(.proxima)),
-        JourneyStop(name: "Sirius", lightYears: 8.6, story: "Gece gökyüzünün en parlak yıldızıdır ve yanında sönük bir beyaz cüce eşi vardır.",
-                    rewardText: "300 Işık", reward: .light(300)),
-        JourneyStop(name: "Vega", lightYears: 25, story: "Lir takımyıldızının kalbidir ve binlerce yıl sonra kutup yıldızı olacak.",
-                    rewardText: "Yeni bir ses paketi", reward: .sound(.library)),
-        JourneyStop(name: "TRAPPIST-1", lightYears: 41, story: "Yedi gezegeni olan küçük bir kırmızı cüce sistemidir.",
-                    rewardText: "“Kırmızı cüce” gök teması", reward: .theme(.redDwarf)),
-        JourneyStop(name: "Ülker", lightYears: 444, story: "Yedi Kız Kardeş olarak bilinen bir yıldız kümesidir. Buradan bakınca Güneş artık sönük bir nokta gibi görünür.",
-                    rewardText: "Yedi Kız Kardeş rozeti", reward: .badge(.pleiades)),
+        JourneyStop(id: "Alfa Centauri", name: loc("Alfa Centauri"), lightYears: 4.4, story: loc("Güneş'e en yakın yıldız sistemidir. Üç yıldızından biri olan Proxima, bize en yakın yıldızdır."),
+                    rewardText: loc("Proxima rozeti ve üçlü yıldız sisteminin hikâyesi"), reward: .badge(.proxima)),
+        JourneyStop(id: "Sirius", name: loc("Sirius"), lightYears: 8.6, story: loc("Gece gökyüzünün en parlak yıldızıdır ve yanında sönük bir beyaz cüce eşi vardır."),
+                    rewardText: loc("300 Işık"), reward: .light(300)),
+        JourneyStop(id: "Vega", name: loc("Vega"), lightYears: 25, story: loc("Lir takımyıldızının kalbidir ve binlerce yıl sonra kutup yıldızı olacak."),
+                    rewardText: loc("Yeni bir ses paketi"), reward: .sound(.library)),
+        JourneyStop(id: "TRAPPIST-1", name: loc("TRAPPIST-1"), lightYears: 41, story: loc("Yedi gezegeni olan küçük bir kırmızı cüce sistemidir."),
+                    rewardText: loc("“Kırmızı cüce” gök teması"), reward: .theme(.redDwarf)),
+        JourneyStop(id: "Ülker", name: loc("Ülker"), lightYears: 444, story: loc("Yedi Kız Kardeş olarak bilinen bir yıldız kümesidir. Buradan bakınca Güneş artık sönük bir nokta gibi görünür."),
+                    rewardText: loc("Yedi Kız Kardeş rozeti"), reward: .badge(.pleiades)),
     ]
 }
 
@@ -220,16 +226,16 @@ public struct MeteorShower: Hashable, Identifiable, Sendable {
         return Self.nightText(of: w.peak, calendar: calendar)
     }
 
-    public static let monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+    /// Month names in the app's language, January first.
+    public static var monthNames: [String] { AppLanguage.monthNames }
 
     /// "21–22 Ekim gecesi" for the night that holds `peak`.
     public static func nightText(of peak: Date, calendar: Calendar) -> String {
         let night = peakNight(of: peak, calendar: calendar)
         let next = calendar.date(byAdding: .day, value: 1, to: night) ?? night
         let a = calendar.dateComponents([.month, .day], from: night), b = calendar.dateComponents([.month, .day], from: next)
-        let ma = monthNames[(a.month ?? 1) - 1], mb = monthNames[(b.month ?? 1) - 1]
-        let span = a.month == b.month ? "\(a.day ?? 1)–\(b.day ?? 1) \(mb)" : "\(a.day ?? 1) \(ma)–\(b.day ?? 1) \(mb)"
-        return "\(span) gecesi"
+        let span = AppLanguage.dayRange((a.day ?? 1, a.month ?? 1), (b.day ?? 1, b.month ?? 1))
+        return loc("\(span) gecesi")
     }
 
     /// Every window of this shower that overlaps `from..<to`: the calendar's dated ones, and the fixed
@@ -285,18 +291,18 @@ public enum MeteorShowers {
     }
 
     public static let all: [MeteorShower] = [
-        MeteorShower(id: "quadrantids", name: "Kuadrantidler", start: (12, 28), end: (1, 12), peak: (1, 3), peakText: "Ocak başı",
-                     radiant: "Çoban'ın kuzeyi", watchTip: "Zirvesi kısa sürer, bu yüzden gece yarısından sonra kuzeydoğuya bak."),
-        MeteorShower(id: "lyrids", name: "Liridler", start: (4, 14), end: (4, 30), peak: (4, 22), peakText: "Nisan sonu",
-                     radiant: "Lir", watchTip: "Meteorlar Vega'nın yakınından geliyor gibi görünür. En iyi izleme zamanı şafaktan hemen öncesidir."),
-        MeteorShower(id: "perseids", name: "Perseidler", start: (7, 17), end: (8, 24), peak: (8, 12), peakText: "Ağustos ortası",
-                     radiant: "Perseus", watchTip: "Yazın en bereketli meteor yağmurudur. Gece yarısından sonra kuzeydoğuya bak."),
-        MeteorShower(id: "orionids", name: "Orionidler", start: (10, 2), end: (11, 7), peak: (10, 21), peakText: "21–22 Ekim civarı",
-                     radiant: "Avcı", watchTip: "Meteorlar Avcı yönünden geliyor gibi görünür. En iyisi gece yarısından sonra, şehir ışıklarından uzak bir yerden izlemektir."),
-        MeteorShower(id: "leonids", name: "Leonidler", start: (11, 6), end: (11, 30), peak: (11, 17), peakText: "Kasım ortası",
-                     radiant: "Aslan", watchTip: "Aslan takımyıldızı yükseldikten sonra, gece yarısından şafağa kadar izleyebilirsin."),
-        MeteorShower(id: "geminids", name: "Geminidler (İkizler)", start: (12, 4), end: (12, 20), peak: (12, 13), peakText: "Aralık ortası",
-                     radiant: "İkizler", watchTip: "Akşamdan itibaren izlenebilir ama en iyi zaman gece yarısı civarıdır."),
+        MeteorShower(id: "quadrantids", name: loc("Kuadrantidler"), start: (12, 28), end: (1, 12), peak: (1, 3), peakText: loc("Ocak başı"),
+                     radiant: loc("Çoban'ın kuzeyi"), watchTip: loc("Zirvesi kısa sürer, bu yüzden gece yarısından sonra kuzeydoğuya bak.")),
+        MeteorShower(id: "lyrids", name: loc("Liridler"), start: (4, 14), end: (4, 30), peak: (4, 22), peakText: loc("Nisan sonu"),
+                     radiant: loc("Lir"), watchTip: loc("Meteorlar Vega'nın yakınından geliyor gibi görünür. En iyi izleme zamanı şafaktan hemen öncesidir.")),
+        MeteorShower(id: "perseids", name: loc("Perseidler"), start: (7, 17), end: (8, 24), peak: (8, 12), peakText: loc("Ağustos ortası"),
+                     radiant: loc("Perseus"), watchTip: loc("Yazın en bereketli meteor yağmurudur. Gece yarısından sonra kuzeydoğuya bak.")),
+        MeteorShower(id: "orionids", name: loc("Orionidler"), start: (10, 2), end: (11, 7), peak: (10, 21), peakText: loc("21–22 Ekim civarı"),
+                     radiant: loc("Avcı"), watchTip: loc("Meteorlar Avcı yönünden geliyor gibi görünür. En iyisi gece yarısından sonra, şehir ışıklarından uzak bir yerden izlemektir.")),
+        MeteorShower(id: "leonids", name: loc("Leonidler"), start: (11, 6), end: (11, 30), peak: (11, 17), peakText: loc("Kasım ortası"),
+                     radiant: loc("Aslan"), watchTip: loc("Aslan takımyıldızı yükseldikten sonra, gece yarısından şafağa kadar izleyebilirsin.")),
+        MeteorShower(id: "geminids", name: loc("Geminidler (İkizler)"), start: (12, 4), end: (12, 20), peak: (12, 13), peakText: loc("Aralık ortası"),
+                     radiant: loc("İkizler"), watchTip: loc("Akşamdan itibaren izlenebilir ama en iyi zaman gece yarısı civarıdır.")),
     ]
 
     /// The sky calendar: every shower window and astronomical event overlapping `from..<to`, in date order.
@@ -368,7 +374,7 @@ public struct SkyEvent: Identifiable, Hashable, Sendable {
 
     public var title: String {
         switch source {
-        case let .shower(s): "\(s.name) meteor yağmuru"
+        case let .shower(s): loc("\(s.name) meteor yağmuru")
         case let .astro(a): a.title
         }
     }
@@ -382,14 +388,14 @@ public struct SkyEvent: Identifiable, Hashable, Sendable {
         case .shower: return MeteorShower.nightText(of: peak, calendar: calendar)
         case let .astro(a):
             let c = calendar.dateComponents([.month, .day, .hour, .minute], from: peak)
-            let day = "\(c.day ?? 1) \(MeteorShower.monthNames[(c.month ?? 1) - 1])"
+            let day = AppLanguage.dayMonth(day: c.day ?? 1, month: c.month ?? 1)
             switch a.kind {
             case .lunarEclipse?, .solarEclipse?: return day + String(format: ", %02d:%02d", c.hour ?? 0, c.minute ?? 0)
             default:
                 switch a.sky {
-                case .morning: return day + ", şafaktan önce"
-                case .evening: return day + ", gün batımından sonra"
-                case .night: return day + ", gece"
+                case .morning: return loc("\(day), şafaktan önce")
+                case .evening: return loc("\(day), gün batımından sonra")
+                case .night: return loc("\(day), gece")
                 case .day: return day
                 }
             }
@@ -422,25 +428,25 @@ public enum Badge: String, Codable, CaseIterable, Hashable, Sendable, Identifiab
 
     public var title: String {
         switch self {
-        case .firstLight: "İlk ışık"
-        case .marathon90: "90 dk maraton"
-        case .streak7: "7 gün seri"
-        case .nightOwl: "Gece kuşu"
-        case .proxima: "Proxima"
-        case .pleiades: "Yedi Kız Kardeş"
-        case .meteor: "Meteor avcısı"
+        case .firstLight: loc("İlk ışık")
+        case .marathon90: loc("90 dk maraton")
+        case .streak7: loc("7 gün seri")
+        case .nightOwl: loc("Gece kuşu")
+        case .proxima: loc("Proxima")
+        case .pleiades: loc("Yedi Kız Kardeş")
+        case .meteor: loc("Meteor avcısı")
         }
     }
 
     public var detail: String {
         switch self {
-        case .firstLight: "İlk oturumunu tamamla"
-        case .marathon90: "90 dakikalık bir oturumu bitir"
-        case .streak7: "7 gün üst üste odaklan"
-        case .nightOwl: "22.00 ile 04.00 arasında bir oturum bitir"
-        case .proxima: "Işık yolculuğunda Alfa Centauri'ye var"
-        case .pleiades: "Işık yolculuğunda Ülker'e var"
-        case .meteor: "Bir meteor yağmuru boyunca 10 oturum tamamla"
+        case .firstLight: loc("İlk oturumunu tamamla")
+        case .marathon90: loc("90 dakikalık bir oturumu bitir")
+        case .streak7: loc("7 gün üst üste odaklan")
+        case .nightOwl: loc("22.00 ile 04.00 arasında bir oturum bitir")
+        case .proxima: loc("Işık yolculuğunda Alfa Centauri'ye var")
+        case .pleiades: loc("Işık yolculuğunda Ülker'e var")
+        case .meteor: loc("Bir meteor yağmuru boyunca 10 oturum tamamla")
         }
     }
 
@@ -455,11 +461,11 @@ public enum SkyTheme: String, Codable, CaseIterable, Hashable, Sendable, Identif
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .night: "Gece"
-        case .aurora: "Kutup ışığı göğü"
-        case .twilight: "Alacakaranlık göğü"
-        case .nebula: "Bulutsu göğü"
-        case .redDwarf: "Kırmızı cüce göğü"
+        case .night: loc("Gece")
+        case .aurora: loc("Kutup ışığı göğü")
+        case .twilight: loc("Alacakaranlık göğü")
+        case .nebula: loc("Bulutsu göğü")
+        case .redDwarf: loc("Kırmızı cüce göğü")
         }
     }
 }
@@ -469,18 +475,18 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .telescope: "Teleskop"
-        case .shootingStar: "Kayan yıldız"
-        case .cloud: "Seri koruyucu bulut"
-        case .brightTicket: "Parlak yıldız bileti"
+        case .telescope: loc("Teleskop")
+        case .shootingStar: loc("Kayan yıldız")
+        case .cloud: loc("Seri koruyucu bulut")
+        case .brightTicket: loc("Parlak yıldız bileti")
         }
     }
     public var detail: String {
         switch self {
-        case .telescope: "Sonraki yıldızı sen seç"
-        case .shootingStar: "Sonraki oturumda Işığın iki katına çıkar"
-        case .cloud: "En fazla 3 tane taşıyabilirsin"
-        case .brightTicket: "Bir parlak yıldızı 45 dakikalık bir oturumda düşürür"
+        case .telescope: loc("Sonraki yıldızı sen seç")
+        case .shootingStar: loc("Sonraki oturumda Işığın iki katına çıkar")
+        case .cloud: loc("En fazla 3 tane taşıyabilirsin")
+        case .brightTicket: loc("Bir parlak yıldızı 45 dakikalık bir oturumda düşürür")
         }
     }
     public var price: Int {

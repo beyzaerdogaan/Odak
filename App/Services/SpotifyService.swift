@@ -23,8 +23,8 @@ final class SpotifyService {
     static let scopes = "playlist-read-private user-read-playback-state user-modify-playback-state"
 
     static let suggested = [
-        SpotifyPlaylist(id: "37i9dQZF1DWZeKCadgRdKQ", name: "Derin Odak", subtitle: "Önerilen, enstrümantal"),
-        SpotifyPlaylist(id: "37i9dQZF1DWWQRwui0ExPn", name: "Lo-fi Çalışma", subtitle: "Önerilen"),
+        SpotifyPlaylist(id: "37i9dQZF1DWZeKCadgRdKQ", name: String(localized: "Derin Odak"), subtitle: String(localized: "Önerilen, enstrümantal")),
+        SpotifyPlaylist(id: "37i9dQZF1DWWQRwui0ExPn", name: String(localized: "Lo-fi Çalışma"), subtitle: String(localized: "Önerilen")),
     ]
 
     private(set) var isConnected = false
@@ -67,7 +67,7 @@ final class SpotifyService {
 
     func handleCallback(_ url: URL) async {
         guard let code = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == "code" })?.value else {
-            lastError = "Spotify bağlantısı iptal edildi."
+            lastError = String(localized: "Spotify bağlantısı iptal edildi.")
             return
         }
         await requestToken(["grant_type": "authorization_code", "code": code, "redirect_uri": Self.redirectURI,
@@ -92,7 +92,7 @@ final class SpotifyService {
         }
         guard let data = await get("https://api.spotify.com/v1/me/playlists?limit=20"),
               let page = try? JSONDecoder().decode(Page.self, from: data) else { return }
-        playlists = page.items.map { SpotifyPlaylist(id: $0.id, name: $0.name, subtitle: "Senin çalma listen") }
+        playlists = page.items.map { SpotifyPlaylist(id: $0.id, name: $0.name, subtitle: String(localized: "Senin çalma listen")) }
     }
 
     /// Starts the playlist on the user's active Spotify device, or opens it in the Spotify app.
@@ -158,7 +158,7 @@ final class SpotifyService {
                             expires: .now.addingTimeInterval(r.expires_in))
             lastError = nil
         } catch {
-            lastError = "Spotify'a bağlanılamadı."
+            lastError = String(localized: "Spotify'a bağlanılamadı.")
         }
     }
 

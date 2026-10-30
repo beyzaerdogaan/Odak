@@ -145,7 +145,7 @@ struct SoundsSheet: View {
                     }
                 }
                 ForEach(suggested) { list in
-                    row(id: list.id, name: list.name, subtitle: "Spotify · \(list.subtitle)", artwork: nil)
+                    row(id: list.id, name: list.name, subtitle: String(localized: "Spotify · \(list.subtitle)"), artwork: nil)
                 }
             }
             if service.isConnected {
@@ -192,7 +192,7 @@ struct SoundsSheet: View {
     }
 
     private func subtitle(for list: MusicList) -> String {
-        list.service == .appleMusic ? "Apple Music · Derin'de çalar" : "\(list.service.title) · \(list.kindTitle)"
+        list.service == .appleMusic ? String(localized: "Apple Music · Derin'de çalar") : String(localized: "\(list.service.title) · \(list.kindTitle)")
     }
 
     private func gradient(for id: String) -> [Color] {

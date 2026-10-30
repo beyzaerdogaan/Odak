@@ -53,7 +53,7 @@ struct AstroEventView: View {
                 .padding(22)
             }
         }
-        .pinnedHeader(fade: .clear) { BackHeader(title: "Gökyüzü etkinliği", subtitle: nil) }
+        .pinnedHeader(fade: .clear) { BackHeader(title: String(localized: "Gökyüzü etkinliği"), subtitle: nil) }
         .background {
             if let astro = event?.astro { AstroBackdrop(event: astro) } else { StarField(seed: 53, count: 110, grid: false) }
         }
@@ -62,13 +62,13 @@ struct AstroEventView: View {
 
     static func kindName(_ kind: AstroEvent.Kind?) -> String {
         switch kind {
-        case .lunarEclipse?: "Ay tutulması"
-        case .solarEclipse?: "Güneş tutulması"
-        case .opposition?: "Karşı konum"
-        case .conjunction?: "Kavuşum"
-        case .elongation?: "En büyük uzanım"
-        case .supermoon?: "Süper Ay"
-        case nil: "Gökyüzü etkinliği"
+        case .lunarEclipse?: String(localized: "Ay tutulması")
+        case .solarEclipse?: String(localized: "Güneş tutulması")
+        case .opposition?: String(localized: "Karşı konum")
+        case .conjunction?: String(localized: "Kavuşum")
+        case .elongation?: String(localized: "En büyük uzanım")
+        case .supermoon?: String(localized: "Süper Ay")
+        case nil: String(localized: "Gökyüzü etkinliği")
         }
     }
 }

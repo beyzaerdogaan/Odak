@@ -30,6 +30,7 @@ targets:
     sources:
       - path: Extensions/ShieldConfiguration
       - path: Shared
+      - path: Localization
     settings:
       groups: [derin]
       base:

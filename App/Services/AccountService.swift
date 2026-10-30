@@ -142,13 +142,13 @@ final class AccountService {
         let ns = error as NSError
         if ns.domain == "FIRAuthErrorDomain", let code = AuthErrorCode(rawValue: ns.code) {
             switch code {
-            case .networkError: return "İnternet bağlantısı yok gibi. Bağlanınca tekrar dene."
+            case .networkError: return String(localized: "İnternet bağlantısı yok gibi. Bağlanınca tekrar dene.")
             case .accountExistsWithDifferentCredential:
-                return "Bu e-posta başka bir giriş yöntemiyle kayıtlı. O yöntemle giriş yap."
+                return String(localized: "Bu e-posta başka bir giriş yöntemiyle kayıtlı. O yöntemle giriş yap.")
             default: break
             }
         }
-        return "Giriş yapılamadı. Biraz sonra tekrar dene."
+        return String(localized: "Giriş yapılamadı. Biraz sonra tekrar dene.")
     }
 }
 

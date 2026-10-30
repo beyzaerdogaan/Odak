@@ -38,9 +38,9 @@ struct SkyView: View {
                 SkyChart(progress: p)
 
                 StatStrip(items: [
-                    (stats.minutes.minutesText, period == .day ? "bugün" : period == .week ? "bu hafta" : "toplam"),
-                    ("\(stats.stars)", "yıldız"),
-                    ("\(model.streak) gün", "seri"),
+                    (stats.minutes.minutesText, period == .day ? String(localized: "bugün") : period == .week ? String(localized: "bu hafta") : String(localized: "toplam")),
+                    ("\(stats.stars)", String(localized: "yıldız")),
+                    (String(localized: "\(model.streak) gün"), String(localized: "seri")),
                 ], size: 23)
                 .padding(.horizontal, 22)
 
@@ -107,7 +107,7 @@ struct SkyView: View {
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
         .defaultScrollAnchor(Demo.screen == "badges" ? .bottom : .top)
-        .collapsingTitle("Gökyüzüm")
+        .collapsingTitle(String(localized: "Gökyüzüm"))
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
@@ -275,7 +275,7 @@ private struct SkyChartPage: View {
                     NavigationLink(value: Route.constellation(c.id)) {
                         HStack(spacing: 6) {
                             Text(c.name).font(.serif(13, italic: true)).foregroundStyle(Theme.paper)
-                            Text(progress.isComplete(c.id) ? "tamam" : "\(progress.litCount(in: c))/\(c.stars.count)")
+                            Text(progress.isComplete(c.id) ? String(localized: "tamam") : "\(progress.litCount(in: c))/\(c.stars.count)")
                                 .font(.system(size: 11)).foregroundStyle(Theme.paper2)
                         }
                         .padding(.vertical, 6)
@@ -299,7 +299,7 @@ struct BadgeView: View {
                 .foregroundStyle(earned ? Theme.paper : Theme.paper3)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text("\(badge.title), \(earned ? "kazanıldı" : badge.detail)"))
+        .accessibilityLabel(Text("\(badge.title), \(earned ? String(localized: "kazanıldı") : badge.detail)"))
     }
 }
 
@@ -348,7 +348,7 @@ struct ConstellationDetailView: View {
                 }
                 .padding(22)
             }
-            .pinnedHeader { BackHeader(title: c.name, subtitle: "\(model.progress.litCount(in: c)) / \(c.stars.count) yıldız") }
+            .pinnedHeader { BackHeader(title: c.name, subtitle: String(localized: "\(model.progress.litCount(in: c)) / \(c.stars.count) yıldız")) }
             .background(StarField(seed: 9, count: 80, grid: false, theme: model.progress.selectedTheme))
             .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $shownStar) { s in StarStorySheet(star: s, constellation: c) }
@@ -376,7 +376,7 @@ struct StarStorySheet: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     VStack(alignment: .leading, spacing: 8) {
-                        Label(r.end.formatted(.dateTime.day().month(.wide).year().hour().minute().locale(Locale(identifier: "tr_TR"))),
+                        Label(r.end.formatted(.dateTime.day().month(.wide).year().hour().minute().locale(AppLanguage.locale)),
                               systemImage: "calendar")
                         Label("\(r.focusedMinutes) dakika odak", systemImage: "hourglass")
                         if r.strict { Label("Katı mod", systemImage: "lock") }
@@ -384,7 +384,7 @@ struct StarStorySheet: View {
                     }
                     .font(.system(size: 14)).foregroundStyle(Theme.paperBody)
                 } else if let lit = model.progress.litStars[star.id] {
-                    Text("Bu yıldız \(lit.formatted(.dateTime.day().month(.wide).year().locale(Locale(identifier: "tr_TR")))) tarihinde yandı, ama hangi odakla kazanıldığı kayıtlı değil.")
+                    Text("Bu yıldız \(lit.formatted(.dateTime.day().month(.wide).year().locale(AppLanguage.locale))) tarihinde yandı, ama hangi odakla kazanıldığı kayıtlı değil.")
                         .font(.system(size: 14)).foregroundStyle(Theme.paperBody)
                         .fixedSize(horizontal: false, vertical: true)
                 }

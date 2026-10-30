@@ -5,10 +5,11 @@ import PackageDescription
 // so they can be unit tested with `swift test` on any machine.
 let package = Package(
     name: "OdakCore",
+    defaultLocalization: "tr",
     platforms: [.iOS("26.0"), .macOS(.v14)],
     products: [.library(name: "OdakCore", targets: ["OdakCore"])],
     targets: [
-        .target(name: "OdakCore", resources: [.copy("Resources/sky-calendar.json")]),
+        .target(name: "OdakCore", resources: [.copy("Resources/sky-calendar.json"), .process("Resources/en.lproj")]),
         .testTarget(name: "OdakCoreTests", dependencies: ["OdakCore"]),
     ],
     swiftLanguageModes: [.v5]

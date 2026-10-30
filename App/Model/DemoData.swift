@@ -36,15 +36,15 @@ enum Demo {
             if d >= 6 && d % 3 != 1 { continue }
             if d == 0 { continue }
             let minutes = d < 6 ? 45 : 90
-            records.append(FocusRecord(task: "Tez", start: end.addingTimeInterval(TimeInterval(-minutes * 60)), end: end,
+            records.append(FocusRecord(task: String(localized: "Tez"), start: end.addingTimeInterval(TimeInterval(-minutes * 60)), end: end,
                                        plannedMinutes: minutes, focusedMinutes: minutes, completed: true, strict: false,
                                        lookedAway: d % 4 == 0, light: minutes))
         }
         let today = cal.date(bySettingHour: 9, minute: 30, second: 0, of: now)!
-        records.append(FocusRecord(task: "Okuma", start: today.addingTimeInterval(-70 * 60), end: today, plannedMinutes: 70,
+        records.append(FocusRecord(task: String(localized: "Okuma"), start: today.addingTimeInterval(-70 * 60), end: today, plannedMinutes: 70,
                                    focusedMinutes: 70, completed: true, strict: false, lookedAway: false, light: 84))
         // Two sessions given up on, shown as burnt-out stars.
-        for (task, minutes, day) in [("Makale okuma", 12, 3), ("İngilizce kelime", 7, 9)] {
+        for (task, minutes, day) in [(String(localized: "Makale okuma"), 12, 3), (String(localized: "İngilizce kelime"), 7, 9)] {
             let end = cal.date(byAdding: .day, value: -day, to: cal.date(bySettingHour: 15, minute: 0, second: 0, of: now)!)!
             records.append(FocusRecord(task: task, start: end.addingTimeInterval(TimeInterval(-minutes * 60)), end: end,
                                        plannedMinutes: 25, focusedMinutes: minutes, completed: false, strict: false, lookedAway: false))
@@ -53,15 +53,15 @@ enum Demo {
         let target = 23 * 60
         let extra = target - p.totalFocusedMinutes
         if extra > 0, let first = p.records.first {
-            p.records.insert(FocusRecord(task: "Tez", start: first.start.addingTimeInterval(-86400 * 10), end: first.start.addingTimeInterval(-86400 * 10 + Double(extra * 60)),
+            p.records.insert(FocusRecord(task: String(localized: "Tez"), start: first.start.addingTimeInterval(-86400 * 10), end: first.start.addingTimeInterval(-86400 * 10 + Double(extra * 60)),
                                          plannedMinutes: extra, focusedMinutes: extra, completed: true, strict: false, lookedAway: true), at: 0)
         }
         p.light = 1440
         p.badges = [Badge.firstLight.rawValue: now, Badge.marathon90.rawValue: now]
         p.deepSky = [:]
         p.promises = [
-            SelfPromise(title: "Yeni bir kitap al", goal: .focusHours(10), createdAt: now, baselineMinutes: p.totalFocusedMinutes - 9 * 60),
-            SelfPromise(title: "Hafta sonu kahvaltıya çık", goal: .constellation("cygnus"), createdAt: now, baselineMinutes: 0),
+            SelfPromise(title: String(localized: "Yeni bir kitap al"), goal: .focusHours(10), createdAt: now, baselineMinutes: p.totalFocusedMinutes - 9 * 60),
+            SelfPromise(title: String(localized: "Hafta sonu kahvaltıya çık"), goal: .constellation("cygnus"), createdAt: now, baselineMinutes: 0),
         ]
         if let shower = MeteorShowers.active(on: now) { p.meteorProgress[shower.seasonKey(for: now)] = 4 }
         return p

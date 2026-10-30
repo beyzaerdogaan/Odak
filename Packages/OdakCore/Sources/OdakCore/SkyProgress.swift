@@ -44,9 +44,9 @@ public struct SelfPromise: Codable, Hashable, Identifiable, Sendable {
 
     public var goalText: String {
         switch goal {
-        case let .focusHours(h): "Hedef: toplam \(h) saat odak"
-        case let .streakDays(d): "Hedef: \(d) günlük seri"
-        case let .constellation(id): "Hedef: \(Catalog.constellation(id)?.name ?? id) takımyıldızını tamamla"
+        case let .focusHours(h): loc("Hedef: toplam \(h) saat odak")
+        case let .streakDays(d): loc("Hedef: \(d) günlük seri")
+        case let .constellation(id): loc("Hedef: \(Catalog.constellation(id)?.name ?? id) takımyıldızını tamamla")
         }
     }
 }
@@ -111,7 +111,7 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         guard let start = journeyStartMinutes else { return 0 }
         return Double(totalFocusedMinutes - start) / 60 * Journey.lightYearsPerHour
     }
-    public var nextStop: JourneyStop? { Journey.stops.first { !reachedStops.contains($0.name) } }
+    public var nextStop: JourneyStop? { Journey.stops.first { !reachedStops.contains($0.id) } }
 
     // MARK: Codable with defaults
 

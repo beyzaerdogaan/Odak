@@ -1,3 +1,4 @@
+import OdakCore
 import SwiftUI
 
 // Liquid Glass is reserved for controls that float above the sky (buttons, pills, chips);
@@ -104,7 +105,7 @@ struct LightPill: View {
     var body: some View {
         HStack(spacing: 6) {
             Spark(size: 12)
-            Text(amount.formatted(.number.locale(Locale(identifier: "tr_TR"))))
+            Text(amount.formatted(.number.locale(AppLanguage.locale)))
                 .font(.system(size: 14, weight: .semibold)).monospacedDigit()
                 .foregroundStyle(Theme.accentInk)
                 .lineLimit(1)
@@ -281,7 +282,7 @@ extension Int {
     /// "1 sa 10 dk", "45 dk"
     var minutesText: String {
         let h = self / 60, m = self % 60
-        if h == 0 { return "\(m) dk" }
-        return m == 0 ? "\(h) sa" : "\(h) sa \(m) dk"
+        if h == 0 { return String(localized: "\(m) dk") }
+        return m == 0 ? String(localized: "\(h) sa") : String(localized: "\(h) sa \(m) dk")
     }
 }
