@@ -12,7 +12,7 @@ struct RewardFlowView: View {
         ZStack {
             if showConstellation, let c = summary.completedConstellation {
                 ConstellationCompleteView(constellation: c, sessions: model.progress.records.filter { r in
-                    r.starID.map { c.star($0) != nil } ?? false
+                    [r.starID, r.twinStarID].contains { $0.map { c.star($0) != nil } ?? false }
                 }.count) {
                     close(showSky: true)
                 }
@@ -105,7 +105,7 @@ struct RewardView: View {
             } else if summary.journeyStarted || model.progress.journeyUnlocked {
                 Text("Yolculuk sürüyor").meta()
                 Text("\(summary.record.focusedMinutes) dk").font(.serif(64, italic: true)).foregroundStyle(Theme.paper)
-                Text("Bu oturum seni \(String(format: "%.1f", Double(summary.record.focusedMinutes) / 60).replacingOccurrences(of: ".", with: ",")) ışık yılı ileri taşıdı")
+                Text("Bu oturum seni \(String(format: "%.1f", Double(summary.record.focusedMinutes * (summary.cometUsed ? 2 : 1)) / 60).replacingOccurrences(of: ".", with: ",")) ışık yılı ileri taşıdı")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper)
             } else {
                 Text("Bu oturumda yıldız düşmedi").meta()
@@ -174,6 +174,10 @@ struct RewardView: View {
 
     private var extraItems: [(String, String, Color)] {
         var items: [(String, String, Color)] = []
+        if let twin = summary.twinStar, let c = Catalog.constellation(containing: twin.id) {
+            items.append(("sparkles", "İkiz yıldız: \(c.name) takımyıldızında \(twin.name) da yandı", Theme.accentInk))
+        }
+        if summary.cometUsed { items.append(("moon.stars", "Kuyrukluyıldız bu oturumu yolculukta iki kat saydı", Theme.ice)) }
         for o in summary.newDeepSky { items.append(("sparkles", "\(o.name) keşfedildi ve \(o.light) Işık kazandın", Theme.nebula)) }
         for p in summary.newPlanets { items.append(("circle.fill", "\(p.name) açıldı", Theme.ice)) }
         for s in summary.reachedStops { items.append(("location.north.fill", "\(s.name) durağına vardın, ödülün: \(s.rewardText)", Theme.accentInk)) }

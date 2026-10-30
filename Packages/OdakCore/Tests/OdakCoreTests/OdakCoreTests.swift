@@ -463,4 +463,106 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(m.openConstellations.count, 3)
         XCTAssertEqual(m.light, LightRules.constellationReward)
     }
+
+    // MARK: - İkiz yıldız, Kıvılcım, Kuyrukluyıldız and looks
+
+    func testTwinStarLightsTwoStarsInALongSession() throws {
+        var p = SkyProgress()
+        p.add(.twinStar)
+        XCTAssertTrue(p.use(.twinStar))
+        XCTAssertFalse(p.use(.twinStar))
+        var rng = SeededGenerator(seed: 11)
+        // Too short: one star, and the twin stays armed.
+        let short = p.complete(input(30, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        XCTAssertNil(short.twinStar)
+        XCTAssertTrue(p.armedTwinStar)
+        XCTAssertEqual(p.starCount, 1)
+        let s = p.complete(input(50, at: date(2026, 10, 2)), calendar: cal, rng: &rng)
+        let first = try XCTUnwrap(s.star), twin = try XCTUnwrap(s.twinStar)
+        XCTAssertNotEqual(first.id, twin.id)
+        XCTAssertFalse(twin.isBright)
+        XCTAssertFalse(p.armedTwinStar)
+        XCTAssertEqual(p.starCount, 3)
+        XCTAssertEqual(p.record(forStar: twin.id)?.id, p.records.last?.id)
+        XCTAssertEqual(p.stats(.all, now: date(2026, 10, 2), calendar: cal).stars, 3)
+    }
+
+    func testTwinStarCanFinishAConstellation() {
+        var p = SkyProgress()
+        let orion = Catalog.constellation("orion")!
+        let faint = orion.stars.filter { !$0.isBright }
+        for s in orion.stars where s.id != faint[0].id && s.id != faint[1].id { p.litStars[s.id] = .now }
+        p.openConstellations = ["orion"]
+        p.armedTwinStar = true
+        var rng = SeededGenerator(seed: 3)
+        let before = p.light
+        let s = p.complete(input(45, at: date(2026, 10, 3)), calendar: cal, rng: &rng)
+        XCTAssertEqual(s.completedConstellation?.id, "orion")
+        XCTAssertEqual(s.bonusLight, LightRules.constellationReward)
+        XCTAssertEqual(p.light - before, s.ledger.total + LightRules.constellationReward)
+    }
+
+    func testSparkRekindlesTheLatestBurntOutStar() {
+        var p = SkyProgress()
+        p.add(.spark, 2)
+        XCTAssertFalse(p.use(.spark)) // nothing to rekindle
+        XCTAssertEqual(p.count(.spark), 2)
+        p.abandon(input(20, at: date(2026, 10, 1)))
+        var later = input(15, at: date(2026, 10, 2)); later.task = "Rapor"
+        p.abandon(later)
+        XCTAssertTrue(p.use(.spark))
+        XCTAssertEqual(p.burntOutStars.map(\.task), ["Tez"])
+        XCTAssertEqual(p.count(.spark), 1)
+        XCTAssertEqual(p.totalFocusedMinutes, 35)
+    }
+
+    func testCometDoublesJourneyDistanceOnlyOnceTheJourneyIsOpen() {
+        var p = SkyProgress()
+        p.add(.comet)
+        XCTAssertFalse(p.use(.comet))
+        for c in Catalog.constellations { for s in c.stars { p.litStars[s.id] = .now }; p.completedConstellations.append(c.id) }
+        p.openConstellations = []
+        var rng = SeededGenerator(seed: 8)
+        _ = p.complete(input(60, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        XCTAssertTrue(p.use(.comet))
+        _ = p.complete(input(180, at: date(2026, 10, 2)), calendar: cal, rng: &rng)
+        XCTAssertFalse(p.armedComet)
+        XCTAssertEqual(p.lightYearsTravelled, 6, accuracy: 0.001)
+        let s = p.complete(input(60, at: date(2026, 10, 3)), calendar: cal, rng: &rng)
+        XCTAssertEqual(p.lightYearsTravelled, 7, accuracy: 0.001)
+        XCTAssertTrue(s.reachedStops.isEmpty)
+    }
+
+    func testNewLooksAreSoldAndOldIconFlagStillCounts() throws {
+        var p = SkyProgress()
+        p.light = 2000
+        try p.buy(.theme(.milkyWay))
+        try p.buy(.dial(.moonPhase))
+        try p.buy(.appIcon(.midnight))
+        XCTAssertEqual(p.light, 2000 - 600 - 250 - 150)
+        XCTAssertTrue(p.owns(.dial(.moonPhase)))
+        XCTAssertThrowsError(try p.buy(.dial(.meteor))) { XCTAssertEqual($0 as? ShopError, .notForSale) }
+        XCTAssertEqual(ShopItem.dial(.analog).id, "look.analog")
+        XCTAssertEqual(ShopItem.appIcon(.dawn).id, "look.icon")
+
+        let old = try JSONDecoder().decode(SkyProgress.self, from: #"{"ownsAppIcon": true, "ownedThemes": ["night", "aurora", "someFutureTheme"]}"#.data(using: .utf8)!)
+        XCTAssertEqual(old.ownedIcons, [.dawn])
+        XCTAssertEqual(old.ownedThemes, [.night, .aurora])
+        let round = try JSONDecoder().decode(SkyProgress.self, from: JSONEncoder().encode(p))
+        XCTAssertEqual(round, p)
+    }
+
+    func testMergeAddsCometMinutesAndKeepsRekindledStars() {
+        let base = SkyProgress()
+        var phone = base, account = base
+        phone.cometMinutes = 60
+        account.cometMinutes = 30
+        let id = UUID()
+        phone.rekindled = [id]
+        account.ownedIcons = [.midnight]
+        let m = SkyProgress.merge(base: base, local: phone, remote: account)
+        XCTAssertEqual(m.cometMinutes, 90)
+        XCTAssertEqual(m.rekindled, [id])
+        XCTAssertEqual(m.ownedIcons, [.midnight])
+    }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws Derin's app icons (1024×1024): the four-point star over a night or dawn sky.
+"""Draws Derin's app icons (1024×1024): the four-point star over a night, dawn or midnight sky.
 Run: python3 design/tools/make_app_icon.py"""
 import math
 import random
@@ -58,8 +58,11 @@ def icon(name, top, bottom, dots, star, halo):
     sd.polygon(star_path(S / 2, S / 2, 330), fill=star + (255,))
     sd.ellipse([S / 2 - 46, S / 2 - 46, S / 2 + 46, S / 2 + 46], fill=(255, 248, 230, 255))
     img = Image.alpha_composite(img, shape)
-    img.convert("RGB").save(ROOT / f"{name}.appiconset/{name}.png")
+    out = ROOT / f"{name}.appiconset"
+    out.mkdir(exist_ok=True)
+    img.convert("RGB").save(out / f"{name}.png")
 
 
 icon("AppIcon", (20, 27, 62), (9, 13, 34), (236, 230, 214), (242, 196, 109), (242, 196, 109))
 icon("AppIconDawn", (246, 247, 251), (203, 209, 226), (39, 48, 92), (154, 116, 36), (242, 196, 109))
+icon("AppIconMidnight", (4, 5, 14), (30, 22, 62), (200, 206, 236), (214, 222, 248), (150, 160, 255))

@@ -108,7 +108,8 @@ struct RewardsView: View {
     private func boosters(_ p: SkyProgress) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Güçlendiriciler").font(.serif(24)).foregroundStyle(Theme.paper).padding(.bottom, 4)
-            ForEach(Booster.allCases) { b in
+            // The Kuyrukluyıldız only matters on the journey, so it waits until the journey opens.
+            ForEach(Booster.allCases.filter { $0 != .comet || p.journeyUnlocked || p.count($0) > 0 }) { b in
                 HStack(spacing: 12) {
                     IconDisc(systemImage: icon(b), color: color(b), fill: color(b).opacity(0.12), size: 46)
                     VStack(alignment: .leading, spacing: 2) {
@@ -131,8 +132,16 @@ struct RewardsView: View {
     }
 
     private func use(_ b: Booster) {
-        if b == .telescope { showTelescope = true; return }
-        model.toast = model.progress.use(b) ? "\(b.title) sonraki oturum için hazır" : "Bu zaten hazır"
+        switch b {
+        case .telescope:
+            showTelescope = true
+        case .spark:
+            model.toast = model.progress.use(b) ? "Sönmüş bir yıldız yeniden yandı" : "Gökyüzünde sönmüş yıldız yok"
+        case .comet where !model.progress.journeyUnlocked:
+            model.toast = "Kuyrukluyıldız, Işık yolculuğu başlayınca kullanılabilir"
+        default:
+            model.toast = model.progress.use(b) ? "\(b.title) sonraki oturum için hazır" : "Bu zaten hazır"
+        }
     }
 
     private func icon(_ b: Booster) -> String {
@@ -141,14 +150,17 @@ struct RewardsView: View {
         case .shootingStar: "sparkle"
         case .cloud: "cloud"
         case .brightTicket: "sun.max"
+        case .twinStar: "sparkles"
+        case .spark: "flame"
+        case .comet: "moon.stars"
         }
     }
 
     private func color(_ b: Booster) -> Color {
         switch b {
-        case .telescope, .shootingStar: Theme.accentInk
-        case .cloud: Theme.ice
-        case .brightTicket: Theme.ember
+        case .telescope, .shootingStar, .twinStar: Theme.accentInk
+        case .cloud, .comet: Theme.ice
+        case .brightTicket, .spark: Theme.ember
         }
     }
 
@@ -188,22 +200,26 @@ struct RewardsView: View {
                                  onBuy: { model.buy(.theme(theme)) }, onSelect: { model.selectTheme(theme) })
                     }
                 }
-                lookTile(preview: AnyView(Image(systemName: "clock").font(.system(size: 30, weight: .light)).foregroundStyle(Theme.paper2)),
-                         title: "Analog sayaç", owned: p.ownedDials.contains(.analog) || model.isZenit,
-                         selected: p.selectedDial == .analog, price: ShopItem.analogDial.price,
-                         onBuy: { model.buy(.analogDial) },
-                         onSelect: { model.progress.selectedDial = p.selectedDial == .analog ? .classic : .analog })
+                ForEach([DialStyle.analog, .moonPhase, .orbit], id: \.self) { dial in
+                    lookTile(preview: AnyView(DialPreview(style: dial)), title: dial.title,
+                             owned: p.ownedDials.contains(dial) || model.isZenit,
+                             selected: p.selectedDial == dial, price: ShopItem.dial(dial).price,
+                             onBuy: { model.buy(.dial(dial)) },
+                             onSelect: { model.progress.selectedDial = p.selectedDial == dial ? .classic : dial })
+                }
                 if p.ownedDials.contains(.meteor) {
-                    lookTile(preview: AnyView(Image(systemName: "sparkles").font(.system(size: 28)).foregroundStyle(Theme.meteor)),
-                             title: "Meteor izi", owned: true, selected: p.selectedDial == .meteor, price: nil, onBuy: {},
+                    lookTile(preview: AnyView(DialPreview(style: .meteor)),
+                             title: DialStyle.meteor.title, owned: true, selected: p.selectedDial == .meteor, price: nil, onBuy: {},
                              onSelect: { model.progress.selectedDial = p.selectedDial == .meteor ? .classic : .meteor })
                 }
-                lookTile(preview: AnyView(Image("AppIconPreview").resizable().scaledToFit().frame(width: 40, height: 40)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))),
-                         title: "Şafak uygulama ikonu", owned: p.ownsAppIcon || model.isZenit,
-                         selected: UIApplication.shared.alternateIconName != nil, price: ShopItem.appIcon.price,
-                         onBuy: { model.buy(.appIcon) },
-                         onSelect: { model.setAlternateIcon(UIApplication.shared.alternateIconName == nil) })
+                ForEach(AppIconStyle.allCases) { icon in
+                    lookTile(preview: AnyView(Image(icon.previewImage).resizable().scaledToFit().frame(width: 40, height: 40)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))),
+                             title: icon.title, owned: p.ownedIcons.contains(icon) || model.isZenit,
+                             selected: UIApplication.shared.alternateIconName == icon.iconName, price: ShopItem.appIcon(icon).price,
+                             onBuy: { model.buy(.appIcon(icon)) },
+                             onSelect: { model.setAlternateIcon(UIApplication.shared.alternateIconName == icon.iconName ? nil : icon) })
+                }
             }
         }
     }

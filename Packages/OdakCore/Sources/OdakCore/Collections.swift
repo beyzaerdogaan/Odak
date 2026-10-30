@@ -451,7 +451,7 @@ public enum Badge: String, Codable, CaseIterable, Hashable, Sendable, Identifiab
 // MARK: - Shop
 
 public enum SkyTheme: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
-    case night, aurora, twilight, nebula, redDwarf
+    case night, aurora, twilight, nebula, redDwarf, blueHour, milkyWay
     public var id: String { rawValue }
     public var title: String {
         switch self {
@@ -460,12 +460,32 @@ public enum SkyTheme: String, Codable, CaseIterable, Hashable, Sendable, Identif
         case .twilight: "Alacakaranlık göğü"
         case .nebula: "Bulutsu göğü"
         case .redDwarf: "Kırmızı cüce göğü"
+        case .blueHour: "Mavi saat göğü"
+        case .milkyWay: "Samanyolu göğü"
+        }
+    }
+}
+
+public enum AppIconStyle: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
+    case dawn, midnight
+    public var id: String { rawValue }
+    public var title: String {
+        switch self {
+        case .dawn: "Şafak uygulama ikonu"
+        case .midnight: "Gece yarısı uygulama ikonu"
+        }
+    }
+    /// The alternate icon's name in the asset catalog.
+    public var iconName: String {
+        switch self {
+        case .dawn: "AppIconDawn"
+        case .midnight: "AppIconMidnight"
         }
     }
 }
 
 public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
-    case telescope, shootingStar, cloud, brightTicket
+    case telescope, shootingStar, cloud, brightTicket, twinStar, spark, comet
     public var id: String { rawValue }
     public var title: String {
         switch self {
@@ -473,6 +493,9 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
         case .shootingStar: "Kayan yıldız"
         case .cloud: "Seri koruyucu bulut"
         case .brightTicket: "Parlak yıldız bileti"
+        case .twinStar: "İkiz yıldız"
+        case .spark: "Kıvılcım"
+        case .comet: "Kuyrukluyıldız"
         }
     }
     public var detail: String {
@@ -481,6 +504,9 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
         case .shootingStar: "Sonraki oturumda Işığın iki katına çıkar"
         case .cloud: "En fazla 3 tane taşıyabilirsin"
         case .brightTicket: "Bir parlak yıldızı 45 dakikalık bir oturumda düşürür"
+        case .twinStar: "45 dakikalık bir sonraki oturumda iki yıldız yanar"
+        case .spark: "Sönmüş bir yıldızı yeniden yakar"
+        case .comet: "Sonraki oturum yolculukta iki kat ışık yılı sayılır"
         }
     }
     public var price: Int {
@@ -489,20 +515,24 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
         case .shootingStar: 150
         case .cloud: 250
         case .brightTicket: 500
+        case .twinStar: 450
+        case .spark: 300
+        case .comet: 250
         }
     }
     public var maxCount: Int { self == .cloud ? 3 : 9 }
 }
 
 public enum ShopItem: Hashable, Sendable, Identifiable {
-    case booster(Booster), sound(SoundID), theme(SkyTheme), analogDial, appIcon
+    case booster(Booster), sound(SoundID), theme(SkyTheme), dial(DialStyle), appIcon(AppIconStyle)
     public var id: String {
         switch self {
         case let .booster(b): "booster.\(b.rawValue)"
         case let .sound(s): "sound.\(s.rawValue)"
         case let .theme(t): "theme.\(t.rawValue)"
-        case .analogDial: "look.analog"
-        case .appIcon: "look.icon"
+        case let .dial(d): "look.\(d.rawValue)"
+        case .appIcon(.dawn): "look.icon"
+        case let .appIcon(i): "look.icon.\(i.rawValue)"
         }
     }
     public var price: Int? {
@@ -511,9 +541,13 @@ public enum ShopItem: Hashable, Sendable, Identifiable {
         case .sound(.library), .sound(.summerNight), .sound(.stream), .sound(.distantStorm): 300
         case .sound: nil
         case .theme(.aurora): 600
-        case .theme(.twilight): 400
+        case .theme(.twilight), .theme(.blueHour): 400
+        case .theme(.milkyWay): 600
         case .theme: nil
-        case .analogDial: 200
+        case .dial(.analog): 200
+        case .dial(.moonPhase): 250
+        case .dial(.orbit): 300
+        case .dial: nil
         case .appIcon: 150
         }
     }

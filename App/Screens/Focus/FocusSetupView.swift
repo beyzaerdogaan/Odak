@@ -190,6 +190,8 @@ struct FocusSetupView: View {
         let p = model.progress
         let armed = [p.armedShootingStar ? "Kayan yıldız hazır, bu oturumda Işık iki katına çıkacak" : nil,
                      p.armedBrightTicket ? "Parlak yıldız bileti hazır" : nil,
+                     p.armedTwinStar ? "İkiz yıldız hazır, 45 dakika ya da daha uzun bir oturumda iki yıldız yanacak" : nil,
+                     p.armedComet ? "Kuyrukluyıldız hazır, bu oturum yolculukta iki kat sayılacak" : nil,
                      p.telescopeTarget.flatMap { id in Catalog.constellation(containing: id)?.star(id).map { "Teleskop \($0.name) yıldızına çevrildi" } }]
             .compactMap { $0 }
         if !armed.isEmpty {
