@@ -26,7 +26,8 @@ final class OdakCoreTests: XCTestCase {
     func testCatalogHasStarterAndNorthernSkiesWithValidLines() {
         XCTAssertEqual(Catalog.starter.count, 16)
         XCTAssertEqual(Catalog.northern.count, 22)
-        XCTAssertEqual(Set(Catalog.constellations.map(\.id)).count, 38)
+        XCTAssertEqual(Catalog.southern.count, 50)
+        XCTAssertEqual(Set(Catalog.constellations.map(\.id)).count, Catalog.officialConstellationCount)
         XCTAssertEqual(Set(Catalog.constellations.flatMap { $0.stars.map(\.id) }).count, Catalog.constellations.reduce(0) { $0 + $1.stars.count })
         for c in Catalog.constellations {
             let ids = Set(c.stars.map(\.id))
@@ -410,6 +411,17 @@ final class OdakCoreTests: XCTestCase {
         let star = try XCTUnwrap(s.star)
         XCTAssertTrue(Catalog.northern.contains { $0.star(star.id) != nil })
         XCTAssertEqual(p.openConstellations, ["auriga", "hercules", "draco"])
+    }
+
+    func testSouthernExpeditionFollowsTheNorthernSky() {
+        var p = SkyProgress()
+        for c in Catalog.starter + Catalog.northern {
+            for s in c.stars { p.litStars[s.id] = .now }
+            p.completedConstellations.append(c.id)
+        }
+        p.openConstellations = []
+        p.refillOpenConstellations()
+        XCTAssertEqual(p.openConstellations, ["canis-major", "virgo", "libra"])
     }
 
     func testOldSkyWithNothingOpenDecodesWithNorthernConstellationsOpen() throws {

@@ -52,8 +52,8 @@ func c(_ id: String, _ name: String, _ latin: String,
 }
 
 public enum Catalog {
-    /// Every constellation the sky has so far, in unlock order: the starter sky, then Kuzey göğü.
-    public static let constellations: [Constellation] = starter + northern
+    /// All 88 constellations in unlock order: the starter sky, then Kuzey göğü, then Güney seferi.
+    public static let constellations: [Constellation] = starter + northern + southern
 
     /// The 16-constellation starter sky, in unlock order (four tiers of four, easy to hard).
     /// Facts must be checked against an astronomy source before release.
@@ -219,7 +219,7 @@ public enum Catalog {
 
     public static func constellation(_ id: String) -> Constellation? { constellations.first { $0.id == id } }
 
-    /// Number of constellations in the whole sky; Güney seferi brings the ones not in `constellations` yet.
+    /// Number of constellations in the whole sky.
     public static let officialConstellationCount = 88
 
     public static func constellation(containing starID: String) -> Constellation? {

@@ -25,6 +25,8 @@ struct CollectionMapView: View {
         let starterCount = Catalog.starter.filter { p.isComplete($0.id) }.count
         let north = Catalog.northern.filter { p.isComplete($0.id) }.count
         let northTotal = Catalog.northern.count
+        let south = Catalog.southern.filter { p.isComplete($0.id) }.count
+        let southTotal = Catalog.southern.count
         let planets = p.unlockedPlanets.count
         let nextPlanet = p.nextPlanet
         let hours = p.totalFocusedMinutes / 60
@@ -33,12 +35,17 @@ struct CollectionMapView: View {
                   bar: Double(starterCount) / Double(total),
                   text: starterDone ? String(localized: "16 tanınmış takımyıldızın hepsini yaktın.") : String(localized: "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın."),
                   color: Theme.accent, state: starterDone ? .done : .here, route: nil),
-            Layer(n: 2, title: String(localized: "Tüm gökyüzü"), right: starterDone ? "\(north) / \(northTotal)" : String(localized: "Kilitli"),
-                  bar: starterDone ? Double(north) / Double(northTotal) : nil,
-                  text: starterDone
-                      ? String(localized: "Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferi. Güney seferi bir sonraki sürümde gelecek.")
-                      : String(localized: "Başlangıç göğü bitince açılır. Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferi."),
-                  color: Theme.accent, state: starterDone ? (north == northTotal ? .done : .here) : .locked, route: nil),
+            Layer(n: 2, title: String(localized: "Tüm gökyüzü"),
+                  right: starterDone ? "\(north + south) / \(northTotal + southTotal)" : String(localized: "Kilitli"),
+                  bar: starterDone ? Double(north + south) / Double(northTotal + southTotal) : nil,
+                  text: !starterDone
+                      ? String(localized: "Başlangıç göğü bitince açılır. Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferindeki 50 takımyıldız.")
+                      : north < northTotal
+                      ? String(localized: "Şu an Kuzey göğündesin, \(north) / \(northTotal). Ardından Güney seferi gelir ve güney gök kutbuna kadar 50 takımyıldız daha açılır.")
+                      : south < southTotal
+                      ? String(localized: "Kuzey göğü tamam. Şu an Güney seferindesin, \(south) / \(southTotal). Sonlara doğru Türkiye'den görülmeyen takımyıldızlara varırsın.")
+                      : String(localized: "88 takımyıldızın hepsini yaktın. Gökyüzünün tamamı senin."),
+                  color: Theme.accent, state: starterDone ? (north + south == northTotal + southTotal ? .done : .here) : .locked, route: nil),
             Layer(n: 3, title: String(localized: "Işık yolculuğu"), right: p.journeyUnlocked ? String(localized: "\(p.reachedStops.count) durak") : String(localized: "Kilitli"),
                   bar: nil, text: String(localized: "Başlangıç göğü bitince Tüm gökyüzü ile aynı anda başlar. Her odak saati seni gerçek yıldız sistemlerine doğru 1 ışık yılı ileri taşır ve rota hiç bitmez."),
                   color: p.journeyUnlocked ? Theme.accent : Theme.paper3, state: p.journeyUnlocked ? .parallel : .locked, route: .journey),
