@@ -2497,12 +2497,12 @@
         }
       }
     },
-    "Kendine bir ödül belirle, örneğin “10 saat odaklanınca yeni bir kitap alacağım” ya da “7 gün üst üste odaklanınca kahvaltıya çıkacağım”. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar." : {
+    "Kendine bir ödül belirle. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Set yourself a reward, like “I'll buy a new book after 10 hours of focus” or “I'll go out for brunch after focusing 7 days in a row”. Derin keeps track of your progress and celebrates with you when you get there."
+            "value" : "Set yourself a reward. Derin keeps track of your progress and celebrates with you when you get there."
           }
         }
       }
