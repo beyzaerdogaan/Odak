@@ -51,6 +51,10 @@ struct FocusSetupView: View {
             blockMode = model.settings.blockMode
         }
         .onChange(of: blockMode) { _, mode in
+            // "Tümü" never opens the app picker, so ask for the Screen Time permission here, before the session starts.
+            if mode == .all, ScreenTimeController.isAvailable, !model.screenTime.isAuthorized {
+                Task { await model.screenTime.ensureAuthorized() }
+            }
             blockModeCommit?.cancel()
             blockModeCommit = Task {
                 try? await Task.sleep(for: .milliseconds(450))

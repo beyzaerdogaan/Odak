@@ -96,7 +96,16 @@ final class AppModel {
         let s = FocusSession(task: settings.task.trimmingCharacters(in: .whitespaces), minutes: settings.minutes,
                              strict: settings.strict, blockMode: settings.blockMode, silenceCalls: settings.silenceCalls)
         session = s
-        screenTime.begin(mode: s.blockMode, strict: s.strict, until: s.end)
+        if s.blockMode != .none {
+            Task {
+                await screenTime.ensureAuthorized()
+                // The session may have been abandoned while the permission prompt was up.
+                guard let current = session, current.start == s.start else { return }
+                screenTime.begin(mode: current.blockMode, strict: current.strict, until: current.end)
+            }
+        } else {
+            screenTime.begin(mode: s.blockMode, strict: s.strict, until: s.end)
+        }
         Notifications.scheduleSessionEnd(at: s.end, task: s.task)
         LiveActivityController.start(s)
         Task { await Notifications.requestPermission() }
