@@ -17,7 +17,18 @@ final class AppModel {
     private(set) var session: FocusSession? { didSet { persist(session, to: "session.json") } }
     /// Set when a session completes; drives the reward screens.
     var summary: SessionSummary? = nil
-    var toast: String? = nil
+    /// A short message at the top of the screen. Each new message hides itself after a few seconds.
+    var toast: String? = nil {
+        didSet {
+            toastDismissal?.cancel()
+            guard toast != nil else { return }
+            toastDismissal = Task { [weak self] in
+                try? await Task.sleep(for: .seconds(2.5))
+                guard !Task.isCancelled else { return }
+                self?.toast = nil
+            }
+        }
+    }
     /// Minutes the phone stayed locked in the session that just finished; shown on the reward screen.
     var lastScreenOffMinutes: Int? = nil
 
@@ -37,6 +48,7 @@ final class AppModel {
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
     @ObservationIgnored private var applyingCloud = false
     @ObservationIgnored private var syncTask: Task<Void, Never>?
+    @ObservationIgnored private var toastDismissal: Task<Void, Never>?
 
     init() {
         if Demo.isOn {
