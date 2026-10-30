@@ -508,7 +508,7 @@ public enum Booster: String, Codable, CaseIterable, Hashable, Sendable, Identifi
         switch self {
         case .telescope: loc("Sonraki yıldızı sen seç")
         case .shootingStar: loc("Sonraki oturumda Işığın iki katına çıkar")
-        case .cloud: loc("En fazla 3 tane taşıyabilirsin")
+        case .cloud: loc("Odaklanamadığın bir günde serini otomatik korur. En fazla 3 tane taşıyabilirsin.")
         case .brightTicket: loc("Bir parlak yıldızı 45 dakikalık bir oturumda düşürür")
         case .twinStar: loc("45 dakikalık bir sonraki oturumda iki yıldız yanar")
         case .spark: loc("Sönmüş bir yıldızı yeniden yakar")

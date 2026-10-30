@@ -63,7 +63,7 @@ struct RewardsView: View {
                     .font(.system(size: 14, weight: .semibold)).foregroundStyle(Theme.accentInk).frame(minHeight: 44)
             }
             if p.promises.isEmpty {
-                Text("Kendine bir ödül belirle, örneğin “10 saat odaklanınca yeni bir kitap alacağım” ya da “7 gün üst üste odaklanınca kahvaltıya çıkacağım”. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar.")
+                Text("Kendine bir ödül belirle. Derin ilerlemeni takip eder ve hedefe ulaştığında seninle kutlar.")
                     .font(.system(size: 13)).foregroundStyle(Theme.paper2).padding(.vertical, 8)
             }
             ForEach(p.promises.sorted { ($0.celebratedAt == nil ? 0 : 1) < ($1.celebratedAt == nil ? 0 : 1) }) { promise in
