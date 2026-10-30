@@ -10,9 +10,11 @@ on:
 permissions:
   contents: write
 
+# Every branch publishes to the same appstore-screenshots branch, so runs wait for each other
+# instead of cancelling: a cancel from another branch's push used to turn this PR's check red.
 concurrency:
   group: appstore-screenshots
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   shots:
