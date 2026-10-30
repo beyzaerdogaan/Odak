@@ -1025,6 +1025,16 @@
         }
       }
     },
+    "Ayarlar'ı aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
     "Aynı anda %lld söz tutabilirsin." : {
       "localizations" : {
         "en" : {
@@ -1041,6 +1051,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can keep at most %lld promises at a time"
+          }
+        }
+      }
+    },
+    "Aynı şekilde ikinci kestirmeyi de ekle." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add the second shortcut the same way."
           }
         }
       }
@@ -1101,6 +1121,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlocked"
+          }
+        }
+      }
+    },
+    "Aşağıdaki düğmeye dokun ve açılan ekranda “Kestirmeyi Ekle”yi seç. Odak sorulursa Derin'i seç." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the button below and choose “Add Shortcut” on the screen that opens. If it asks for a Focus, choose Derin."
           }
         }
       }
@@ -1505,12 +1535,32 @@
         }
       }
     },
+    "Derin Başlat'ı ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Start Derin"
+          }
+        }
+      }
+    },
     "Derin Bitir" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "End Derin"
+          }
+        }
+      }
+    },
+    "Derin Bitir'i ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add End Derin"
           }
         }
       }
