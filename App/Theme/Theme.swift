@@ -28,6 +28,8 @@ enum Theme {
     static let meteor = dynamic(light: 0x5D47BE, dark: 0xC9B8FF)
     static let meteor2 = dynamic(light: 0x463A7A, dark: 0xD6CFF0)
     static let ember = dynamic(light: 0xB9582A, dark: 0xF0A070)
+    /// Dull rust of a star that has gone out.
+    static let cinder = dynamic(light: 0x8C3F24, dark: 0xB4553A)
     static let alarm = dynamic(light: 0xB23A30, dark: 0xF2A49A)
 
     static func dynamic(light: UInt32, lightAlpha: Double = 1, dark: UInt32, darkAlpha: Double = 1) -> Color {
