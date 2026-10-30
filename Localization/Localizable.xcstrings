@@ -735,6 +735,16 @@
         }
       }
     },
+    "88 takımyıldızın hepsini yaktın. Gökyüzünün tamamı senin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have lit all 88 constellations. The whole sky is yours."
+          }
+        }
+      }
+    },
     "Adım %lld" : {
       "localizations" : {
         "en" : {
@@ -1185,12 +1195,22 @@
         }
       }
     },
-    "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez." : {
+    "Başlangıç göğü bitince Tüm gökyüzü ile aynı anda başlar. Her odak saati seni gerçek yıldız sistemlerine doğru 1 ışık yılı ileri taşır ve rota hiç bitmez." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Once the starter sky is complete, a journey toward real star systems begins. Every hour of focus carries you 1 light-year further, and the route never ends."
+            "value" : "Starts alongside the whole sky once the starter sky is done. Every focus hour carries you 1 light-year toward real star systems, and the route never ends."
+          }
+        }
+      }
+    },
+    "Başlangıç göğü bitince açılır. Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferindeki 50 takımyıldız." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens when the starter sky is done. First the 22 constellations of the Northern sky, then the 50 of the Southern expedition."
           }
         }
       }
@@ -1871,16 +1891,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back"
-          }
-        }
-      }
-    },
-    "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The remaining 72 constellations arrive in a later version, first the Northern sky and then a Southern expedition."
           }
         }
       }
@@ -2723,6 +2733,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can use the comet once the Journey of Light begins"
+          }
+        }
+      }
+    },
+    "Kuzey göğü tamam. Şu an Güney seferindesin, %lld / %lld. Sonlara doğru Türkiye'den görülmeyen takımyıldızlara varırsın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Northern sky is done. You are on the Southern expedition, %lld / %lld. Toward the end you reach constellations that can't be seen from Turkey."
           }
         }
       }
@@ -4663,6 +4683,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skip for now"
+          }
+        }
+      }
+    },
+    "Şu an Kuzey göğündesin, %lld / %lld. Ardından Güney seferi gelir ve güney gök kutbuna kadar 50 takımyıldız daha açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are in the Northern sky, %lld / %lld. Then comes the Southern expedition, with 50 more constellations all the way to the south celestial pole."
           }
         }
       }

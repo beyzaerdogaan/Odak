@@ -35,7 +35,7 @@ public struct Constellation: Hashable, Identifiable, Sendable {
 }
 
 /// Short builder so the catalogue below reads like a star chart.
-private func c(_ id: String, _ name: String, _ latin: String,
+func c(_ id: String, _ name: String, _ latin: String,
                stars: [(String, Double, Double, Double, Bool)],
                lines: [(String, String)], facts: [String], look: String,
                sound: SoundID? = nil) -> Constellation {
@@ -52,9 +52,12 @@ private func c(_ id: String, _ name: String, _ latin: String,
 }
 
 public enum Catalog {
+    /// All 88 constellations in unlock order: the starter sky, then Kuzey göğü, then Güney seferi.
+    public static let constellations: [Constellation] = starter + northern + southern
+
     /// The 16-constellation starter sky, in unlock order (four tiers of four, easy to hard).
     /// Facts must be checked against an astronomy source before release.
-    public static let constellations: [Constellation] = [
+    public static let starter: [Constellation] = [
         c("ursa-major", loc("Büyük Ayı"), "Ursa Major",
           stars: [("Dubhe", 80, 20, 2.4, false), ("Merak", 80, 45, 2, false), ("Phecda", 55, 52, 2, false),
                   ("Megrez", 52, 32, 1.4, false), ("Alioth", 35, 30, 2.4, false), ("Mizar", 20, 28, 2.2, false),
@@ -216,7 +219,7 @@ public enum Catalog {
 
     public static func constellation(_ id: String) -> Constellation? { constellations.first { $0.id == id } }
 
-    /// Number of constellations in the whole sky; layer 2 opens the remaining ones in a later release.
+    /// Number of constellations in the whole sky.
     public static let officialConstellationCount = 88
 
     public static func constellation(containing starID: String) -> Constellation? {

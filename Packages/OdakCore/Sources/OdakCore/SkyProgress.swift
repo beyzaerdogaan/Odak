@@ -179,6 +179,7 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         meteorProgress = v(.meteorProgress, d.meteorProgress)
         journeyStartMinutes = v(.journeyStartMinutes, d.journeyStartMinutes)
         reachedStops = v(.reachedStops, d.reachedStops)
+        refillOpenConstellations()
     }
 
     public func encode(to encoder: Encoder) throws {

@@ -23,9 +23,12 @@ final class OdakCoreTests: XCTestCase {
                    plannedMinutes: minutes, focusedMinutes: minutes, strict: strict, lookedAway: lookedAway)
     }
 
-    func testCatalogHasSixteenConstellationsWithValidLines() {
-        XCTAssertEqual(Catalog.constellations.count, 16)
-        XCTAssertEqual(Set(Catalog.constellations.map(\.id)).count, 16)
+    func testCatalogHasStarterAndNorthernSkiesWithValidLines() {
+        XCTAssertEqual(Catalog.starter.count, 16)
+        XCTAssertEqual(Catalog.northern.count, 22)
+        XCTAssertEqual(Catalog.southern.count, 50)
+        XCTAssertEqual(Set(Catalog.constellations.map(\.id)).count, Catalog.officialConstellationCount)
+        XCTAssertEqual(Set(Catalog.constellations.flatMap { $0.stars.map(\.id) }).count, Catalog.constellations.reduce(0) { $0 + $1.stars.count })
         for c in Catalog.constellations {
             let ids = Set(c.stars.map(\.id))
             XCTAssertEqual(ids.count, c.stars.count, c.id)
@@ -395,6 +398,38 @@ final class OdakCoreTests: XCTestCase {
         let s = p.complete(input(300, at: date(2026, 10, 2)), calendar: cal, rng: &rng)
         XCTAssertEqual(s.reachedStops.map(\.name), ["Alfa Centauri"])
         XCTAssertTrue(p.hasBadge(.proxima))
+    }
+
+    func testNorthernSkyOpensWhenTheStarterSkyIsDoneAndJourneyRunsAlongside() throws {
+        var p = SkyProgress()
+        for c in Catalog.starter { for s in c.stars { p.litStars[s.id] = .now }; p.completedConstellations.append(c.id) }
+        // A sky finished before Kuzey göğü existed has nothing open; the next session picks up from there.
+        p.openConstellations = []
+        var rng = SeededGenerator(seed: 8)
+        let s = p.complete(input(60, at: date(2026, 10, 1)), calendar: cal, rng: &rng)
+        XCTAssertTrue(s.journeyStarted)
+        let star = try XCTUnwrap(s.star)
+        XCTAssertTrue(Catalog.northern.contains { $0.star(star.id) != nil })
+        XCTAssertEqual(p.openConstellations, ["auriga", "hercules", "draco"])
+    }
+
+    func testSouthernExpeditionFollowsTheNorthernSky() {
+        var p = SkyProgress()
+        for c in Catalog.starter + Catalog.northern {
+            for s in c.stars { p.litStars[s.id] = .now }
+            p.completedConstellations.append(c.id)
+        }
+        p.openConstellations = []
+        p.refillOpenConstellations()
+        XCTAssertEqual(p.openConstellations, ["canis-major", "virgo", "libra"])
+    }
+
+    func testOldSkyWithNothingOpenDecodesWithNorthernConstellationsOpen() throws {
+        var p = SkyProgress()
+        p.completedConstellations = Catalog.starter.map(\.id)
+        p.openConstellations = []
+        let decoded = try JSONDecoder().decode(SkyProgress.self, from: JSONEncoder().encode(p))
+        XCTAssertEqual(decoded.openConstellations, ["auriga", "hercules", "draco"])
     }
 
     func testProgressDecodesOldPayloadWithDefaults() throws {
