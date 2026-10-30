@@ -3157,6 +3157,16 @@
         }
       }
     },
+    "Seçtiğin liste odaklanmaya başladığında çalmaya başlar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list you pick starts playing when you start focusing."
+          }
+        }
+      }
+    },
     "Seçtiğin liste uygulamadan çıkmadan Derin'in içinde çalar." : {
       "localizations" : {
         "en" : {

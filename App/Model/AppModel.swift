@@ -44,6 +44,8 @@ final class AppModel {
     @ObservationIgnored private var awaySince: Date?
     @ObservationIgnored private var lockedWhileAway = false
     @ObservationIgnored private var expectingHandOff = false
+    /// A list picked before the session that waits for Shortcuts to hand back before its app opens.
+    @ObservationIgnored private var pendingList: String?
     @ObservationIgnored private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
     @ObservationIgnored private var applyingCloud = false
@@ -110,7 +112,12 @@ final class AppModel {
         LiveActivityController.start(s)
         Task { await Notifications.requestPermission() }
         if !sounds.volumes.isEmpty { sounds.play() }
-        if s.silenceCalls, settings.focusShortcutsReady {
+        let runsShortcut = s.silenceCalls && settings.focusShortcutsReady
+        if let id = settings.spotifyPlaylist {
+            // Opening a music app now would cut off the Focus shortcut, so such a list waits until Derin is back.
+            if runsShortcut, music.list(id: id)?.service != .appleMusic { pendingList = id } else { Task { await play(listID: id) } }
+        }
+        if runsShortcut {
             expectingHandOff = true
             FocusModeShortcuts.run(FocusModeShortcuts.startName)
         }
@@ -172,6 +179,7 @@ final class AppModel {
     private func wrapUp() {
         let s = session
         session = nil
+        pendingList = nil
         screenTime.end()
         Notifications.cancelSessionEnd()
         LiveActivityController.end()
@@ -188,6 +196,22 @@ final class AppModel {
 
     /// Opening a music app or Shortcuts from the app does not count as looking at the phone.
     func handOff() { expectingHandOff = true }
+
+    /// Plays a picked list: Apple Music inside Derin, Spotify on the active device, the rest in their own app.
+    func play(listID id: String) async {
+        if let list = music.list(id: id) {
+            if list.service == .appleMusic, await appleMusic.play(list) { return }
+            handOff()
+            if list.service == .spotify, !list.isAlbum, let spotifyID = list.spotifyURI?.absoluteString.split(separator: ":").last {
+                await spotify.play(SpotifyPlaylist(id: String(spotifyID), name: list.name, subtitle: ""))
+            } else {
+                await music.open(list)
+            }
+        } else if let playlist = (SpotifyService.suggested + spotify.playlists).first(where: { $0.id == id }) {
+            handOff()
+            await spotify.play(playlist)
+        }
+    }
 
     // MARK: - Leaving the app during a session
 
@@ -211,6 +235,10 @@ final class AppModel {
         if let shared = music.collectShared() { toast = String(localized: "“\(shared.name)” müzik listelerine eklendi") }
         tick()
         scheduleSync(after: .zero)
+        if let id = pendingList, session != nil {
+            pendingList = nil
+            Task { await play(listID: id) }
+        }
         guard var s = session, let away = awaySince else { return }
         // Locking the phone is fine; switching to another app is "looking at the phone".
         if !lockedWhileAway, !expectingHandOff, !s.isOnBreak, Date.now.timeIntervalSince(away) > 3 {
