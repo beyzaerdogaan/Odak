@@ -45,6 +45,8 @@ targets:
       - path: Shared
       - path: LiveActivity
       - path: Music
+      # Texts in Turkish (the base language) and English, shared with the extensions.
+      - path: Localization
     dependencies:
       - package: OdakCore
       - package: Firebase
@@ -77,6 +79,7 @@ targets:
     sources:
       - path: Widgets
       - path: LiveActivity
+      - path: Localization
     settings:
       groups: [derin]
       base:
@@ -90,6 +93,7 @@ targets:
     sources:
       - path: ShareExtension
       - path: Music
+      - path: Localization
     settings:
       groups: [derin]
       base:

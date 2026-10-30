@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-17",
+  "updated": "2026-10-29",
   "source": "Meteor yağmurları: IMO Meteor Shower Calendar 2026 ve 2027 (sterngucker.de üzerinden); Orionidler, Leonidler, Geminidler 2027 ve Kuadrantidler 2028 zirveleri güneş boylamından hesaplandı, IMO 2028 takvimi çıkınca güncellenmeli. Tutulmalar: NASA GSFC tutulma tabloları (Espenak), Türkiye'den görünürlük ve kapanma oranı PyEphem ile hesaplandı. Gezegen olayları ve süper Aylar: PyEphem (VSOP87) ile hesaplandı.",
   "occurrences": [
     {
@@ -86,7 +86,14 @@
         "jupiter"
       ],
       "detail": "İki gezegen arasında yalnızca 1,2° kalıyor, bu da aşağı yukarı iki dolunay genişliği kadar.",
-      "tip": "Gece yarısından sonra doğuya bak. Göz alıcı parlaklıktaki nokta Jüpiter, hemen yanındaki kızıl nokta ise Mars."
+      "tip": "Gece yarısından sonra doğuya bak. Göz alıcı parlaklıktaki nokta Jüpiter, hemen yanındaki kızıl nokta ise Mars.",
+      "translations": {
+        "en": {
+          "title": "Mars and Jupiter side by side",
+          "detail": "Only 1.2° separates the two planets, roughly the width of two full moons.",
+          "tip": "Look east after midnight. The dazzling point is Jupiter, and the reddish one right beside it is Mars."
+        }
+      }
     },
     {
       "id": "supermoon-2026-12",
@@ -98,7 +105,14 @@
         "moon"
       ],
       "detail": "Yılın en yakın dolunayı. Ay 356.738 km uzakta olacak ve sıradan bir dolunaydan belirgin biçimde büyük ve parlak görünecek.",
-      "tip": "Ay'ı doğarken, ufka yakınken izle. Ağaçların ve binaların yanında en büyük hâliyle görünür."
+      "tip": "Ay'ı doğarken, ufka yakınken izle. Ağaçların ve binaların yanında en büyük hâliyle görünür.",
+      "translations": {
+        "en": {
+          "title": "Supermoon",
+          "detail": "The closest full moon of the year. The Moon will be 356,738 km away and look noticeably bigger and brighter than an ordinary full moon.",
+          "tip": "Watch it rise while it is still close to the horizon. Beside trees and buildings it looks its largest."
+        }
+      }
     },
     {
       "id": "elongation-venus-2027-01",
@@ -110,7 +124,14 @@
         "venus"
       ],
       "detail": "Venüs Güneş'ten 47° uzakta olduğu için şafaktan önce yılın en uzun süresince görünür.",
-      "tip": "Gün ağarmadan önce güneydoğuya bak, gökyüzündeki en parlak nokta Venüs'tür."
+      "tip": "Gün ağarmadan önce güneydoğuya bak, gökyüzündeki en parlak nokta Venüs'tür.",
+      "translations": {
+        "en": {
+          "title": "Venus at its highest before dawn",
+          "detail": "Venus stands 47° from the Sun, so it stays visible before dawn for longer than at any other time of the year.",
+          "tip": "Look southeast before daybreak. The brightest point in the sky is Venus."
+        }
+      }
     },
     {
       "id": "supermoon-2027-01",
@@ -122,7 +143,14 @@
         "moon"
       ],
       "detail": "Bu, art arda gelen ikinci süper Ay. Ay 357.644 km uzakta olacak.",
-      "tip": "Akşam doğudan doğarken izle. Gece boyunca kış göğünde yüksekten geçer."
+      "tip": "Akşam doğudan doğarken izle. Gece boyunca kış göğünde yüksekten geçer.",
+      "translations": {
+        "en": {
+          "title": "Supermoon",
+          "detail": "The second supermoon in a row. The Moon will be 357,644 km away.",
+          "tip": "Watch it rise in the east in the evening. Through the night it passes high across the winter sky."
+        }
+      }
     },
     {
       "id": "opposition-jupiter-2027",
@@ -134,7 +162,14 @@
         "jupiter"
       ],
       "detail": "Jüpiter Güneş'in tam karşısında olduğu için bütün gece görünür ve yılın en parlak hâlindedir.",
-      "tip": "Akşam doğuda doğar, gece yarısı en yüksekte olur. Dürbünle dört büyük uydusu seçilir."
+      "tip": "Akşam doğuda doğar, gece yarısı en yüksekte olur. Dürbünle dört büyük uydusu seçilir.",
+      "translations": {
+        "en": {
+          "title": "Jupiter at opposition",
+          "detail": "Jupiter sits directly opposite the Sun, so it is up all night and at its brightest for the year.",
+          "tip": "It rises in the east in the evening and stands highest around midnight. Binoculars show its four large moons."
+        }
+      }
     },
     {
       "id": "opposition-mars-2027",
@@ -146,7 +181,14 @@
         "mars"
       ],
       "detail": "Mars bütün gece gökte kalır ve iki yılda bir ulaştığı en parlak hâline yakındır.",
-      "tip": "Kızıl, titreşmeyen bir nokta ara. Akşam doğudan yükselir."
+      "tip": "Kızıl, titreşmeyen bir nokta ara. Akşam doğudan yükselir.",
+      "translations": {
+        "en": {
+          "title": "Mars at opposition",
+          "detail": "Mars stays in the sky all night, close to the peak brightness it reaches once every two years.",
+          "tip": "Look for a red point that does not twinkle. It climbs out of the east in the evening."
+        }
+      }
     },
     {
       "id": "eclipse-lunar-2027-02",
@@ -159,7 +201,14 @@
       ],
       "detail": "Ay Dünya'nın yarı gölgesinin kıyısından geçer; kuzey kenarı çok hafifçe kararır.",
       "tip": "Ay gece yarısından sonra yüksekte olur. Kararma çok hafif olduğu için dikkatle bak, fotoğrafta daha kolay seçilir.",
-      "magnitude": -0.057
+      "magnitude": -0.057,
+      "translations": {
+        "en": {
+          "title": "Penumbral lunar eclipse",
+          "detail": "The Moon grazes the edge of Earth's outer shadow, and its northern edge dims ever so slightly.",
+          "tip": "The Moon is high after midnight. The dimming is very faint, so look closely; it shows more easily in photos."
+        }
+      }
     },
     {
       "id": "elongation-mercury-2027-03",
@@ -171,7 +220,14 @@
         "mercury"
       ],
       "detail": "Merkür Güneş'ten 27,6° uzakta. Bu, küçük gezegeni görmek için yılın iyi fırsatlarından biri.",
-      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak."
+      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak.",
+      "translations": {
+        "en": {
+          "title": "Mercury in the morning sky",
+          "detail": "Mercury stands 27.6° from the Sun, one of the year's good chances to catch the little planet.",
+          "tip": "Half an hour before sunrise, look just above the eastern horizon."
+        }
+      }
     },
     {
       "id": "conjunction-venus-saturn-2027",
@@ -184,7 +240,14 @@
         "saturn"
       ],
       "detail": "İki gezegen arasında yalnızca 0,6° kalıyor, bu da bir dolunay genişliğinden biraz fazla.",
-      "tip": "Şafaktan önce doğu ufkunun üstüne bak. Venüs göz kamaştırır, yanındaki Satürn ise sönük ve sarımsı görünür."
+      "tip": "Şafaktan önce doğu ufkunun üstüne bak. Venüs göz kamaştırır, yanındaki Satürn ise sönük ve sarımsı görünür.",
+      "translations": {
+        "en": {
+          "title": "Venus meets Saturn",
+          "detail": "Only 0.6° separates the two planets, a little more than the width of a full moon.",
+          "tip": "Look above the eastern horizon before dawn. Venus is dazzling, and Saturn beside it looks faint and yellowish."
+        }
+      }
     },
     {
       "id": "eclipse-solar-2027-08",
@@ -198,7 +261,14 @@
       ],
       "detail": "Türkiye'den parçalı olarak görülür ve Ay, Güneş çapının yaklaşık üçte ikisini örter (İstanbul %67, Antalya %76). Tam tutulma Mısır ve Libya'dan görülür.",
       "tip": "Güneş'e asla çıplak gözle, güneş gözlüğüyle ya da filtresiz dürbünle bakma; ISO 12312-2 belgeli tutulma gözlüğü kullan.",
-      "magnitude": 0.67
+      "magnitude": 0.67,
+      "translations": {
+        "en": {
+          "title": "Solar eclipse",
+          "detail": "From Turkey it is partial, with the Moon covering about two thirds of the Sun's diameter (67% in Istanbul, 76% in Antalya). The total eclipse can be seen from Egypt and Libya.",
+          "tip": "Never look at the Sun with the naked eye, through sunglasses or through unfiltered binoculars; use eclipse glasses certified to ISO 12312-2."
+        }
+      }
     },
     {
       "id": "elongation-mercury-2027-09",
@@ -210,7 +280,14 @@
         "mercury"
       ],
       "detail": "Merkür Güneş'ten 26,3° uzakta.",
-      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak."
+      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak.",
+      "translations": {
+        "en": {
+          "title": "Mercury in the evening sky",
+          "detail": "Mercury stands 26.3° from the Sun.",
+          "tip": "After sunset, look just above the western horizon."
+        }
+      }
     },
     {
       "id": "opposition-saturn-2027",
@@ -222,7 +299,14 @@
         "saturn"
       ],
       "detail": "Satürn bütün gece görünür ve yılın en parlak hâlindedir.",
-      "tip": "Küçük bir teleskopla halkaları seçilir. Gece yarısı güneyde görünür."
+      "tip": "Küçük bir teleskopla halkaları seçilir. Gece yarısı güneyde görünür.",
+      "translations": {
+        "en": {
+          "title": "Saturn at opposition",
+          "detail": "Saturn is up all night and at its brightest for the year.",
+          "tip": "A small telescope shows its rings. Around midnight it stands in the south."
+        }
+      }
     },
     {
       "id": "conjunction-venus-mars-2027",
@@ -235,7 +319,14 @@
         "mars"
       ],
       "detail": "Venüs ile Mars arasında yalnızca 0,3° kalıyor, ikisi dürbünün aynı karesine sığar.",
-      "tip": "Gün batımından sonra güneybatıya, ufka yakın bir yere bak."
+      "tip": "Gün batımından sonra güneybatıya, ufka yakın bir yere bak.",
+      "translations": {
+        "en": {
+          "title": "Venus meets Mars",
+          "detail": "Only 0.3° separates Venus and Mars, close enough to share a single binocular view.",
+          "tip": "After sunset, look southwest, low near the horizon."
+        }
+      }
     },
     {
       "id": "eclipse-lunar-2028-01",
@@ -248,7 +339,14 @@
       ],
       "detail": "Ay'ın küçük bir kenarı Dünya'nın tam gölgesine girer.",
       "tip": "Şafağa doğru batıda, alçakta görünür. Ufku açık bir yer seç.",
-      "magnitude": 0.066
+      "magnitude": 0.066,
+      "translations": {
+        "en": {
+          "title": "Partial lunar eclipse",
+          "detail": "A small edge of the Moon slips into Earth's full shadow.",
+          "tip": "It hangs low in the west toward dawn. Pick a spot with an open horizon."
+        }
+      }
     },
     {
       "id": "supermoon-2028-02",
@@ -260,7 +358,14 @@
         "moon"
       ],
       "detail": "Yılın en yakın dolunayı. Ay 356.721 km uzakta olacak.",
-      "tip": "Akşam doğuda doğarken izle."
+      "tip": "Akşam doğuda doğarken izle.",
+      "translations": {
+        "en": {
+          "title": "Supermoon",
+          "detail": "The closest full moon of the year. The Moon will be 356,721 km away.",
+          "tip": "Watch it rise in the east in the evening."
+        }
+      }
     },
     {
       "id": "elongation-mercury-2028-02",
@@ -272,7 +377,14 @@
         "mercury"
       ],
       "detail": "Merkür Güneş'ten 26,9° uzakta.",
-      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak."
+      "tip": "Güneş doğmadan yarım saat önce doğu ufkunun hemen üstüne bak.",
+      "translations": {
+        "en": {
+          "title": "Mercury in the morning sky",
+          "detail": "Mercury stands 26.9° from the Sun.",
+          "tip": "Half an hour before sunrise, look just above the eastern horizon."
+        }
+      }
     },
     {
       "id": "opposition-jupiter-2028",
@@ -284,7 +396,14 @@
         "jupiter"
       ],
       "detail": "Jüpiter bütün gece görünür ve yılın en parlak hâlindedir.",
-      "tip": "Dürbünle dört büyük uydusu seçilir."
+      "tip": "Dürbünle dört büyük uydusu seçilir.",
+      "translations": {
+        "en": {
+          "title": "Jupiter at opposition",
+          "detail": "Jupiter is up all night and at its brightest for the year.",
+          "tip": "Binoculars show its four large moons."
+        }
+      }
     },
     {
       "id": "elongation-venus-2028-03",
@@ -296,7 +415,14 @@
         "venus"
       ],
       "detail": "Venüs Güneş'ten 46° uzakta olduğu için gün batımından sonra saatlerce görünür.",
-      "tip": "Akşam batıya bak, gökyüzündeki en parlak nokta Venüs'tür."
+      "tip": "Akşam batıya bak, gökyüzündeki en parlak nokta Venüs'tür.",
+      "translations": {
+        "en": {
+          "title": "Venus at its highest after sunset",
+          "detail": "Venus stands 46° from the Sun, so it stays visible for hours after sunset.",
+          "tip": "Look west in the evening. The brightest point in the sky is Venus."
+        }
+      }
     },
     {
       "id": "eclipse-lunar-2028-07",
@@ -309,7 +435,14 @@
       ],
       "detail": "Ay'ın üçte birinden fazlası Dünya'nın tam gölgesine girer.",
       "tip": "Ay tutulmuş hâlde, güneydoğuda ufkun hemen üstünden doğar.",
-      "magnitude": 0.389
+      "magnitude": 0.389,
+      "translations": {
+        "en": {
+          "title": "Partial lunar eclipse",
+          "detail": "More than a third of the Moon slips into Earth's full shadow.",
+          "tip": "The Moon rises already eclipsed, just above the southeastern horizon."
+        }
+      }
     },
     {
       "id": "elongation-venus-2028-08",
@@ -321,7 +454,14 @@
         "venus"
       ],
       "detail": "Venüs Güneş'ten 46° uzakta.",
-      "tip": "Şafaktan önce doğuya bak."
+      "tip": "Şafaktan önce doğuya bak.",
+      "translations": {
+        "en": {
+          "title": "Venus at its highest before dawn",
+          "detail": "Venus stands 46° from the Sun.",
+          "tip": "Look east before dawn."
+        }
+      }
     },
     {
       "id": "elongation-mercury-2028-09",
@@ -333,7 +473,14 @@
         "mercury"
       ],
       "detail": "Merkür Güneş'ten 27,1° uzakta.",
-      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak."
+      "tip": "Gün batımından sonra batı ufkunun hemen üstüne bak.",
+      "translations": {
+        "en": {
+          "title": "Mercury in the evening sky",
+          "detail": "Mercury stands 27.1° from the Sun.",
+          "tip": "After sunset, look just above the western horizon."
+        }
+      }
     },
     {
       "id": "opposition-saturn-2028",
@@ -345,7 +492,14 @@
         "saturn"
       ],
       "detail": "Satürn bütün gece görünür ve yılın en parlak hâlindedir.",
-      "tip": "Küçük bir teleskopla halkaları seçilir."
+      "tip": "Küçük bir teleskopla halkaları seçilir.",
+      "translations": {
+        "en": {
+          "title": "Saturn at opposition",
+          "detail": "Saturn is up all night and at its brightest for the year.",
+          "tip": "A small telescope shows its rings."
+        }
+      }
     },
     {
       "id": "conjunction-venus-jupiter-2028",
@@ -358,7 +512,14 @@
         "jupiter"
       ],
       "detail": "Gökyüzünün en parlak iki gezegeni arasında yalnızca 0,6° kalıyor.",
-      "tip": "Şafaktan önce doğuya bak."
+      "tip": "Şafaktan önce doğuya bak.",
+      "translations": {
+        "en": {
+          "title": "Venus meets Jupiter",
+          "detail": "Only 0.6° separates the two brightest planets in the sky.",
+          "tip": "Look east before dawn."
+        }
+      }
     },
     {
       "id": "eclipse-lunar-2028-12",
@@ -371,7 +532,14 @@
       ],
       "detail": "Ay bütünüyle Dünya'nın gölgesine girip bakır kızılına döner.",
       "tip": "Yılbaşı akşamı Ay doğuda yükselirken izleyebilirsin. Ay tutulması çıplak gözle güvenle izlenir.",
-      "magnitude": 1.246
+      "magnitude": 1.246,
+      "translations": {
+        "en": {
+          "title": "Total lunar eclipse",
+          "detail": "The Moon slips entirely into Earth's shadow and turns a coppery red.",
+          "tip": "On New Year's Eve you can watch it as the Moon climbs in the east. A lunar eclipse is safe to watch with the naked eye."
+        }
+      }
     }
   ]
 }

@@ -2,6 +2,12 @@ import XCTest
 @testable import OdakCore
 
 final class OdakCoreTests: XCTestCase {
+    // The texts below are checked in Turkish, the base language, whatever language the test machine runs in.
+    override class func setUp() {
+        super.setUp()
+        AppLanguage.current = "tr"
+    }
+
     var cal: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Europe/Istanbul")!
@@ -37,6 +43,20 @@ final class OdakCoreTests: XCTestCase {
         XCTAssertEqual(l.lines.map(\.amount), [45, 9, 5])
         XCTAssertEqual(l.total, 59)
         XCTAssertEqual(l.lines[2].label, "Seri bonusu, 6. gün %10")
+    }
+
+    func testEnglishTexts() throws {
+        AppLanguage.current = "en"
+        defer { AppLanguage.current = "tr" }
+        XCTAssertEqual(SoundID.rain.title, "Rain")
+        XCTAssertEqual(LightRules.ledger(minutes: 45, noLook: true, streakDays: 6, strict: false, doubled: false).lines.map(\.label),
+                       ["Focus time, 45 min", "Phone untouched, +20%", "Streak bonus, day 6, +10%"])
+        let now = date(2026, 10, 13)
+        XCTAssertEqual(shower("orionids").peakText(around: now, calendar: cal), "on the night of October 21–22")
+        let solar = try XCTUnwrap(MeteorShowers.schedule(from: now, to: date(2029, 1, 1), calendar: cal).first { $0.astro?.kind == .solarEclipse })
+        XCTAssertEqual(solar.whenText(calendar: cal), "August 2, 12:46")
+        XCTAssertEqual(solar.title, "Solar eclipse")
+        XCTAssertEqual(SelfPromise(title: "Kitap", goal: .streakDays(7), createdAt: now, baselineMinutes: 0).goalText, "Goal: a 7-day streak")
     }
 
     func testStreakBonusCapsAtTwentyPercent() {

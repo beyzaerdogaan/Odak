@@ -46,9 +46,9 @@ public struct SelfPromise: Codable, Hashable, Identifiable, Sendable {
 
     public var goalText: String {
         switch goal {
-        case let .focusHours(h): "Hedef: toplam \(h) saat odak"
-        case let .streakDays(d): "Hedef: \(d) günlük seri"
-        case let .constellation(id): "Hedef: \(Catalog.constellation(id)?.name ?? id) takımyıldızını tamamla"
+        case let .focusHours(h): loc("Hedef: toplam \(h) saat odak")
+        case let .streakDays(d): loc("Hedef: \(d) günlük seri")
+        case let .constellation(id): loc("Hedef: \(Catalog.constellation(id)?.name ?? id) takımyıldızını tamamla")
         }
     }
 }
@@ -58,11 +58,11 @@ public enum DialStyle: String, Codable, CaseIterable, Hashable, Sendable {
 
     public var title: String {
         switch self {
-        case .classic: "Klasik sayaç"
-        case .analog: "Analog sayaç"
-        case .meteor: "Meteor izi"
-        case .moonPhase: "Ay evresi sayacı"
-        case .orbit: "Yörünge sayacı"
+        case .classic: loc("Klasik sayaç")
+        case .analog: loc("Analog sayaç")
+        case .meteor: loc("Meteor izi")
+        case .moonPhase: loc("Ay evresi sayacı")
+        case .orbit: loc("Yörünge sayacı")
         }
     }
 }
@@ -129,7 +129,7 @@ public struct SkyProgress: Codable, Hashable, Sendable {
         guard let start = journeyStartMinutes else { return 0 }
         return Double(totalFocusedMinutes - start + cometMinutes) / 60 * Journey.lightYearsPerHour
     }
-    public var nextStop: JourneyStop? { Journey.stops.first { !reachedStops.contains($0.name) } }
+    public var nextStop: JourneyStop? { Journey.stops.first { !reachedStops.contains($0.id) } }
 
     // MARK: Codable with defaults
 

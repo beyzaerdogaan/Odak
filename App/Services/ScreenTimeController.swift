@@ -31,12 +31,12 @@ final class ScreenTimeController {
     var selectionSummary: String {
         #if SCREEN_TIME
         var parts: [String] = []
-        if !selection.applicationTokens.isEmpty { parts.append("\(selection.applicationTokens.count) uygulama") }
-        if !selection.categoryTokens.isEmpty { parts.append("\(selection.categoryTokens.count) kategori") }
-        if !selection.webDomainTokens.isEmpty { parts.append("\(selection.webDomainTokens.count) site") }
-        return parts.isEmpty ? "Henüz seçilmedi" : parts.joined(separator: ", ")
+        if !selection.applicationTokens.isEmpty { parts.append(String(localized: "\(selection.applicationTokens.count) uygulama")) }
+        if !selection.categoryTokens.isEmpty { parts.append(String(localized: "\(selection.categoryTokens.count) kategori")) }
+        if !selection.webDomainTokens.isEmpty { parts.append(String(localized: "\(selection.webDomainTokens.count) site")) }
+        return parts.isEmpty ? String(localized: "Henüz seçilmedi") : parts.joined(separator: ", ")
         #else
-        return "Ekran Süresi izni gerekiyor"
+        return String(localized: "Ekran Süresi izni gerekiyor")
         #endif
     }
 

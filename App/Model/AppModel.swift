@@ -17,7 +17,18 @@ final class AppModel {
     private(set) var session: FocusSession? { didSet { persist(session, to: "session.json") } }
     /// Set when a session completes; drives the reward screens.
     var summary: SessionSummary? = nil
-    var toast: String? = nil
+    /// A short message at the top of the screen. Each new message hides itself after a few seconds.
+    var toast: String? = nil {
+        didSet {
+            toastDismissal?.cancel()
+            guard toast != nil else { return }
+            toastDismissal = Task { [weak self] in
+                try? await Task.sleep(for: .seconds(2.5))
+                guard !Task.isCancelled else { return }
+                self?.toast = nil
+            }
+        }
+    }
     /// Minutes the phone stayed locked in the session that just finished; shown on the reward screen.
     var lastScreenOffMinutes: Int? = nil
 
@@ -37,11 +48,12 @@ final class AppModel {
     @ObservationIgnored private var rng = SystemRandomNumberGenerator()
     @ObservationIgnored private var applyingCloud = false
     @ObservationIgnored private var syncTask: Task<Void, Never>?
+    @ObservationIgnored private var toastDismissal: Task<Void, Never>?
 
     init() {
         if Demo.isOn {
             progress = Demo.progress()
-            settings = FocusSettings(task: "Tez · Bölüm 3 literatür", ambient: ["rain": 0.3])
+            settings = FocusSettings(task: String(localized: "Tez · Bölüm 3 literatür"), ambient: ["rain": 0.3])
             session = nil
         } else {
             progress = Self.load(SkyProgress.self, from: "progress.json") ?? SkyProgress()
@@ -143,7 +155,7 @@ final class AppModel {
     }
 
     private func input(for s: FocusSession, end: Date) -> FocusInput {
-        FocusInput(task: s.task.isEmpty ? "Odak" : s.task, start: s.start, end: end, plannedMinutes: s.plannedMinutes,
+        FocusInput(task: s.task.isEmpty ? String(localized: "Odak") : s.task, start: s.start, end: end, plannedMinutes: s.plannedMinutes,
                    focusedMinutes: s.focusedMinutes(at: end), strict: s.strict,
                    lookedAway: s.lookAways > 0 || SharedStore.shieldAttempts > 0)
     }
@@ -187,7 +199,7 @@ final class AppModel {
         didUnlock(at: .now)
         screenTime.clearIfExpired()
         appleMusic.refresh()
-        if let shared = music.collectShared() { toast = "“\(shared.name)” müzik listelerine eklendi" }
+        if let shared = music.collectShared() { toast = String(localized: "“\(shared.name)” müzik listelerine eklendi") }
         tick()
         scheduleSync(after: .zero)
         guard var s = session, let away = awaySince else { return }
@@ -243,11 +255,11 @@ final class AppModel {
     func buy(_ item: ShopItem) {
         do {
             try progress.buy(item)
-            toast = "Satın alındı"
+            toast = String(localized: "Satın alındı")
         } catch ShopError.notEnoughLight {
-            toast = "Bunun için yeterli Işığın yok"
+            toast = String(localized: "Bunun için yeterli Işığın yok")
         } catch ShopError.limitReached {
-            toast = "Bundan daha fazlasını taşıyamazsın"
+            toast = String(localized: "Bundan daha fazlasını taşıyamazsın")
         } catch {
             toast = nil
         }
@@ -325,7 +337,7 @@ final class AppModel {
         account.signOut()
         cloud.forget()
         clearProgress()
-        toast = "Çıkış yapıldı"
+        toast = String(localized: "Çıkış yapıldı")
     }
 
     /// Deletes the account and everything saved in it, and the sky on this phone.
@@ -335,7 +347,7 @@ final class AppModel {
         guard await account.deleteAccount(beforeDelete: { uid in try await cloud.deleteRemote(uid: uid) }) else { return }
         cloud.forget()
         clearProgress()
-        toast = "Hesabın silindi"
+        toast = String(localized: "Hesabın silindi")
     }
 
     private func clearProgress() {
@@ -376,7 +388,8 @@ final class AppModel {
         case "stars", "star":
             // Tie Orion's lit stars to the sessions that dropped them, so the star list and sheet have a story.
             var p = Demo.progress(now: now)
-            let tasks = ["Tez · Bölüm 3 literatür", "İstatistik ödevi", "Okuma", "Tez · Bölüm 2", "İngilizce kelime", "Sunum hazırlığı"]
+            let tasks = [String(localized: "Tez · Bölüm 3 literatür"), String(localized: "İstatistik ödevi"), String(localized: "Okuma"),
+                         String(localized: "Tez · Bölüm 2"), String(localized: "İngilizce kelime"), String(localized: "Sunum hazırlığı")]
             let lit = Catalog.constellation("orion")?.stars.filter { p.isLit($0.id) } ?? []
             for (i, s) in lit.enumerated() where i < p.records.count {
                 let r = p.records.count - 1 - i

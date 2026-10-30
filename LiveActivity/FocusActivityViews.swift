@@ -109,9 +109,9 @@ struct FocusLockScreenView: View {
 
     private var status: String {
         switch phase {
-        case .focus: "Derin odak sürüyor"
-        case .onBreak: "Moladasın"
-        case .done: "Yıldızın hazır"
+        case .focus: String(localized: "Derin odak sürüyor")
+        case .onBreak: String(localized: "Moladasın")
+        case .done: String(localized: "Yıldızın hazır")
         }
     }
 

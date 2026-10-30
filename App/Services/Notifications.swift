@@ -12,8 +12,8 @@ enum Notifications {
 
     static func scheduleSessionEnd(at date: Date, task: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Yıldızın hazır"
-        content.body = task.isEmpty ? "Odak süren doldu. Hangi yıldızı yaktığını gör." : "\(task) için odak süren doldu. Hangi yıldızı yaktığını gör."
+        content.title = String(localized: "Yıldızın hazır")
+        content.body = task.isEmpty ? String(localized: "Odak süren doldu. Hangi yıldızı yaktığını gör.") : String(localized: "\(task) için odak süren doldu. Hangi yıldızı yaktığını gör.")
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(1, date.timeIntervalSinceNow), repeats: false)
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: sessionID, content: content, trigger: trigger))
@@ -29,7 +29,7 @@ enum Notifications {
         await requestPermission()
         let content = UNMutableNotificationContent()
         content.title = event.title
-        content.body = event.astro?.tip ?? "Gökyüzüne bakma zamanı."
+        content.body = event.astro?.tip ?? String(localized: "Gökyüzüne bakma zamanı.")
         content.sound = .default
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
@@ -40,8 +40,8 @@ enum Notifications {
         guard date > .now else { return }
         await requestPermission()
         let content = UNMutableNotificationContent()
-        content.title = "\(name) zirvede"
-        content.body = "Bu gece meteor yağmurunun zirvesi var. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak."
+        content.title = String(localized: "\(name) zirvede")
+        content.body = String(localized: "Bu gece meteor yağmurunun zirvesi var. Şehir ışıklarından uzakta, gece yarısından sonra gökyüzüne bak.")
         content.sound = .default
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)

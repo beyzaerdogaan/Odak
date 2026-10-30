@@ -13,6 +13,15 @@ struct RewardsView: View {
     enum Category: String, CaseIterable, Identifiable {
         case all = "Tümü", boosters = "Güçlendirici", sounds = "Sesler", looks = "Görünüm", zenit = "Zenit"
         var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .all: String(localized: "Tümü")
+            case .boosters: String(localized: "Güçlendirici")
+            case .sounds: String(localized: "Sesler")
+            case .looks: String(localized: "Görünüm")
+            case .zenit: String(localized: "Zenit")
+            }
+        }
     }
 
     var body: some View {
@@ -37,7 +46,7 @@ struct RewardsView: View {
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
-        .collapsingTitle("Ödüller")
+        .collapsingTitle(String(localized: "Ödüller"))
         .background(StarField(seed: 6, count: 90, depth: 0.7, grid: false, theme: p.selectedTheme, falloff: true))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showNewPromise) { NewPromiseSheet(onNeedZenit: { showZenit = true }) }
@@ -88,7 +97,7 @@ struct RewardsView: View {
                         Button {
                             withAnimation(.snappy) { category = c }
                         } label: {
-                            Text(c.rawValue)
+                            Text(c.title)
                                 .font(.system(size: 14, weight: category == c ? .semibold : .medium))
                                 .foregroundStyle(category == c ? Theme.night : Theme.paper2)
                                 .padding(.horizontal, 15).frame(height: 38)
@@ -114,7 +123,7 @@ struct RewardsView: View {
                     IconDisc(systemImage: icon(b), color: color(b), fill: color(b).opacity(0.12), size: 46)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(b.title).font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                        Text(p.count(b) > 0 ? "\(b.detail) · Elinde \(p.count(b)) tane var" : b.detail).small()
+                        Text(p.count(b) > 0 ? String(localized: "\(b.detail) · Elinde \(p.count(b)) tane var") : b.detail).small()
                     }
                     Spacer(minLength: 4)
                     if p.count(b) > 0 && b != .cloud {
@@ -136,11 +145,11 @@ struct RewardsView: View {
         case .telescope:
             showTelescope = true
         case .spark:
-            model.toast = model.progress.use(b) ? "Sönmüş bir yıldız yeniden yandı" : "Gökyüzünde sönmüş yıldız yok"
+            model.toast = model.progress.use(b) ? String(localized: "Sönmüş bir yıldız yeniden yandı") : String(localized: "Gökyüzünde sönmüş yıldız yok")
         case .comet where !model.progress.journeyUnlocked:
-            model.toast = "Kuyrukluyıldız, Işık yolculuğu başlayınca kullanılabilir"
+            model.toast = String(localized: "Kuyrukluyıldız, Işık yolculuğu başlayınca kullanılabilir")
         default:
-            model.toast = model.progress.use(b) ? "\(b.title) sonraki oturum için hazır" : "Bu zaten hazır"
+            model.toast = model.progress.use(b) ? String(localized: "\(b.title) sonraki oturum için hazır") : String(localized: "Bu zaten hazır")
         }
     }
 
@@ -258,14 +267,14 @@ struct RewardsView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(["Tüm ses paketleri ve gök temaları", "Ayrıntılı haftalık ve aylık istatistikler", "Sınırsız kendine söz"], id: \.self) { line in
+                ForEach([String(localized: "Tüm ses paketleri ve gök temaları"), String(localized: "Ayrıntılı haftalık ve aylık istatistikler"), String(localized: "Sınırsız kendine söz")], id: \.self) { line in
                     HStack(spacing: 10) { Spark(size: 11); Text(line).font(.system(size: 14)).foregroundStyle(Theme.paper) }
                 }
             }
             if model.isZenit {
                 Label("Zenit aktif", systemImage: "checkmark.seal.fill").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.aurora)
             } else {
-                PrimaryButton(title: "Zenit'e geç") { showZenit = true }
+                PrimaryButton(title: String(localized: "Zenit'e geç")) { showZenit = true }
             }
         }
         .padding(18)
@@ -387,7 +396,7 @@ struct NewPromiseSheet: View {
             onNeedZenit()
         } else {
             dismiss()
-            model.toast = "Aynı anda en fazla \(SkyProgress.freePromiseLimit) söz tutabilirsin"
+            model.toast = String(localized: "Aynı anda en fazla \(SkyProgress.freePromiseLimit) söz tutabilirsin")
         }
     }
 }
@@ -406,8 +415,8 @@ struct TelescopeSheet: View {
                             Button {
                                 if model.progress.use(.telescope, target: s.id) {
                                     model.toast = s.isBright
-                                        ? "\(s.name) parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek"
-                                        : "Sonraki yıldızın \(s.name) olacak"
+                                        ? String(localized: "\(s.name) parlak, 60 dakikalık bir oturumda, katı modda ya da biletle 45 dakikada düşecek")
+                                        : String(localized: "Sonraki yıldızın \(s.name) olacak")
                                 }
                                 dismiss()
                             } label: {

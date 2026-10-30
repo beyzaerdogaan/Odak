@@ -23,6 +23,7 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>tr</string>
+		<string>en</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
