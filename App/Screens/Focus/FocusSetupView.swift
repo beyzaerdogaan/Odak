@@ -136,15 +136,18 @@ struct FocusSetupView: View {
     }
 
     private func stepButton(_ symbol: String, label: String, by step: Int) -> some View {
-        let next = model.settings.minutes + step
+        let range = 5...180
         return Button {
+            // Read the value at tap time, never one captured when the button was last drawn:
+            // a quick tap could otherwise land on a stale action and step from an older value.
+            let next = min(max(model.settings.minutes + step, range.lowerBound), range.upperBound)
             withAnimation(.snappy) { model.settings.minutes = next }
         } label: {
             Image(systemName: symbol).font(.system(size: 15, weight: .semibold)).frame(width: 36, height: 36)
         }
         .buttonStyle(.glass)
         .buttonBorderShape(.circle)
-        .disabled(!(5...180).contains(next))
+        .disabled(!range.contains(model.settings.minutes + step))
         .accessibilityLabel(label)
         .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] + 14 }
         .transition(.scale.combined(with: .opacity))
