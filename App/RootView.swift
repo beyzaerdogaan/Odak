@@ -122,21 +122,22 @@ struct FocusFlowView: View {
 struct ToastView: View {
     @Environment(AppModel.self) private var model
 
+    // AppModel hides the toast on its own timer. A `.task` here could miss its restart when the same
+    // message was shown again, and the toast then stayed on screen.
     var body: some View {
-        if let text = model.toast {
-            Text(text)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(Theme.paper)
-                .padding(.horizontal, 16)
-                .frame(height: 40)
-                .glassEffect(.regular, in: .capsule)
-                .padding(.top, 8)
-                .transition(.move(edge: .top).combined(with: .opacity))
-                .task(id: text) {
-                    try? await Task.sleep(for: .seconds(2))
-                    withAnimation { model.toast = nil }
-                }
-                .accessibilityAddTraits(.updatesFrequently)
+        ZStack {
+            if let text = model.toast {
+                Text(text)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Theme.paper)
+                    .padding(.horizontal, 16)
+                    .frame(height: 40)
+                    .glassEffect(.regular, in: .capsule)
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .accessibilityAddTraits(.updatesFrequently)
+            }
         }
+        .animation(.default, value: model.toast)
     }
 }
