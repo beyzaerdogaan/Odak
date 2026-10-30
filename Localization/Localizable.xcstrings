@@ -705,6 +705,26 @@
         }
       }
     },
+    "5 dakika artır" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add 5 minutes"
+          }
+        }
+      }
+    },
+    "5 dakika azalt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove 5 minutes"
+          }
+        }
+      }
+    },
     "5 dk mola ver" : {
       "localizations" : {
         "en" : {

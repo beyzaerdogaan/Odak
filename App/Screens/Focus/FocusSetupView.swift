@@ -106,11 +106,14 @@ struct FocusSetupView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Odak süresi").font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.paper2)
                 Spacer()
+                // With "Özel" picked, −/+ sit on both sides of the value itself, so the minutes show only once.
+                if custom { stepButton("minus", label: String(localized: "5 dakika azalt"), by: -5) }
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Text("\(model.settings.minutes)").font(.serif(44)).monospacedDigit().foregroundStyle(Theme.paper)
                         .contentTransition(.numericText())
                     Text("dk").font(.system(size: 18)).foregroundStyle(Theme.paper2)
                 }
+                if custom { stepButton("plus", label: String(localized: "5 dakika artır"), by: 5) }
             }
             Picker("Odak süresi", selection: Binding(
                 get: { custom ? 0 : model.settings.minutes },
@@ -124,17 +127,27 @@ struct FocusSetupView: View {
                 Text("Özel").tag(0)
             }
             .pickerStyle(.segmented)
-            if custom {
-                Stepper(value: $model.settings.minutes, in: 5...180, step: 5) {
-                    Text("\(model.settings.minutes) dakika").font(.system(size: 15)).foregroundStyle(Theme.paper)
-                }
-            }
             HStack(spacing: 8) {
                 Spark(size: 13)
                 Text("Bu oturum sana 1 yıldız ve yaklaşık \(model.estimatedLight) Işık kazandırır")
             }
             .font(.system(size: 13)).foregroundStyle(Theme.paper2)
         }
+    }
+
+    private func stepButton(_ symbol: String, label: String, by step: Int) -> some View {
+        let next = model.settings.minutes + step
+        return Button {
+            withAnimation(.snappy) { model.settings.minutes = next }
+        } label: {
+            Image(systemName: symbol).font(.system(size: 15, weight: .semibold)).frame(width: 36, height: 36)
+        }
+        .buttonStyle(.glass)
+        .buttonBorderShape(.circle)
+        .disabled(!(5...180).contains(next))
+        .accessibilityLabel(label)
+        .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] + 14 }
+        .transition(.scale.combined(with: .opacity))
     }
 
     private var blockingSection: some View {
