@@ -205,6 +205,7 @@ extension SkyProgress {
 
     public mutating func complete<R: RandomNumberGenerator>(_ input: FocusInput, calendar cal: Calendar = .current, rng: inout R) -> SessionSummary {
         let now = input.end
+        refillOpenConstellations()
         reconcileClouds(now: now, calendar: cal)
         let planetsBefore = Set(unlockedPlanets.map(\.id))
         let completedBefore = Set(completedConstellations)
@@ -316,7 +317,7 @@ extension SkyProgress {
     @discardableResult
     private mutating func afterMinutesChanged(now: Date) -> (started: Bool, stops: [JourneyStop]) {
         var started = false
-        if journeyStartMinutes == nil, completedConstellations.count >= Catalog.constellations.count {
+        if journeyStartMinutes == nil, Catalog.starter.allSatisfy({ isComplete($0.id) }) {
             journeyStartMinutes = totalFocusedMinutes
             started = true
         }
@@ -342,6 +343,15 @@ extension SkyProgress {
         if let s = c.unlocksSound { ownedSounds.insert(s) }
         openConstellations.removeAll { $0 == c.id }
         if let next = Catalog.constellations.first(where: { !isComplete($0.id) && !openConstellations.contains($0.id) }) {
+            openConstellations.append(next.id)
+        }
+    }
+
+    /// Keeps three constellations open while unfinished ones remain, so a sky finished before Kuzey göğü
+    /// existed picks up from there.
+    public mutating func refillOpenConstellations() {
+        while openConstellations.count < 3,
+              let next = Catalog.constellations.first(where: { !isComplete($0.id) && !openConstellations.contains($0.id) }) {
             openConstellations.append(next.id)
         }
     }

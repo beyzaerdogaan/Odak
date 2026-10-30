@@ -20,29 +20,35 @@ struct CollectionMapView: View {
 
     private var layers: [Layer] {
         let p = model.progress
-        let total = Catalog.constellations.count
-        let starterDone = p.completedConstellations.count >= total
+        let total = Catalog.starter.count
+        let starterDone = Catalog.starter.allSatisfy { p.isComplete($0.id) }
+        let starterCount = Catalog.starter.filter { p.isComplete($0.id) }.count
+        let north = Catalog.northern.filter { p.isComplete($0.id) }.count
+        let northTotal = Catalog.northern.count
         let planets = p.unlockedPlanets.count
         let nextPlanet = p.nextPlanet
         let hours = p.totalFocusedMinutes / 60
         return [
-            Layer(n: 1, title: String(localized: "Başlangıç göğü"), right: "\(p.completedConstellations.count) / \(total)",
-                  bar: Double(p.completedConstellations.count) / Double(total),
+            Layer(n: 1, title: String(localized: "Başlangıç göğü"), right: "\(starterCount) / \(total)",
+                  bar: Double(starterCount) / Double(total),
                   text: starterDone ? String(localized: "16 tanınmış takımyıldızın hepsini yaktın.") : String(localized: "En tanınmış 16 takımyıldızdan oluşur. Şu an buradasın."),
                   color: Theme.accent, state: starterDone ? .done : .here, route: nil),
-            Layer(n: 2, title: String(localized: "Tüm gökyüzü"), right: String(localized: "Yakında"),
-                  bar: nil, text: String(localized: "Geri kalan 72 takımyıldız, önce Kuzey göğü ardından Güney seferi olarak bir sonraki sürümde gelecek."),
-                  color: Theme.paper3, state: .locked, route: nil),
-            Layer(n: 3, title: String(localized: "Derin gök nesneleri"), right: "\(p.deepSky.count) / \(DeepSky.catalogueSize)",
+            Layer(n: 2, title: String(localized: "Tüm gökyüzü"), right: starterDone ? "\(north) / \(northTotal)" : String(localized: "Kilitli"),
+                  bar: starterDone ? Double(north) / Double(northTotal) : nil,
+                  text: starterDone
+                      ? String(localized: "Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferi. Güney seferi bir sonraki sürümde gelecek.")
+                      : String(localized: "Başlangıç göğü bitince açılır. Önce Kuzey göğündeki 22 takımyıldız, sonra Güney seferi."),
+                  color: Theme.accent, state: starterDone ? (north == northTotal ? .done : .here) : .locked, route: nil),
+            Layer(n: 3, title: String(localized: "Işık yolculuğu"), right: p.journeyUnlocked ? String(localized: "\(p.reachedStops.count) durak") : String(localized: "Kilitli"),
+                  bar: nil, text: String(localized: "Başlangıç göğü bitince Tüm gökyüzü ile aynı anda başlar. Her odak saati seni gerçek yıldız sistemlerine doğru 1 ışık yılı ileri taşır ve rota hiç bitmez."),
+                  color: p.journeyUnlocked ? Theme.accent : Theme.paper3, state: p.journeyUnlocked ? .parallel : .locked, route: .journey),
+            Layer(n: 4, title: String(localized: "Derin gök nesneleri"), right: "\(p.deepSky.count) / \(DeepSky.catalogueSize)",
                   bar: nil, text: String(localized: "Başlangıç göğüyle paralel ilerler ve bulutsuları, galaksileri, yıldız kümelerini kapsar. İlk nesne Avcı Bulutsusu'dur ve Avcı takımyıldızı tamamlandıktan sonra 90 dakikalık bir oturumla birlikte açılır."),
                   color: Theme.nebula, state: .parallel, route: .deepSky),
-            Layer(n: 4, title: String(localized: "Gezegenler ve Ay"), right: "\(planets) / \(Planets.all.count)",
+            Layer(n: 5, title: String(localized: "Gezegenler ve Ay"), right: "\(planets) / \(Planets.all.count)",
                   bar: nextPlanet.map { Double(p.totalFocusedMinutes) / Double($0.hours * 60) },
                   text: nextPlanet.map { String(localized: "Toplam odak sürene göre paralel ilerler. Sıradaki gök cismi \($0.name) ve \($0.hours) saatte açılır, sen şu an \(hours) saattesin.") } ?? String(localized: "Bütün gezegenler ve Ay açıldı."),
                   color: Theme.ice, state: .parallel, route: .deepSky),
-            Layer(n: 5, title: String(localized: "Işık yolculuğu"), right: p.journeyUnlocked ? String(localized: "\(p.reachedStops.count) durak") : String(localized: "Kilitli"),
-                  bar: nil, text: String(localized: "Başlangıç göğü tamamlanınca gerçek yıldız sistemlerine doğru bir yolculuk başlar. Her odak saati seni 1 ışık yılı ileri taşır ve rota hiç bitmez."),
-                  color: p.journeyUnlocked ? Theme.accent : Theme.paper3, state: p.journeyUnlocked ? .parallel : .locked, route: .journey),
         ]
     }
 
