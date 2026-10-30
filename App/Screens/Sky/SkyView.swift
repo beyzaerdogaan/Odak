@@ -61,12 +61,7 @@ struct SkyView: View {
                     NavigationLink(value: Route.skyCalendar) {
                         HStack(spacing: 12) {
                             Image(systemName: "calendar").font(.system(size: 20)).foregroundStyle(Theme.accentInk)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Gökyüzü etkinlikleri").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                                if let next = nextEvent {
-                                    Text("Sıradaki: \(next.title), \(next.whenText())").small().lineLimit(1)
-                                }
-                            }
+                            Text("Gökyüzü etkinlikleri").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                             Spacer()
                             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.accentInk)
                         }
@@ -77,10 +72,7 @@ struct SkyView: View {
                     Divider().overlay(Theme.hair)
                     HStack(spacing: 12) {
                         Image(systemName: "cloud").font(.system(size: 22)).foregroundStyle(Theme.ice)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(p.count(.cloud)) seri koruyucu bulut").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
-                            Text("Odaklanamadığın bir günde serini otomatik olarak korur").small()
-                        }
+                        Text("\(p.count(.cloud)) seri koruyucu bulut").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.paper)
                     }
                     .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
                 }
@@ -111,11 +103,6 @@ struct SkyView: View {
         .background(StarField(seed: 5, count: 150, depth: 1, grid: false, theme: p.selectedTheme))
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showZenit) { ZenitSheet() }
-    }
-
-    /// The meteor shower, eclipse or planet event happening now or next.
-    private var nextEvent: SkyEvent? {
-        MeteorShowers.schedule(from: .now, to: .now.addingTimeInterval(400 * 86400)).first { $0.end > .now }
     }
 
     @ViewBuilder private func detailedStats(_ p: SkyProgress) -> some View {

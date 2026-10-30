@@ -2907,16 +2907,6 @@
         }
       }
     },
-    "Odaklanamadığın bir günde serini otomatik olarak korur" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keeps your streak safe on a day you couldn't focus"
-          }
-        }
-      }
-    },
     "Odaklandığın konu" : {
       "localizations" : {
         "en" : {
@@ -3513,16 +3503,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next constellation:"
-          }
-        }
-      }
-    },
-    "Sıradaki: %@, %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Next: %@, %@"
           }
         }
       }
