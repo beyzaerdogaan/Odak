@@ -219,16 +219,37 @@ struct SkyChart: View {
             .frame(height: 300)
 
             if count > 1 {
-                HStack(spacing: 6) {
-                    ForEach(0..<count, id: \.self) { i in
-                        Circle().fill(i == current ? Theme.accentInk : Theme.paper3.opacity(0.5))
-                            .frame(width: 5, height: 5)
-                    }
-                }
+                PageDots(count: count, current: current)
                 .accessibilityElement()
                 .accessibilityLabel(Text("Gökyüzü sayfası \(current + 1) / \(count), diğer takımyıldızlar için yana kaydır"))
             }
         }
+    }
+}
+
+/// Page dots that stay short however big the catalog gets: at most seven show, sliding along with the
+/// current page, and the end ones shrink when more pages wait beyond them.
+private struct PageDots: View {
+    let count: Int
+    let current: Int
+    private static let visible = 7
+
+    var body: some View {
+        let shown = min(count, Self.visible)
+        let first = min(max(current - shown / 2, 0), count - shown)
+        let last = first + shown - 1
+        HStack(spacing: 6) {
+            ForEach(first...last, id: \.self) { i in
+                // How far this dot sits from a window edge that hides more pages.
+                let edge = min(i - first + (first > 0 ? 0 : 9), last - i + (last < count - 1 ? 0 : 9))
+                let size: CGFloat = edge == 0 ? 3 : edge == 1 ? 4 : 5
+                Circle().fill(i == current ? Theme.accentInk : Theme.paper3.opacity(0.5))
+                    .frame(width: size, height: size)
+                    .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .frame(height: 5)
+        .animation(.snappy, value: current)
     }
 }
 
