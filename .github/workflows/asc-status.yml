@@ -1,0 +1,28 @@
+# Prints what App Store Connect has for the version being prepared (read only), to see what is left before review.
+name: App Store status
+
+on:
+  push:
+    paths: [ci/asc_status.py, .github/workflows/asc-status.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Status
+        run: |
+          pip install -q pyjwt cryptography
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$ASC_KEY_PATH"
+          cd ci
+          python3 asc_status.py
