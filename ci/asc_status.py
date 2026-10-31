@@ -80,12 +80,15 @@ for info in get(f"/apps/{app_id}/appInfos")["data"]:
         la = loc["attributes"]
         section(f"app info {la['locale']}", {k: la.get(k) for k in ("name", "subtitle", "privacyPolicyUrl")})
 
-prices = get(f"/apps/{app_id}/appPriceSchedule/manualPrices", {"include": "appPricePoint,territory"})
-section("manual prices", prices and [p["relationships"] for p in prices["data"]] or "none")
-base = get(f"/apps/{app_id}/appPriceSchedule/baseTerritory")
-section("price base territory", base and base["data"] and base["data"]["id"])
-points = prices and [i for i in prices.get("included", []) if i["type"] == "appPricePoints"]
-section("price points", points and [p["attributes"] for p in points] or "none")
+schedule = get(f"/apps/{app_id}/appPriceSchedule")
+if schedule and schedule.get("data"):
+    sid = schedule["data"]["id"]
+    base = get(f"/appPriceSchedules/{sid}/baseTerritory")
+    prices = get(f"/appPriceSchedules/{sid}/manualPrices", {"include": "appPricePoint"})
+    points = [i["attributes"] for i in (prices or {}).get("included", []) if i["type"] == "appPricePoints"]
+    section("price", {"baseTerritory": base and base["data"]["id"], "pricePoints": points})
+else:
+    section("price", "not set")
 
 avail = get(f"/apps/{app_id}/appAvailabilityV2")
 if avail and avail.get("data"):

@@ -1,0 +1,6 @@
+{
+  "firstName": "Beyza",
+  "lastName": "Erdoğan",
+  "email": "beyzaerdogaaan@gmail.com",
+  "notes": "Derin is a focus timer: each completed focus session lights a star, and stars complete constellations.\n\n- No account is needed. Every feature works without signing in. Sign in with Apple / Google is optional and only backs up progress; accounts can be deleted in Settings > Account > Delete account.\n- Screen Time (FamilyControls): on the Focus setup screen the user can choose to block distracting apps (or all apps) during a session. Screen Time authorization is requested only when the user picks a blocking option (or taps the button in Settings). The selection never leaves the device.\n- Spotify is optional: suggested playlists open in the Spotify app; connecting an account is not required.\n- Ambient sounds are from Freesound under CC0 / CC BY licences; attribution is in Settings.\n- No ads, no tracking, no in-app purchases in this version."
+}
