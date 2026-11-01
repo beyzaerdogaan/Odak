@@ -37,7 +37,7 @@ def main():
     app_id = app["id"]
     version = call("GET", f"/apps/{app_id}/appStoreVersions",
                    query={"filter[platform]": "IOS",
-                                      "filter[appStoreState]": "PREPARE_FOR_SUBMISSION,INVALID_BINARY,DEVELOPER_REJECTED,REJECTED"})["data"][0]
+                                      "filter[appStoreState]": "PREPARE_FOR_SUBMISSION,READY_FOR_REVIEW,INVALID_BINARY,DEVELOPER_REJECTED,REJECTED"})["data"][0]
     vid = version["id"]
 
     if submit:
