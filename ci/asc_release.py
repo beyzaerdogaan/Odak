@@ -99,15 +99,28 @@ def main():
 
 
 def submit_for_review(app_id, vid):
-    sub = call("POST", "/reviewSubmissions", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
-        "relationships": {"app": {"data": {"type": "apps", "id": app_id}}}}})["data"]
-    call("POST", "/reviewSubmissionItems", {"data": {"type": "reviewSubmissionItems", "relationships": {
-        "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub["id"]}},
-        "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
-    call("PATCH", f"/reviewSubmissions/{sub['id']}", {"data": {"type": "reviewSubmissions", "id": sub["id"],
+    # A version sent back (e.g. as an invalid binary) stays in its review submission: send that one again.
+    open_subs = call("GET", "/reviewSubmissions", query={"filter[app]": app_id, "filter[platform]": "IOS",
+        "filter[state]": "READY_FOR_REVIEW,UNRESOLVED_ISSUES", "include": "items"})
+    target = None
+    for sub in open_subs["data"]:
+        if sub["relationships"]["items"]["data"]:
+            target = target or sub
+        else:
+            call("PATCH", f"/reviewSubmissions/{sub['id']}", {"data": {"type": "reviewSubmissions", "id": sub["id"],
+                "attributes": {"canceled": True}}})
+            print(f"canceled empty submission {sub['id']}")
+    if target is None:
+        target = call("POST", "/reviewSubmissions", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
+            "relationships": {"app": {"data": {"type": "apps", "id": app_id}}}}})["data"]
+        call("POST", "/reviewSubmissionItems", {"data": {"type": "reviewSubmissionItems", "relationships": {
+            "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": target["id"]}},
+            "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
+    else:
+        print(f"resubmitting {target['id']} ({target['attributes']['state']})")
+    call("PATCH", f"/reviewSubmissions/{target['id']}", {"data": {"type": "reviewSubmissions", "id": target["id"],
         "attributes": {"submitted": True}}})
     print("submitted for review")
-
 
 if __name__ == "__main__":
     main()
