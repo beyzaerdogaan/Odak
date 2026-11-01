@@ -75,6 +75,14 @@ def main():
             "relationships": {"appPricePoint": {"data": {"type": "appPricePoints", "id": free["id"]}}}}]})
     print("price: free")
 
+    # The availability can only be created once; after that App Store Connect answers 404 for "not set" only.
+    try:
+        existing = call("GET", f"/apps/{app_id}/appAvailabilityV2")
+    except SystemExit:
+        existing = None
+    if existing and existing.get("data"):
+        print("availability already set")
+        return
     territories = [t["id"] for t in all_pages("/territories", {"limit": 200})]
     asc_signing.API = asc_signing.API.replace("/v1", "/v2")
     try:
