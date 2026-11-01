@@ -102,14 +102,9 @@ def submit_for_review(app_id, vid):
     # A version sent back (e.g. as an invalid binary) stays in its review submission: send that one again.
     open_subs = call("GET", "/reviewSubmissions", query={"filter[app]": app_id, "filter[platform]": "IOS",
         "filter[state]": "READY_FOR_REVIEW,UNRESOLVED_ISSUES", "include": "items"})
-    target = None
     for sub in open_subs["data"]:
-        if sub["relationships"]["items"]["data"]:
-            target = target or sub
-        else:
-            call("PATCH", f"/reviewSubmissions/{sub['id']}", {"data": {"type": "reviewSubmissions", "id": sub["id"],
-                "attributes": {"canceled": True}}})
-            print(f"canceled empty submission {sub['id']}")
+        print(f"open submission {sub['id']}: {sub['attributes']['state']}, {len(sub['relationships']['items']['data'])} items")
+    target = next((sub for sub in open_subs["data"] if sub["relationships"]["items"]["data"]), None)
     if target is None:
         target = call("POST", "/reviewSubmissions", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
             "relationships": {"app": {"data": {"type": "apps", "id": app_id}}}}})["data"]
