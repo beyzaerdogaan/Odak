@@ -104,3 +104,13 @@ if avail and avail.get("data"):
         "EU available": sorted(EU & set(on))})
 else:
     section("availability", "not set")
+
+groups = get(f"/apps/{app_id}/subscriptionGroups")
+for g in (groups or {}).get("data", []):
+    subs = get(f"/subscriptionGroups/{g['id']}/subscriptions")
+    section(f"subscription group {g['attributes'].get('referenceName')}",
+            [{k: s["attributes"].get(k) for k in ("productId", "name", "state")} for s in (subs or {}).get("data", [])])
+if groups is not None and not groups.get("data"):
+    section("subscription groups", "none")
+iaps = get(f"/apps/{app_id}/inAppPurchasesV2")
+section("in-app purchases", [{k: i["attributes"].get(k) for k in ("productId", "state")} for i in (iaps or {}).get("data", [])] or "none")
