@@ -70,6 +70,7 @@ final class AppModel {
             LiveActivityController.sync(session)
             SkyCalendarUpdater.loadCached()
             Task { await SkyCalendarUpdater.refresh() }
+            Task { await Notifications.repairSkyReminders() }
             account.onSignIn = { [weak self] in self?.scheduleSync(after: .zero) }
             scheduleSync(after: .zero)
         }
