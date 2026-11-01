@@ -75,7 +75,7 @@ def main():
             "relationships": {"appPricePoint": {"data": {"type": "appPricePoints", "id": free["id"]}}}}]})
     print("price: free")
 
-    # The availability can only be created once; after that App Store Connect answers 404 for "not set" only.
+    # Availability can only be created once; a 404 here means it is not set yet.
     try:
         existing = call("GET", f"/apps/{app_id}/appAvailabilityV2")
     except SystemExit:
