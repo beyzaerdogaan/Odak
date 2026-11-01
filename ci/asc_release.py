@@ -6,7 +6,7 @@
 Attaches the build to the version being prepared, writes the App Review contact (name, email) and notes
 from appstore/review.json, declares the content rights, makes the app free, and makes it available
 everywhere except the EU. The reviewer phone number is left to App Store Connect (the repo is public).
-With --submit, also sends the version to App Review.
+With --submit, only sends the version (with that build already attached) to App Review.
 Needs ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (see asc_signing.py).
 """
 import json
@@ -38,6 +38,12 @@ def main():
     version = call("GET", f"/apps/{app_id}/appStoreVersions",
                    query={"filter[platform]": "IOS", "filter[appStoreState]": "PREPARE_FOR_SUBMISSION"})["data"][0]
     vid = version["id"]
+
+    if submit:
+        attached = call("GET", f"/appStoreVersions/{vid}/build")["data"]
+        if not attached or attached["attributes"]["version"] != build_number:
+            sys.exit(f"build {build_number} is not attached; run without --submit first")
+        return submit_for_review(app_id, vid)
 
     build = call("GET", "/builds", query={"filter[app]": app_id, "filter[version]": build_number})["data"][0]
     call("PATCH", f"/appStoreVersions/{vid}/relationships/build", {"data": {"type": "builds", "id": build["id"]}})
@@ -81,15 +87,17 @@ def main():
         asc_signing.API = asc_signing.API.replace("/v2", "/v1")
     print(f"available in {len([t for t in territories if t not in EU])} territories, not in the {len(EU)} EU countries")
 
-    if submit:
-        sub = call("POST", "/reviewSubmissions", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
-            "relationships": {"app": {"data": {"type": "apps", "id": app_id}}}}})["data"]
-        call("POST", "/reviewSubmissionItems", {"data": {"type": "reviewSubmissionItems", "relationships": {
-            "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub["id"]}},
-            "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
-        call("PATCH", f"/reviewSubmissions/{sub['id']}", {"data": {"type": "reviewSubmissions", "id": sub["id"],
-            "attributes": {"submitted": True}}})
-        print("submitted for review")
+
+
+def submit_for_review(app_id, vid):
+    sub = call("POST", "/reviewSubmissions", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
+        "relationships": {"app": {"data": {"type": "apps", "id": app_id}}}}})["data"]
+    call("POST", "/reviewSubmissionItems", {"data": {"type": "reviewSubmissionItems", "relationships": {
+        "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub["id"]}},
+        "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
+    call("PATCH", f"/reviewSubmissions/{sub['id']}", {"data": {"type": "reviewSubmissions", "id": sub["id"],
+        "attributes": {"submitted": True}}})
+    print("submitted for review")
 
 
 if __name__ == "__main__":
