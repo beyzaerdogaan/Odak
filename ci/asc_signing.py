@@ -34,7 +34,9 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 
 API = "https://api.appstoreconnect.apple.com/v1"
-PROFILE_PREFIX = "Derin CI "
+# A release build keeps its certificate (App Review rejects a binary whose certificate was revoked as
+# "Invalid Binary"), so its profiles get their own names that later CI runs leave alone.
+PROFILE_PREFIX = os.environ.get("ASC_PROFILE_PREFIX", "Derin CI ")
 
 
 def token():
