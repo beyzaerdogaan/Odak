@@ -36,7 +36,8 @@ def main():
     app = call("GET", "/apps", query={"filter[bundleId]": BUNDLE_ID})["data"][0]
     app_id = app["id"]
     version = call("GET", f"/apps/{app_id}/appStoreVersions",
-                   query={"filter[platform]": "IOS", "filter[appStoreState]": "PREPARE_FOR_SUBMISSION"})["data"][0]
+                   query={"filter[platform]": "IOS",
+                                      "filter[appStoreState]": "PREPARE_FOR_SUBMISSION,INVALID_BINARY,DEVELOPER_REJECTED,REJECTED"})["data"][0]
     vid = version["id"]
 
     if submit:
