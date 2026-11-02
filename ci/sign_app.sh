@@ -83,6 +83,12 @@ for ext in "$APP"/PlugIns/*.appex; do
 done
 sign_bundle "$APP"
 codesign --verify --deep --strict --verbose=2 "$APP"
+# What App Review will see: each bundle's signed entitlement keys (App Review rejects a Screen Time
+# app automatically if Family Controls is missing from any bundle that uses it).
+for b in "$APP" "$APP"/PlugIns/*.appex; do
+  echo "Entitlements of $(basename "$b"):"
+  codesign -d --entitlements - --xml "$b" 2>/dev/null | plutil -convert json -o - - | python3 -c 'import json,sys; print("  " + ", ".join(sorted(json.load(sys.stdin))))'
+done
 
 WORK=$(mktemp -d)
 mkdir "$WORK/Payload"
