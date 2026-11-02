@@ -10,6 +10,10 @@ on:
         description: "Screen Time (FamilyControls) ile derle. Yalnızca Apple onayı geldikten sonra."
         type: boolean
         default: false
+      keep_certificate:
+        description: "App Store'a gönderilecek build: imza sertifikasını iptal etme (iptal edilirse App Review 'Invalid Binary' der)."
+        type: boolean
+        default: false
   push:
     tags: ["v*"]
 
@@ -28,6 +32,7 @@ jobs:
       BUNDLE_PREFIX: ${{ vars.BUNDLE_ID_PREFIX || 'com.beyzaerdogan' }}
       SPOTIFY_CLIENT_ID: ${{ vars.SPOTIFY_CLIENT_ID }}
       SCREEN_TIME: ${{ inputs.screen_time && 'YES' || vars.SCREEN_TIME || 'NO' }}
+      ASC_PROFILE_PREFIX: ${{ inputs.keep_certificate && 'Derin Release ' || 'Derin CI ' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -178,7 +183,11 @@ jobs:
           python3 -m venv "$RUNNER_TEMP/venv"
           "$RUNNER_TEMP/venv/bin/pip" install --quiet pyjwt cryptography
           "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py wait "$BUNDLE_PREFIX.derin" "${{ github.run_number }}"
-          "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py cleanup "$RUNNER_TEMP/signing"
+          if [ "${{ inputs.keep_certificate }}" = "true" ]; then
+            echo "Release build: keeping certificate and profiles $SIGNING_STATE"
+          else
+            "$RUNNER_TEMP/venv/bin/python" ci/asc_signing.py cleanup "$RUNNER_TEMP/signing"
+          fi
 
       - name: Clean up key
         if: always()

@@ -1,0 +1,40 @@
+# Fills in what App Store Connect still needs before review (ci/asc_release.py) and, if asked, submits
+# the version to App Review. Run by hand only; the push trigger just registers the workflow.
+name: App Store release
+
+on:
+  push:
+    paths: [.github/workflows/asc-release.yml]
+  workflow_dispatch:
+    inputs:
+      build:
+        description: Build number to attach to the version
+        required: true
+      submit:
+        description: Also send the version to App Review
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Release
+        env:
+          BUILD: ${{ inputs.build }}
+        run: |
+          pip install -q pyjwt cryptography
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$ASC_KEY_PATH"
+          cd ci
+          python3 asc_release.py "$BUILD" ${{ inputs.submit && '--submit' || '' }}
