@@ -50,14 +50,20 @@ def token():
 def call(method, path, body=None, query=None):
     url = API + path + ("?" + urllib.parse.urlencode(query) if query else "")
     data = json.dumps(body).encode() if body is not None else None
-    req = urllib.request.Request(url, data=data, method=method, headers={
-        "Authorization": "Bearer " + token(), "Content-Type": "application/json"})
-    try:
-        with urllib.request.urlopen(req) as resp:
-            raw = resp.read()
-            return json.loads(raw) if raw else None
-    except urllib.error.HTTPError as e:
-        sys.exit(f"{method} {path} failed: {e.code} {e.read().decode(errors='replace')}")
+    # App Store Connect now and then answers 500 for a moment; a GET is safe to repeat.
+    for attempt in range(4):
+        req = urllib.request.Request(url, data=data, method=method, headers={
+            "Authorization": "Bearer " + token(), "Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req) as resp:
+                raw = resp.read()
+                return json.loads(raw) if raw else None
+        except urllib.error.HTTPError as e:
+            if method == "GET" and e.code >= 500 and attempt < 3:
+                print(f"{method} {path}: {e.code}, retrying")
+                time.sleep(10 * (attempt + 1))
+                continue
+            sys.exit(f"{method} {path} failed: {e.code} {e.read().decode(errors='replace')}")
 
 
 def bundle_id(identifier):
